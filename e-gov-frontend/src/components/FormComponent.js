@@ -12,7 +12,7 @@ function FormComponent() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch("localhost:4200/votes", {
+    fetch("localhost:8080/api/votes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ voterName, voteOption }),
