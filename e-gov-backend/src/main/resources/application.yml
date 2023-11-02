@@ -2,8 +2,11 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/e-gov-db
-    username: root
+    username: postgres
     password: 1234
+  sql:
+    init:
+      mode: always
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -12,4 +15,4 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
-    defer-datasource-initialization: true
+    show-sql: true
