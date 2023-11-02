@@ -37,6 +37,15 @@ public class UserVoteController {
         return ResponseEntity.ok(savedUser);
     }
 
+    @Operation(summary = "Gets all user votes from the data base")
+    @ApiResponses(
+            value = @ApiResponse(responseCode = "200",
+                    description = "If all books are load successfully",
+                    content = {
+                            @Content(mediaType = "application/json")
+                    }
+            )
+    )
     @GetMapping("/api/votes")
     public ResponseEntity<List<UserVotedInfoDTO>> getAllUserVotes() {
         List<UserVotedInfoDTO> allSavedUserVotes = this.userService.getAllUserVotes();
