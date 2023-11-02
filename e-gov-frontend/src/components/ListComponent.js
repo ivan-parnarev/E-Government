@@ -31,15 +31,19 @@ function ListComponent() {
         Генерирай
       </button>
 
-      <ul className={styles.listDataContainer}>
-        {votesData.map(({ voterName, voteOption }, index) => {
-          return (
-            <li key={index}>
-              {voterName} гласува за {voteOption}.
-            </li>
-          );
-        })}
-      </ul>
+      {votesData.length === 0 ? (
+        ""
+      ) : (
+        <ul className={styles.listDataContainer}>
+          {votesData.map(({ voterName, voteOption }, index) => {
+            return (
+              <li key={index}>
+                {voterName} гласува за {voteOption}.
+              </li>
+            );
+          })}
+        </ul>
+      )}
 
       {votesData.length === 0 ? "" : <p>Общо гласували: {votesData.length}</p>}
     </div>
