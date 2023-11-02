@@ -1,12 +1,16 @@
-import "./App.css";
+import styles from "./App.module.css";
 import FormComponent from "./components/FormComponent";
+import ListComponent from "./components/ListComponent";
 import MainNavigation from "./components/MainNavigation";
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.app}>
       <MainNavigation />
-      <FormComponent />
+      <div className={styles.container}>
+        <FormComponent />
+        <ListComponent />
+      </div>
     </div>
   );
 }
