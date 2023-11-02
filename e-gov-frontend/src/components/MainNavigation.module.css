@@ -1,0 +1,35 @@
+.navbarNav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar {
+  background-color: transparent;
+}
+
+.navbarLogoImageContainer {
+  padding: 0px;
+}
+
+.navbarLogoImage {
+  width: 70px;
+}
+
+.navbarNavLink {
+  color: var(--gray) !important;
+  font-size: 1.1rem;
+}
+.navbarNavLink:hover {
+  color: var(--red) !important;
+}
+
+.activeCampaigns {
+  background-color: var(--red);
+  color: var(--light) !important;
+}
+
+.activeCampaigns:hover {
+  color: var(--dark-grey) !important;
+}
