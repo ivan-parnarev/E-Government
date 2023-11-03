@@ -1,4 +1,9 @@
-## This project is a Spring Boot application built with Maven.The following guide will help you clone the project, build it, and run it on your local machine.
+
+## Backend REST Api Documentation
+
+## Introduction
+This project is a Spring Boot application built with Maven.The following guide will help you clone the project, build it, and run it on your local machine.
+E-Government enables voters to cast their votes for candidates or policies from any location, using a computer or a mobile device.
 
 ## Prerequisites
 1. Java JDK
@@ -31,3 +36,9 @@ Locate the `main` method in your Spring Boot application. This is typically foun
 - Right-click on the file containing the `main` method and select `Run EGovBackendApplication`.
 
 Once the application starts, you can access it by opening your web browser and going to `http://localhost:8080` 
+
+## Endpoints
+
+ UserVoteController
+- GET /api/votes - retrieve information about all the users in the database. Returns `Response.ok`
+- POST /api/votes - accepts `@RequestBody` and creates an object of `User.class` that is saved in the database. Returns `Response.ok`
