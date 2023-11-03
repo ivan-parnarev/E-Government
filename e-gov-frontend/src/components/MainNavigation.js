@@ -17,16 +17,16 @@ function MainNavigation() {
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="#home" className={styles.navbarNavLink}>
-              Home
+              Начало
             </Nav.Link>
             <Nav.Link href="#register" className={styles.navbarNavLink}>
-              Register
+              Регистрация
             </Nav.Link>
             <Nav.Link
               href="#active-campaigns"
               className={`${styles.navbarNavLink} ${styles.activeCampaigns}`}
             >
-              Active Campaigns
+              Активни кампании
             </Nav.Link>
           </Nav>
         </Container>
