@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import styles from "./MainNavigation.module.css";
-import eGovLogo from "../assets/Government-PNG-Image-HD.png";
+import eGovLogo from "../assets/e-gov-logo.png";
 
 function MainNavigation() {
   return (

@@ -22,14 +22,15 @@
   font-size: 1.1rem;
 }
 .navbarNavLink:hover {
-  color: var(--red) !important;
+  color: var(--blue-dark) !important;
 }
 
 .activeCampaigns {
-  background-color: var(--red);
+  background-color: var(--gray);
   color: var(--light) !important;
 }
 
 .activeCampaigns:hover {
-  color: var(--dark-grey) !important;
+  background-color: var(--blue-dark);
+  color: var(--light) !important;
 }
