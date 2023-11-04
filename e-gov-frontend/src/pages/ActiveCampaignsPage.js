@@ -1,8 +1,8 @@
 import styles from "./ActiveCampaignsPage.module.css";
-import FormComponent from "../components/FormComponent";
-import ListComponent from "../components/ListComponent";
+import { FormComponent } from "../components/FormComponent";
+import { ListComponent } from "../components/ListComponent";
 
-function ActiveCampaignsPage() {
+export function ActiveCampaignsPage() {
   return (
     <div className={styles.container}>
       <FormComponent />
@@ -10,5 +10,3 @@ function ActiveCampaignsPage() {
     </div>
   );
 }
-
-export default ActiveCampaignsPage;

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./HomePage.module.css";
 
-const HomePage = () => {
+export function HomePage() {
   return (
     <div className={styles.containerBackground}>
       <div className={styles.container}>
@@ -36,6 +36,4 @@ const HomePage = () => {
       </div>
     </div>
   );
-};
-
-export default HomePage;
+}
