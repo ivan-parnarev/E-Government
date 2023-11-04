@@ -1,7 +1,7 @@
 import styles from "./FormComponent.module.css";
 import { useState } from "react";
 
-function FormComponent() {
+export function FormComponent() {
   const [voterName, setVoterName] = useState("");
   const [voteOption, setVoteOption] = useState("");
 
@@ -96,5 +96,3 @@ function FormComponent() {
     </div>
   );
 }
-
-export default FormComponent;

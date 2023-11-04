@@ -5,7 +5,7 @@ import styles from "./MainNavigation.module.css";
 import eGovLogo from "../assets/images/e-gov-logo.png";
 import { Link } from "react-router-dom";
 
-function MainNavigation() {
+export function MainNavigation() {
   return (
     <div className={styles.navbarNav}>
       <Navbar className={styles.navbar}>
@@ -35,5 +35,3 @@ function MainNavigation() {
     </div>
   );
 }
-
-export default MainNavigation;

@@ -4,10 +4,10 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import RootLayout from "./RootLayout";
-import HomePage from "./pages/HomePage";
-import RegisterPage from "./pages/RegisterPage";
-import ActiveCampaignsPage from "./pages/ActiveCampaignsPage";
+import { RootLayout } from "./RootLayout";
+import { HomePage } from "./pages/HomePage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { ActiveCampaignsPage } from "./pages/ActiveCampaignsPage";
 
 const routeChildren = [
   <Route key="home" index="true" element={<HomePage />} />,
@@ -27,8 +27,6 @@ const routeDefinitions = createRoutesFromElements(
 
 const router = createBrowserRouter(routeDefinitions);
 
-function App() {
+export function App() {
   return <RouterProvider router={router} />;
 }
-
-export default App;

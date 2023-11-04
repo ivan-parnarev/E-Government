@@ -1,17 +1,11 @@
 import styles from "./ListComponent.module.css";
 import { useState } from "react";
 
-function ListComponent() {
+export function ListComponent() {
   const [votesData, setVotesData] = useState([]);
 
   function handleClick(e) {
     e.preventDefault();
-
-    // setVotesData([
-    //   { voterName: "John Doe", voteOption: "Option 1" },
-    //   { voterName: "Jane Doe", voteOption: "Option 2" },
-    //   { voterName: "Alice Doe", voteOption: "Option 3" },
-    // ]);
 
     fetch("http://localhost:8080/api/votes", {
       method: "GET",
@@ -49,5 +43,3 @@ function ListComponent() {
     </div>
   );
 }
-
-export default ListComponent;
