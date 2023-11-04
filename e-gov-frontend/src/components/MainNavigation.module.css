@@ -10,7 +10,7 @@
 }
 
 .navbarLogoImageContainer {
-  padding: 0px;
+  padding: 5px;
 }
 
 .navbarLogoImage {
@@ -20,9 +20,12 @@
 .navbarNavLink {
   color: var(--gray) !important;
   font-size: 1.1rem;
+  padding: 10px;
+  text-decoration: none;
 }
 .navbarNavLink:hover {
   color: var(--blue-dark) !important;
+  text-decoration: none;
 }
 
 .activeCampaigns {
