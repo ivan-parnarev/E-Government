@@ -19,25 +19,4 @@ describe("ListComponent", () => {
     const listContainer = screen.queryByRole("list");
     expect(listContainer).not.toBeInTheDocument();
   });
-
-  // it("renders the list after clicking the 'Генерирай' button", async () => {
-  //   render(<ListComponent />);
-  //   const generateButton = screen.getByText(/Генерирай/i);
-  //   fireEvent.click(generateButton);
-  //   await waitFor(() => {
-  //     const listContainer = screen.getByRole("list");
-  //     expect(listContainer).toBeInTheDocument();
-  //   });
-  // });
-
-  // it("renders the correct number of votes after fetching data", async () => {
-  //   render(<ListComponent />);
-  //   const generateButton = screen.getByText(/Генерирай/i);
-  //   fireEvent.click(generateButton);
-  //   await waitFor(() => {
-  //     const totalVotes = screen.getByText(/Общо гласували:/i);
-  //     expect(totalVotes).toBeInTheDocument();
-  //     expect(totalVotes.textContent).toMatch(/Общо гласували: \d+/i);
-  //   });
-  // });
 });

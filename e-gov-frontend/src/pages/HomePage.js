@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./HomePage.module.css";
+import Button from "react-bootstrap/Button";
 
 export function HomePage() {
   return (
@@ -12,7 +13,7 @@ export function HomePage() {
           Иновативна система за електронно преброяване и гласуване
         </h2>
 
-        <div className={styles.features}>
+        <div className={styles.featuresSection}>
           <h2 className={styles.subTitle}>Основни функционалности:</h2>
           <ul className={styles.featuresList}>
             <li>Лесно създаване на потребителски профили</li>
@@ -25,13 +26,29 @@ export function HomePage() {
         </div>
 
         <div className={styles.aboutSection}>
-          <h2 className={styles.subTitle}>За нас</h2>
+          <h2 className={styles.subTitle}>За нас:</h2>
           <p className={styles.aboutSectionDescription}>
             Ние вярваме в силата на технологиите за улесняване на демократичните
             процеси. Системата ни за електронно преброяване и гласуване е
             създадена с оглед на повишаване на участието на гражданите във
             важните решения, които засягат бъдещето на нашето общество.
           </p>
+        </div>
+
+        <div className={styles.activeCampaignsSection}>
+          <h2 className={styles.subTitle}>Активни кампании:</h2>
+          <div className={styles.activeCampaignsButtonsGroup}>
+            <Button
+              variant="outline-light"
+              size="lg"
+              className={styles.activeCampaignsButton}
+            >
+              Електронно гласуване
+            </Button>
+            <Button variant="outline-light" size="lg">
+              Електронно преброяване
+            </Button>
+          </div>
         </div>
       </div>
     </div>
