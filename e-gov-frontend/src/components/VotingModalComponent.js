@@ -16,7 +16,10 @@ export function VotingModalComponent(props) {
         <Modal.Title id="contained-modal-title-vcenter">
           Електронно гласуване
         </Modal.Title>
-        <button className={styles.modalCloseButton} onClick={props.onHide}>
+        <button
+          className={styles.modalHeaderCloseButton}
+          onClick={props.onHide}
+        >
           ✖
         </button>
       </Modal.Header>
@@ -32,7 +35,13 @@ export function VotingModalComponent(props) {
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Затвори</Button>
+        <Button className={styles.modalFooterCloseButton}>Продължи</Button>
+        <Button
+          onClick={props.onHide}
+          className={styles.modalFooterCloseButton}
+        >
+          Затвори
+        </Button>
       </Modal.Footer>
     </Modal>
   );
