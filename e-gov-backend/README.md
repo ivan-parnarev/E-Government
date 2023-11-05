@@ -6,7 +6,7 @@ This project is a Spring Boot application built with Maven.The following guide w
 E-Government enables voters to cast their votes for candidates or policies from any location, using a computer or a mobile device.
 
 ## Prerequisites
-1. Java JDK
+1. Java JDK 17
 2. Maven
 3. Git
 4. Programming IDE (Intellij Recommended, but it works as well in VS Code)
@@ -42,3 +42,6 @@ Once the application starts, you can access it by opening your web browser and g
  UserVoteController
 - GET /api/votes - retrieve information about all the users in the database. Returns `Response.ok`
 - POST /api/votes - accepts `@RequestBody` and creates an object of `User.class` that is saved in the database. Returns `Response.ok`
+
+## SWAGGER 
+SWAGGER documentation is available when the application is working on port `localhost:8080/swagger-ui/index.html`. You can test the endpoints and read the documentation about the logic behind each endpoint. 

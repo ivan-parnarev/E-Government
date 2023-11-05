@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
-import com.egovernment.egovbackend.services.UserService;
+import com.egovernment.egovbackend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,7 +40,7 @@ public class UserVoteController {
     @Operation(summary = "Gets all user votes from the data base")
     @ApiResponses(
             value = @ApiResponse(responseCode = "200",
-                    description = "If all books are load successfully",
+                    description = "If all votes are load successfully",
                     content = {
                             @Content(mediaType = "application/json")
                     }

@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.services;
+package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.domain.entities.User;
-import com.egovernment.egovbackend.repositories.UserRepository;
+import com.egovernment.egovbackend.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

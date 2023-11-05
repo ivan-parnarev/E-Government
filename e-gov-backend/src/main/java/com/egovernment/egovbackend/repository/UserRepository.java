@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.repositories;
+package com.egovernment.egovbackend.repository;
 
 import com.egovernment.egovbackend.domain.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
