@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./HomePage.module.css";
 import Button from "react-bootstrap/Button";
+import { VotingModalComponent } from "../components/VotingModalComponent";
 
 export function HomePage() {
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <div className={styles.containerBackground}>
       <div className={styles.container}>
@@ -42,9 +45,16 @@ export function HomePage() {
               variant="outline-light"
               size="lg"
               className={styles.activeCampaignsButton}
+              onClick={() => setModalShow(true)}
             >
               Електронно гласуване
             </Button>
+
+            <VotingModalComponent
+              show={modalShow}
+              onHide={() => setModalShow(false)}
+            />
+
             <Button variant="outline-light" size="lg">
               Електронно преброяване
             </Button>
