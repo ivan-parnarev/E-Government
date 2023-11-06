@@ -3,8 +3,25 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./VotingModalComponent.module.css";
+import { useState } from "react";
+import { ElectionRow } from "./ElectionRow";
 
 export function VotingModalComponent(props) {
+  const [pinValue, setPinValue] = useState("");
+  const [showQuestions, setShowQuestions] = useState(false);
+
+  const handlePinChange = (event) => {
+    setPinValue(event.target.value);
+  };
+
+  const handleContinue = () => {
+    setShowQuestions(true);
+  };
+
+  const handleBack = () => {
+    setShowQuestions(false);
+  };
+
   return (
     <Modal
       {...props}
@@ -24,22 +41,46 @@ export function VotingModalComponent(props) {
         </button>
       </Modal.Header>
       <Modal.Body>
-        <h4>Влезли сте като гост</h4>
-        <p>Моля въведете ЕГН, за да се идентифицирате:</p>
-        <InputGroup size="sm" className="mb-3">
-          <InputGroup.Text id="inputGroup-sizing-sm">ЕГН:</InputGroup.Text>
-          <Form.Control
-            aria-label="Small"
-            aria-describedby="inputGroup-sizing-sm"
-          />
-        </InputGroup>
+        {!showQuestions ? (
+          <>
+            <h4>Влезли сте като гост</h4>
+            <p>Моля въведете ЕГН, за да се идентифицирате:</p>
+            <InputGroup size="sm" className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-sm">ЕГН:</InputGroup.Text>
+              <Form.Control
+                aria-label="Small"
+                aria-describedby="inputGroup-sizing-sm"
+                value={pinValue}
+                onChange={handlePinChange}
+              />
+            </InputGroup>
+          </>
+        ) : (
+          <>
+            <h4>Район Видин</h4>
+            <h2>
+              <b>ИЗБОРИ ЗА КМЕТ НА ОБЩИНА</b>
+            </h2>
+            <ElectionRow />
+          </>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button className={styles.modalFooterCloseButton}>Продължи</Button>
-        <Button
-          onClick={props.onHide}
-          className={styles.modalFooterCloseButton}
-        >
+        {!showQuestions ? (
+          <Button className={styles.modalFooterButton} onClick={handleContinue}>
+            Продължи
+          </Button>
+        ) : (
+          <>
+            <div className={styles.modalFooterButtonGroup}>
+              <Button className={styles.modalFooterButton} onClick={handleBack}>
+                Назад
+              </Button>
+            </div>
+            <Button className={styles.modalFooterButton}>Гласувай</Button>
+          </>
+        )}
+        <Button className={styles.modalFooterButton} onClick={props.onHide}>
           Затвори
         </Button>
       </Modal.Footer>
