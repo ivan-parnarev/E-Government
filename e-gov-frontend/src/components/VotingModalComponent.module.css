@@ -18,3 +18,17 @@
 .modalFooterButton {
   background-color: var(--blue-dark);
 }
+
+.electionRowContainerPosition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.electionRowContainer {
+  border: 2px solid var(--dark);
+  border-radius: 10px;
+  padding: 20px 0px;
+  width: 70%;
+}

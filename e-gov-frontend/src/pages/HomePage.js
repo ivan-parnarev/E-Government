@@ -1,10 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./HomePage.module.css";
 import Button from "react-bootstrap/Button";
 import { VotingModalComponent } from "../components/VotingModalComponent";
+import { ActiveCampaign } from "../components/ActiveCampaign";
 
 export function HomePage() {
-  const [modalShow, setModalShow] = useState(false);
+  const [activeCampaigns, setActiveCampaigns] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/campaigns/active")
+      .then((response) => response.json())
+      .then((data) => {
+        setActiveCampaigns(data);
+      })
+      .catch((error) =>
+        console.error("Error fetching active campaigns:", error)
+      );
+  }, []);
+
+  useEffect(() => {}, [activeCampaigns]);
 
   return (
     <div className={styles.containerBackground}>
@@ -41,23 +55,15 @@ export function HomePage() {
         <div className={styles.activeCampaignsSection}>
           <h2 className={styles.subTitle}>Активни кампании:</h2>
           <div className={styles.activeCampaignsButtonsGroup}>
-            <Button
-              variant="outline-light"
-              size="lg"
-              className={styles.activeCampaignsButton}
-              onClick={() => setModalShow(true)}
-            >
-              Електронно гласуване
-            </Button>
-
-            <VotingModalComponent
-              show={modalShow}
-              onHide={() => setModalShow(false)}
-            />
-
-            <Button variant="outline-light" size="lg">
-              Електронно преброяване
-            </Button>
+            {activeCampaigns.map((campaign) => {
+              return (
+                <ActiveCampaign
+                  key={campaign.id}
+                  campaignTopic={campaign.campaignTopic}
+                  answersJson={JSON.parse(campaign.answersJson)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>

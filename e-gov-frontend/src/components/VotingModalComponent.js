@@ -6,9 +6,15 @@ import styles from "./VotingModalComponent.module.css";
 import { useState } from "react";
 import { ElectionRow } from "./ElectionRow";
 
-export function VotingModalComponent(props) {
+export function VotingModalComponent({
+  show,
+  onHide,
+  campaignTopic,
+  answersJson,
+}) {
   const [pinValue, setPinValue] = useState("");
   const [showQuestions, setShowQuestions] = useState(false);
+  const [checkedId, setCheckedId] = useState(null);
 
   const handlePinChange = (event) => {
     setPinValue(event.target.value);
@@ -24,19 +30,19 @@ export function VotingModalComponent(props) {
 
   return (
     <Modal
-      {...props}
+      show={show}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
-          Електронно гласуване
+          <h2>
+            <b>{campaignTopic}</b>
+          </h2>
         </Modal.Title>
-        <button
-          className={styles.modalHeaderCloseButton}
-          onClick={props.onHide}
-        >
+        <button className={styles.modalHeaderCloseButton} onClick={onHide}>
           ✖
         </button>
       </Modal.Header>
@@ -57,11 +63,23 @@ export function VotingModalComponent(props) {
           </>
         ) : (
           <>
-            <h4>Район Видин</h4>
-            <h2>
-              <b>ИЗБОРИ ЗА КМЕТ НА ОБЩИНА</b>
-            </h2>
-            <ElectionRow />
+            <h5>БЮЛЕТИНА ЗА НАРОДНИ ПРЕДСТАВИТЕЛИ</h5>
+            <div className={styles.electionRowContainerPosition}>
+              <div className={styles.electionRowContainer}>
+                {answersJson.map((answer) => {
+                  return (
+                    <ElectionRow
+                      key={answer.id}
+                      id={answer.id}
+                      name={answer.name}
+                      number={answer.number}
+                      checked={checkedId === answer.id}
+                      onChange={() => setCheckedId(answer.id)}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </>
         )}
       </Modal.Body>
@@ -80,7 +98,7 @@ export function VotingModalComponent(props) {
             <Button className={styles.modalFooterButton}>Гласувай</Button>
           </>
         )}
-        <Button className={styles.modalFooterButton} onClick={props.onHide}>
+        <Button className={styles.modalFooterButton} onClick={onHide}>
           Затвори
         </Button>
       </Modal.Footer>
