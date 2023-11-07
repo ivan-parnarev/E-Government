@@ -29,4 +29,7 @@ public class RoleService {
         }
     }
 
+    public Role getRole(RoleEnum roleEnum) {
+        return this.roleRepository.findByRoleName(roleEnum);
+    }
 }

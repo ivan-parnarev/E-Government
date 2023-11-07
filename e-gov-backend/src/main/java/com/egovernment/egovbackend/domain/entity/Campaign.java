@@ -20,6 +20,8 @@ public class Campaign extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column
     private CampaignType campaignType;
+    @Column
+    private String campaignTopic;
     @ManyToOne
     private User from; //with role administrator
     @Column
