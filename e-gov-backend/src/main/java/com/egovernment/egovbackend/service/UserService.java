@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
-import com.egovernment.egovbackend.domain.entities.User;
+import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,16 +15,16 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public UserVotedInfoDTO addNewUserVote(UserVotedInfoDTO userDTO) {
-        User userToBeSaved = User.builder()
-                .voterName(userDTO.getVoterName())
-                .voteOption(userDTO.getVoteOption())
-                .build();
-
-        User savedUser = this.userRepository.save(userToBeSaved);
-
-        return mapSavedUserToDTO(savedUser);
-    }
+//    public UserVotedInfoDTO addNewUserVote(UserVotedInfoDTO userDTO) {
+//        User userToBeSaved = User.builder()
+//                .voterName(userDTO.getVoterName())
+//                .voteOption(userDTO.getVoteOption())
+//                .build();
+//
+//        User savedUser = this.userRepository.save(userToBeSaved);
+//
+//        return mapSavedUserToDTO(savedUser);
+//    }
     public List<UserVotedInfoDTO> getAllUserVotes() {
         List<User> allUserVotes = this.userRepository.findAll();
 
@@ -36,8 +36,8 @@ public class UserService {
 
     private UserVotedInfoDTO mapSavedUserToDTO(User savedUser) {
         return UserVotedInfoDTO.builder()
-                .voterName(savedUser.getVoterName())
-                .voteOption(savedUser.getVoteOption())
+//                .voterName(savedUser.getVoterName())
+//                .voteOption(savedUser.getVoteOption())
                 .build();
     }
 

@@ -33,8 +33,8 @@ public class UserVoteController {
     )
     @PostMapping("/api/votes")
     public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@RequestBody UserVotedInfoDTO user){
-        UserVotedInfoDTO savedUser = this.userService.addNewUserVote(user);
-        return ResponseEntity.ok(savedUser);
+//        UserVotedInfoDTO savedUser = this.userService.addNewUserVote(user);
+        return ResponseEntity.ok(user);
     }
 
     @Operation(summary = "Gets all user votes from the data base")
