@@ -27,5 +27,7 @@ public class Vote extends BaseEntity {
     private String answer;
     @Column
     private LocalDate date;
+    @Column
+    private String userPin;
 
 }
