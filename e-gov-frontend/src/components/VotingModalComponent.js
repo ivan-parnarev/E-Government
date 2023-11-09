@@ -13,19 +13,37 @@ export function VotingModalComponent({
   answersJson,
 }) {
   const [pinValue, setPinValue] = useState("");
+  const [isValidPinValue, setIsValidPinValue] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [checkedId, setCheckedId] = useState(null);
 
+  const validatePinValue = (input) => {
+    const regex = /^[0-9]{10}$/gm;
+    return regex.test(input);
+  };
+
   const handlePinChange = (event) => {
     setPinValue(event.target.value);
+    setIsValidPinValue(validatePinValue(pinValue));
   };
 
   const handleContinue = () => {
-    setShowQuestions(true);
+    if (pinValue.length < 10) {
+      setShowQuestions(false);
+    } else if (pinValue.length > 10) {
+      setShowQuestions(false);
+    } else {
+      setShowQuestions(true);
+    }
   };
 
   const handleBack = () => {
     setShowQuestions(false);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
   };
 
   return (
@@ -58,8 +76,23 @@ export function VotingModalComponent({
                 aria-describedby="inputGroup-sizing-sm"
                 value={pinValue}
                 onChange={handlePinChange}
+                onFocus={handleFocus}
               />
             </InputGroup>
+            {pinValue.length < 10 && isFocused ? (
+              <p className={styles.invalidInput}>
+                Въведеното ЕГН съдържа по-малко от 10 цифри.
+              </p>
+            ) : (
+              ""
+            )}
+            {pinValue.length > 10 ? (
+              <p className={styles.invalidInput}>
+                Въведеното ЕГН съдържа по-повече от 10 цифри.
+              </p>
+            ) : (
+              ""
+            )}
           </>
         ) : (
           <>
@@ -85,7 +118,14 @@ export function VotingModalComponent({
       </Modal.Body>
       <Modal.Footer>
         {!showQuestions ? (
-          <Button className={styles.modalFooterButton} onClick={handleContinue}>
+          <Button
+            className={`${
+              pinValue.length === 10
+                ? styles.modalFooterButton
+                : styles.disabledModalFooterButton
+            }`}
+            onClick={handleContinue}
+          >
             Продължи
           </Button>
         ) : (
