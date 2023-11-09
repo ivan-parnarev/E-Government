@@ -67,4 +67,8 @@ public class CampaignService {
                 .map(c -> this.modelMapper.map(c, CampaignViewDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public Optional<Campaign> getCampaignById(Long campaignId) {
+        return this.campaignRepository.findById(campaignId);
+    }
 }

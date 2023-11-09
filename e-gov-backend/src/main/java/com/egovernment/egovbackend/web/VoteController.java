@@ -31,8 +31,9 @@ public class VoteController implements VoteControllerInterface {
     )
     @Override
     @PostMapping
-    public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO user){
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
+        this.voteService.saveVote(vote);
+        return ResponseEntity.ok(vote);
     }
 
     @Override
