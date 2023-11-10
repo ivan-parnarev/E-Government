@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./HomePage.module.css";
-import Button from "react-bootstrap/Button";
-import { VotingModalComponent } from "../components/VotingModalComponent";
 import { ActiveCampaign } from "../components/ActiveCampaign";
 
 export function HomePage() {
   const [activeCampaigns, setActiveCampaigns] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/campaigns/active")
+    fetch("http://localhost:8080/api/v1/campaigns/active")
       .then((response) => response.json())
       .then((data) => {
         setActiveCampaigns(data);

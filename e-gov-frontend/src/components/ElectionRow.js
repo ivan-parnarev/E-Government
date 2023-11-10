@@ -14,7 +14,7 @@ export function ElectionRow({ id, name, number, checked, onChange }) {
           <Form.Check.Input
             type="checkbox"
             checked={checked}
-            onChange={onChange}
+            onChange={() => onChange(id, name, number)}
             className={styles.electionRowCheckbox}
           />{" "}
           <Form.Check.Label className={styles.electionRowCheckLabel}>

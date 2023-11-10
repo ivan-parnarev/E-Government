@@ -17,6 +17,8 @@ export function VotingModalComponent({
   const [isFocused, setIsFocused] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [checkedId, setCheckedId] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const validatePinValue = (input) => {
     const regex = /^[0-9]{10}$/gm;
@@ -29,6 +31,8 @@ export function VotingModalComponent({
   };
 
   const handleContinue = () => {
+    setUserData({ pin: pinValue });
+
     if (pinValue.length < 10) {
       setShowQuestions(false);
     } else if (pinValue.length > 10) {
@@ -44,6 +48,42 @@ export function VotingModalComponent({
 
   const handleFocus = () => {
     setIsFocused(true);
+  };
+
+  const handleCheckboxChange = (id, name, number) => {
+    const dataFromChild = {
+      campaignId: id,
+      candidate: {
+        id: id,
+        number: number,
+        name: name,
+      },
+    };
+    setUserData((prevData) => {
+      return { ...prevData, ...dataFromChild };
+    });
+
+    setCheckedId(id);
+  };
+
+  const handleVoteSubmit = (event) => {
+    event.preventDefault();
+
+    console.log("submitting");
+
+    fetch("http://localhost:8080/api/v1/vote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setSuccessMessage(
+          () => `Успешно гласувахте за кандидат ${data.number}. ${data.name}!`
+        );
+        alert(successMessage);
+      })
+      .catch((error) => console.error("Error:", error.message));
   };
 
   return (
@@ -107,7 +147,7 @@ export function VotingModalComponent({
                       name={answer.name}
                       number={answer.number}
                       checked={checkedId === answer.id}
-                      onChange={() => setCheckedId(answer.id)}
+                      onChange={handleCheckboxChange}
                     />
                   );
                 })}
@@ -135,7 +175,12 @@ export function VotingModalComponent({
                 Назад
               </Button>
             </div>
-            <Button className={styles.modalFooterButton}>Гласувай</Button>
+            <Button
+              className={styles.modalFooterButton}
+              onClick={handleVoteSubmit}
+            >
+              Гласувай
+            </Button>
           </>
         )}
         <Button className={styles.modalFooterButton} onClick={onHide}>
