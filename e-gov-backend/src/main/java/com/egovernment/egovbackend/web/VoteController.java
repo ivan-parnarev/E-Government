@@ -3,6 +3,7 @@ package com.egovernment.egovbackend.web;
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
 import com.egovernment.egovbackend.web.interfaces.VoteControllerInterface;
+import com.egovernment.egovbackend.web.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -14,26 +15,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequiredArgsConstructor
 public class VoteController implements VoteControllerInterface {
 
     private final VoteService voteService;
-    @Operation(summary = "Receives and returns information about the user name and vote option")
+    @Operation(summary = "Receives information about voting and saves the vote in the database")
     @ApiResponses(
-            value = @ApiResponse(responseCode = "200",
-                    description = "The user data have been received successfully " +
-                            "and returned back to the response body so that they can be visualized.",
-                    content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = UserVotedInfoDTO.class))
-                    }
-            )
+            value = {
+                    @ApiResponse(responseCode = "201",
+                            description = "Vote data has been successfully received and saved in the database. " +
+                                    "After that you are redirected to active campaigns.",
+                            content = {
+                                    @Content(mediaType = "application/json", schema = @Schema(implementation = UserVotedInfoDTO.class))
+                            }
+                    )
+                    ,@ApiResponse(responseCode = "400",
+                                  description = "Bad Request - Validation error or incorrect data format.",
+                    content = {@Content(mediaType = "application/json")}
+                    )
+            }
     )
     @Override
     @PostMapping
     public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
         this.voteService.saveVote(vote);
-        return ResponseEntity.ok(vote);
+        return ResponseEntity
+                .created(URI.create(ApiPaths.BASE_API_PATH + ApiPaths.CAMPAIGN_PATH + "/active"))
+                .build();
     }
 
     @Override
