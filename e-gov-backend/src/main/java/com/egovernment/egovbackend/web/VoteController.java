@@ -11,9 +11,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
 
@@ -40,11 +42,10 @@ public class VoteController implements VoteControllerInterface {
     )
     @Override
     @PostMapping
-    public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
+    @ResponseStatus(HttpStatus.CREATED)
+    public RedirectView saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
         this.voteService.saveVote(vote);
-        return ResponseEntity
-                .created(URI.create(ApiPaths.BASE_API_PATH + ApiPaths.CAMPAIGN_PATH + "/active"))
-                .build();
+        return new RedirectView("http://localhost:3000/active-campaigns");
     }
 
     @Override

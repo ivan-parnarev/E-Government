@@ -19,31 +19,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleService roleService;
 
-//    public UserVotedInfoDTO addNewUserVote(UserVotedInfoDTO userDTO) {
-//        User userToBeSaved = User.builder()
-//                .voterName(userDTO.getVoterName())
-//                .voteOption(userDTO.getVoteOption())
-//                .build();
-//
-//        User savedUser = this.userRepository.save(userToBeSaved);
-//
-//        return mapSavedUserToDTO(savedUser);
-//    }
-    public List<UserVotedInfoDTO> getAllUserVotes() {
-        List<User> allUserVotes = this.userRepository.findAll();
-
-        List<UserVotedInfoDTO> savedUserVotesList = allUserVotes.stream()
-                .map(this::mapSavedUserToDTO)
-                .collect(Collectors.toList());
-        return savedUserVotesList;
-    }
-
-    private UserVotedInfoDTO mapSavedUserToDTO(User savedUser) {
-        return UserVotedInfoDTO.builder()
-//                .voterName(savedUser.getVoterName())
-//                .voteOption(savedUser.getVoteOption())
-                .build();
-    }
 
     public void initAdministrator() {
         if(this.userRepository.count() == 0){
