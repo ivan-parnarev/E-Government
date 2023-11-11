@@ -43,7 +43,7 @@ public class VoteController implements VoteControllerInterface {
     @PostMapping
     public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
         this.voteService.saveVote(vote);
-        URI location = URI.create("http://localhost:8080/api/v1/active-campaigns");
+        URI location = URI.create("http://localhost:3000/active-campaigns");
         return ResponseEntity.created(location).body(vote);
     }
 
