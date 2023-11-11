@@ -5,6 +5,8 @@ import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./VotingModalComponent.module.css";
 import { useState } from "react";
 import { ElectionRow } from "./ElectionRow";
+import { PinInputComponent } from "./PinInputComponent";
+import ModalFooterComponent from "./ModalFooterComponent";
 
 export function VotingModalComponent({
   show,
@@ -19,7 +21,6 @@ export function VotingModalComponent({
   const [showQuestions, setShowQuestions] = useState(false);
   const [checkedId, setCheckedId] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
 
   const validatePinValue = (input) => {
     const regex = /^[0-9]{10}$/gm;
@@ -76,6 +77,7 @@ export function VotingModalComponent({
       body: JSON.stringify(userData),
     })
       .then((response) => {
+        console.log(response.headers.get("location"));
         if (response.status === 201) {
           return response.json().then((data) => {
             if (data) {
@@ -83,7 +85,7 @@ export function VotingModalComponent({
               alert(successMessage);
             }
 
-            window.location.href = "http://localhost:3000/active-campaigns";
+            window.location.href = response.headers.get("location");
           });
         } else {
           return response.json();
@@ -112,34 +114,12 @@ export function VotingModalComponent({
       </Modal.Header>
       <Modal.Body>
         {!showQuestions ? (
-          <>
-            <h4>Влезли сте като гост</h4>
-            <p>Моля въведете ЕГН, за да се идентифицирате:</p>
-            <InputGroup size="sm" className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-sm">ЕГН:</InputGroup.Text>
-              <Form.Control
-                aria-label="Small"
-                aria-describedby="inputGroup-sizing-sm"
-                value={pinValue}
-                onChange={handlePinChange}
-                onFocus={handleFocus}
-              />
-            </InputGroup>
-            {pinValue.length < 10 && isFocused ? (
-              <p className={styles.invalidInput}>
-                Въведеното ЕГН съдържа по-малко от 10 цифри.
-              </p>
-            ) : (
-              ""
-            )}
-            {pinValue.length > 10 ? (
-              <p className={styles.invalidInput}>
-                Въведеното ЕГН съдържа по-повече от 10 цифри.
-              </p>
-            ) : (
-              ""
-            )}
-          </>
+          <PinInputComponent
+            pinValue={pinValue}
+            onChange={handlePinChange}
+            onFocus={handleFocus}
+            isFocused={isFocused}
+          />
         ) : (
           <>
             <h5>БЮЛЕТИНА ЗА НАРОДНИ ПРЕДСТАВИТЕЛИ</h5>
@@ -163,35 +143,14 @@ export function VotingModalComponent({
         )}
       </Modal.Body>
       <Modal.Footer>
-        {!showQuestions ? (
-          <Button
-            className={`${
-              pinValue.length === 10
-                ? styles.modalFooterButton
-                : styles.disabledModalFooterButton
-            }`}
-            onClick={handleContinue}
-          >
-            Продължи
-          </Button>
-        ) : (
-          <>
-            <div className={styles.modalFooterButtonGroup}>
-              <Button className={styles.modalFooterButton} onClick={handleBack}>
-                Назад
-              </Button>
-            </div>
-            <Button
-              className={styles.modalFooterButton}
-              onClick={handleVoteSubmit}
-            >
-              Гласувай
-            </Button>
-          </>
-        )}
-        <Button className={styles.modalFooterButton} onClick={onHide}>
-          Затвори
-        </Button>
+        <ModalFooterComponent
+          pinValueLength={pinValue.length}
+          showQuestions={showQuestions}
+          onContinue={handleContinue}
+          onBack={handleBack}
+          onSubmit={handleVoteSubmit}
+          onHide={onHide}
+        />
       </Modal.Footer>
     </Modal>
   );

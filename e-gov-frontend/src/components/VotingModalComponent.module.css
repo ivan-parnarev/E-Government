@@ -13,24 +13,6 @@
   color: var(--red);
 }
 
-.disabledModalFooterButton {
-  background-color: var(--gray);
-}
-
-.disabledModalFooterButton:hover {
-  background-color: var(--gray);
-}
-
-.modalFooterButtonGroup {
-  display: "flex";
-  justify-content: "space-between";
-  width: 100%;
-}
-
-.modalFooterButton {
-  background-color: var(--blue-dark);
-}
-
 .electionRowContainerPosition {
   display: flex;
   flex-direction: column;
