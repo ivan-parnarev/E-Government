@@ -1,12 +1,9 @@
-import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./VotingModalComponent.module.css";
 import { useState } from "react";
 import { ElectionRow } from "./ElectionRow";
 import { PinInputComponent } from "./PinInputComponent";
-import ModalFooterComponent from "./ModalFooterComponent";
+import { ModalFooterComponent } from "./ModalFooterComponent";
 
 export function VotingModalComponent({
   show,
@@ -23,23 +20,25 @@ export function VotingModalComponent({
   const [userData, setUserData] = useState(null);
 
   const validatePinValue = (input) => {
-    const regex = /^[0-9]{10}$/gm;
+    const regex = /^[0-9]{10}$/;
     return regex.test(input);
   };
 
   const handlePinChange = (event) => {
-    setPinValue(event.target.value);
-    setIsValidPinValue(validatePinValue(pinValue));
+    const newPinValue = event.target.value;
+    setPinValue(newPinValue);
+    setIsValidPinValue(validatePinValue(newPinValue));
   };
 
   const handleContinue = () => {
-    setUserData({ pin: pinValue });
-
     if (pinValue.length < 10) {
       setShowQuestions(false);
     } else if (pinValue.length > 10) {
       setShowQuestions(false);
+    } else if (!isValidPinValue) {
+      setShowQuestions(false);
     } else {
+      setUserData({ pin: pinValue });
       setShowQuestions(true);
     }
   };
@@ -77,7 +76,6 @@ export function VotingModalComponent({
       body: JSON.stringify(userData),
     })
       .then((response) => {
-        console.log(response.headers.get("location"));
         if (response.status === 201) {
           return response.json().then((data) => {
             if (data) {
@@ -116,6 +114,7 @@ export function VotingModalComponent({
         {!showQuestions ? (
           <PinInputComponent
             pinValue={pinValue}
+            isValidPinValue={isValidPinValue}
             onChange={handlePinChange}
             onFocus={handleFocus}
             isFocused={isFocused}
@@ -145,6 +144,7 @@ export function VotingModalComponent({
       <Modal.Footer>
         <ModalFooterComponent
           pinValueLength={pinValue.length}
+          isValidPinValue={isValidPinValue}
           showQuestions={showQuestions}
           onContinue={handleContinue}
           onBack={handleBack}

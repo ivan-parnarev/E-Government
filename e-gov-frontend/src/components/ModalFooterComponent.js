@@ -1,16 +1,16 @@
-// ModalFooterComponent.jsx
 import React from "react";
 import Button from "react-bootstrap/Button";
 import styles from "./ModalFooterComponent.module.css";
 
-const ModalFooterComponent = ({
+export function ModalFooterComponent({
   pinValueLength,
+  isValidPinValue,
   showQuestions,
   onContinue,
   onBack,
   onSubmit,
   onHide,
-}) => {
+}) {
   return (
     <>
       {showQuestions ? (
@@ -27,7 +27,7 @@ const ModalFooterComponent = ({
       ) : (
         <Button
           className={
-            pinValueLength === 10
+            pinValueLength === 10 && isValidPinValue
               ? styles.modalFooterButton
               : styles.disabledModalFooterButton
           }
@@ -41,6 +41,4 @@ const ModalFooterComponent = ({
       </Button>
     </>
   );
-};
-
-export default ModalFooterComponent;
+}
