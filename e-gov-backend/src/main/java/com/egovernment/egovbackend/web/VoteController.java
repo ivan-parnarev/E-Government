@@ -3,7 +3,6 @@ package com.egovernment.egovbackend.web;
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
 import com.egovernment.egovbackend.web.interfaces.VoteControllerInterface;
-import com.egovernment.egovbackend.web.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,11 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
 
@@ -40,12 +37,14 @@ public class VoteController implements VoteControllerInterface {
                     )
             }
     )
+
+
     @Override
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public RedirectView saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
+    public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
         this.voteService.saveVote(vote);
-        return new RedirectView("http://localhost:3000/active-campaigns");
+        URI location = URI.create("http://localhost:8080/api/v1/active-campaigns");
+        return ResponseEntity.created(location).body(vote);
     }
 
     @Override
