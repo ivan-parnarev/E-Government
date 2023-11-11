@@ -10,6 +10,7 @@ export function VotingModalComponent({
   show,
   onHide,
   campaignTopic,
+  campaignId,
   answersJson,
 }) {
   const [pinValue, setPinValue] = useState("");
@@ -52,7 +53,7 @@ export function VotingModalComponent({
 
   const handleCheckboxChange = (id, name, number) => {
     const dataFromChild = {
-      campaignId: id,
+      campaignId: campaignId,
       candidate: {
         id: id,
         number: number,
@@ -69,19 +70,24 @@ export function VotingModalComponent({
   const handleVoteSubmit = (event) => {
     event.preventDefault();
 
-    console.log("submitting");
-
     fetch("http://localhost:8080/api/v1/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        setSuccessMessage(
-          () => `Успешно гласувахте за кандидат ${data.number}. ${data.name}!`
-        );
-        alert(successMessage);
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json().then((data) => {
+            if (data) {
+              const successMessage = `Успешно гласувахте за кандидат ${data.candidate.number}. ${data.candidate.name}!`;
+              alert(successMessage);
+            }
+
+            window.location.href = "http://localhost:3000/active-campaigns";
+          });
+        } else {
+          return response.json();
+        }
       })
       .catch((error) => console.error("Error:", error.message));
   };

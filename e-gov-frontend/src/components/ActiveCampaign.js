@@ -3,7 +3,7 @@ import { VotingModalComponent } from "./VotingModalComponent";
 import styles from "./ActiveCampaign.module.css";
 import { useState } from "react";
 
-export function ActiveCampaign({ campaignTopic, answersJson }) {
+export function ActiveCampaign({ campaignTopic, campaignId, answersJson }) {
   const [modalShow, setModalShow] = useState(false);
 
   return (
@@ -21,6 +21,7 @@ export function ActiveCampaign({ campaignTopic, answersJson }) {
         show={modalShow}
         onHide={() => setModalShow(false)}
         campaignTopic={campaignTopic}
+        campaignId={campaignId}
         answersJson={answersJson}
       />
     </>

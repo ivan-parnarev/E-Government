@@ -16,8 +16,6 @@ export function HomePage() {
       );
   }, []);
 
-  useEffect(() => {}, [activeCampaigns]);
-
   return (
     <div className={styles.containerBackground}>
       <div className={styles.container}>
@@ -58,6 +56,7 @@ export function HomePage() {
                 <ActiveCampaign
                   key={campaign.id}
                   campaignTopic={campaign.campaignTopic}
+                  campaignId={campaign.id}
                   answersJson={JSON.parse(campaign.answersJson)}
                 />
               );
