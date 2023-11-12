@@ -1,12 +1,12 @@
 import styles from "./ActiveCampaignsPage.module.css";
-import { FormComponent } from "../components/FormComponent";
-import { ListComponent } from "../components/ListComponent";
+import { ActiveCampaignsContainerComponent } from "../components/ActiveCampaignsContainerComponent";
 
 export function ActiveCampaignsPage() {
   return (
-    <div className={styles.container}>
-      <FormComponent />
-      <ListComponent />
+    <div className={styles.containerBackground}>
+      <div className={styles.container}>
+        <ActiveCampaignsContainerComponent />
+      </div>
     </div>
   );
 }

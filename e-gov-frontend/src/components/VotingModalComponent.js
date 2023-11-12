@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { useState } from "react";
-import { ElectionRow } from "./ElectionRow";
+import { ElectionRow } from "./ElectionRowComponent";
 import { PinInputComponent } from "./PinInputComponent";
 import { ModalFooterComponent } from "./ModalFooterComponent";
 
@@ -14,13 +14,12 @@ export function VotingModalComponent({
 }) {
   const [pinValue, setPinValue] = useState("");
   const [isValidPinValue, setIsValidPinValue] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [checkedId, setCheckedId] = useState(null);
   const [userData, setUserData] = useState(null);
 
   const validatePinValue = (input) => {
-    const regex = /^[0-9]{10}$/;
+    const regex = /^[0-9]+$/;
     return regex.test(input);
   };
 
@@ -45,10 +44,6 @@ export function VotingModalComponent({
 
   const handleBack = () => {
     setShowQuestions(false);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
   };
 
   const handleCheckboxChange = (id, name, number) => {
@@ -116,8 +111,6 @@ export function VotingModalComponent({
             pinValue={pinValue}
             isValidPinValue={isValidPinValue}
             onChange={handlePinChange}
-            onFocus={handleFocus}
-            isFocused={isFocused}
           />
         ) : (
           <>

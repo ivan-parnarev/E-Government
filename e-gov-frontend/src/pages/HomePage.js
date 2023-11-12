@@ -1,21 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./HomePage.module.css";
-import { ActiveCampaign } from "../components/ActiveCampaign";
+import { ActiveCampaignsContainerComponent } from "../components/ActiveCampaignsContainerComponent";
 
 export function HomePage() {
-  const [activeCampaigns, setActiveCampaigns] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/v1/campaigns/active")
-      .then((response) => response.json())
-      .then((data) => {
-        setActiveCampaigns(data);
-      })
-      .catch((error) =>
-        console.error("Error fetching active campaigns:", error)
-      );
-  }, []);
-
   return (
     <div className={styles.containerBackground}>
       <div className={styles.container}>
@@ -47,22 +34,7 @@ export function HomePage() {
             важните решения, които засягат бъдещето на нашето общество.
           </p>
         </div>
-
-        <div className={styles.activeCampaignsSection}>
-          <h2 className={styles.subTitle}>Активни кампании:</h2>
-          <div className={styles.activeCampaignsButtonsGroup}>
-            {activeCampaigns.map((campaign) => {
-              return (
-                <ActiveCampaign
-                  key={campaign.id}
-                  campaignTopic={campaign.campaignTopic}
-                  campaignId={campaign.id}
-                  answersJson={JSON.parse(campaign.answersJson)}
-                />
-              );
-            })}
-          </div>
-        </div>
+        <ActiveCampaignsContainerComponent />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import styles from "./ElectionRow.module.css";
+import styles from "./ElectionRowComponent.module.css";
 
 export function ElectionRow({ id, name, number, checked, onChange }) {
   return (

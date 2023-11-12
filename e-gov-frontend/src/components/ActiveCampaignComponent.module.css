@@ -1,0 +1,9 @@
+.activeCampaignContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.activeCampaignsButton {
+  font-size: 2rem;
+  margin-right: 10px;
+}

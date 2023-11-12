@@ -3,21 +3,15 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./VotingModalComponent.module.css";
 
-export function PinInputComponent({
-  pinValue,
-  isValidPinValue,
-  onChange,
-  onFocus,
-  isFocused,
-}) {
-  let errorMessage = null;
+export function PinInputComponent({ pinValue, isValidPinValue, onChange }) {
+  let errorMessage = "";
 
-  if (pinValue.length < 10) {
+  if (!isValidPinValue) {
+    errorMessage = "Въведеното ЕГН трябва да съдържа само цифри.";
+  } else if (pinValue.length < 10) {
     errorMessage = "Въведеното ЕГН съдържа по-малко от 10 цифри.";
   } else if (pinValue.length > 10) {
     errorMessage = "Въведеното ЕГН съдържа повече от 10 цифри.";
-  } else if (!isValidPinValue) {
-    errorMessage = "Въведеното ЕГН трябва да съдържа само цифри.";
   }
 
   return (
@@ -31,10 +25,9 @@ export function PinInputComponent({
           aria-describedby="inputGroup-sizing-sm"
           value={pinValue}
           onChange={onChange}
-          onFocus={onFocus}
         />
       </InputGroup>
-      {errorMessage && isFocused && (
+      {errorMessage && pinValue.length > 0 && (
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}
     </>

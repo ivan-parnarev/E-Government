@@ -1,6 +1,11 @@
+.containerBackground {
+  background: linear-gradient(144deg, #004ea2, var(--blue-dark));
+}
+
 .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 30px;
+  text-align: center;
+  color: var(--light);
 }
