@@ -1,5 +1,6 @@
 package com.egovernment.egovbackend.domain.template;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,10 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnswerCategory {
 
-    private List<QuestionAnswer> demographicInfo;
-    private List<QuestionAnswer> educationInfo;
+    private List<QuestionAnswerTemplate> demographicInfo;
+    private List<QuestionAnswerTemplate> educationInfo;
 
 }

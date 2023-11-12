@@ -26,11 +26,14 @@ public class VoteServiceTest {
     @Mock
     private  CampaignService campaignService;
 
+    @Mock
+    private UserService userService;
+
     private VoteService voteServiceToTest;
 
     @BeforeEach
     void setUp() {
-        this.voteServiceToTest = new VoteService(voteRepository, campaignService);
+        this.voteServiceToTest = new VoteService(voteRepository, campaignService, userService);
     }
 
     @Test
@@ -80,7 +83,7 @@ public class VoteServiceTest {
         Long campaignId = 1L;
 
         when(this.voteRepository
-                .existsByUserPinAndCampaignId("0000000000", 1L))
+                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
                 .thenReturn(true);
 
         boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);
@@ -95,7 +98,7 @@ public class VoteServiceTest {
         Long campaignId = 1L;
 
         when(this.voteRepository
-                .existsByUserPinAndCampaignId("0000000000", 1L))
+                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
                 .thenReturn(false);
 
         boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);

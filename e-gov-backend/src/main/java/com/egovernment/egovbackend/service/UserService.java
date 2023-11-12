@@ -1,6 +1,5 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +34,11 @@ public class UserService {
                 .stream()
                 .filter(p -> p.getRoles().contains(role))
                 .findFirst();
+    }
+
+    public User createUserWithUserPin(String pin) {
+        User user = User.builder().PIN(pin).build();
+        this.userRepository.save(user);
+        return user;
     }
 }

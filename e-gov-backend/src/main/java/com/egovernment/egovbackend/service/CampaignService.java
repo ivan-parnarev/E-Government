@@ -7,7 +7,9 @@ import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
+import com.egovernment.egovbackend.domain.template.AnswerCategory;
 import com.egovernment.egovbackend.domain.template.CandidateTemplate;
+import com.egovernment.egovbackend.domain.template.QuestionAnswerTemplate;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -27,33 +29,62 @@ public class CampaignService {
     private final UserService userService;
     private final RoleService roleService;
     private final ModelMapper modelMapper;
+    Gson gson = new Gson();
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
 
-            String answerJson = produceSampleAnswerJson();
+            String votingAnswerJson = produceSampleVotingCampaignAnswerJson();
+            String censusCampaignAnswersJson = produceSampleCensusCampaignAnswerJson();
 
             Role administratorRole = this.roleService.getRole(RoleEnum.ADMINISTRATOR);
             Optional<User> optUser = this.userService.getUserByRole(administratorRole);
 
             if(optUser.isPresent()){
                 User administrator = optUser.get();
-                Campaign campaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори"
-                        ,administrator, 356, answerJson);
-                this.campaignRepository.save(campaign);
+
+                Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори"
+                        ,administrator, 356, votingAnswerJson);
+
+                Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване"
+                        ,administrator, 356, censusCampaignAnswersJson);
+
+                this.campaignRepository.save(votingCampaign);
+                this.campaignRepository.save(censusCampaign);
             }
 
         }
     }
 
-    private String produceSampleAnswerJson() {
-        Gson gson = new Gson();
+    private String produceSampleCensusCampaignAnswerJson() {
+        QuestionAnswerTemplate firstDemographicQuestion = QuestionAnswerTemplate
+                .builder().question("What is your age?").build();
+        QuestionAnswerTemplate secondDemographicQuestion = QuestionAnswerTemplate
+                .builder().question("What is your gender?").build();
+
+        QuestionAnswerTemplate firstEducationQuestion = QuestionAnswerTemplate
+                .builder().question("Are you currently attending school or college?").build();
+        QuestionAnswerTemplate secondEducationQuestion = QuestionAnswerTemplate
+                .builder().question("What is the field of study for your highest qualification?").build();
+
+        List<QuestionAnswerTemplate> demographicInfo = List.of(firstDemographicQuestion, secondDemographicQuestion);
+        List<QuestionAnswerTemplate> educationInfo = List.of(firstEducationQuestion, secondEducationQuestion);
+
+        AnswerCategory answerCategory = AnswerCategory.builder()
+                .demographicInfo(demographicInfo)
+                .educationInfo(educationInfo)
+                .build();
+
+        return this.gson.toJson(answerCategory);
+    }
+
+    private String produceSampleVotingCampaignAnswerJson() {
 
         CandidateTemplate firstCandidate = new CandidateTemplate(1, 11, "ГЕРБ");
         CandidateTemplate secondCandidate = new CandidateTemplate(2, 13, "ПП");
         CandidateTemplate thirdCandidate = new CandidateTemplate(3, 14, "БЗНС");
 
-        return gson.toJson(List.of(firstCandidate, secondCandidate, thirdCandidate));
+        return this.gson.toJson(List.of(firstCandidate, secondCandidate, thirdCandidate));
     }
 
     public Campaign launchCampaign(CampaignType type, String campaignTopic, User from, int duration, String answersJson) {

@@ -31,8 +31,6 @@ public class CampaignServiceTest {
     @Mock
     private RoleService roleService;
     @Mock
-    private CampaignFactory campaignFactory;
-    @Mock
     private ModelMapper modelMapper;
     private CampaignService campaignServiceToTest;
 
@@ -52,7 +50,7 @@ public class CampaignServiceTest {
         when(userService.getUserByRole(administrator)).thenReturn(Optional.of(new User()));
 
         this.campaignServiceToTest.initSampleCampaign();
-        verify(campaignRepository, times(1)).save(any(Campaign.class));
+        verify(campaignRepository, times(2)).save(any(Campaign.class));
     }
 
     @Test

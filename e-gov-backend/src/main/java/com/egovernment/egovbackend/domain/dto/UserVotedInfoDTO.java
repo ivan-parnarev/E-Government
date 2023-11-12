@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.domain.dto;
 
-import com.egovernment.egovbackend.domain.annotation.UniqueVoteConstraint;
+import com.egovernment.egovbackend.domain.annotation.vote.UniqueVoteConstraint;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

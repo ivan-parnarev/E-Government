@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.annotation;
+package com.egovernment.egovbackend.domain.annotation.vote;
 
 import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
