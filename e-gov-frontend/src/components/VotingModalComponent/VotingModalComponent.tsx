@@ -1,9 +1,27 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
-import { useState } from "react";
-import { ElectionRow } from "./ElectionRowComponent";
-import { PinInputComponent } from "./PinInputComponent";
-import { ModalFooterComponent } from "./ModalFooterComponent";
+import { ChangeEvent, MouseEvent, useState } from "react";
+import ElectionRowComponent from "../ElectionRowComponent.tsx";
+import PinInputComponent from "../PinInputComponent.tsx";
+import ModalFooterComponent from "../ModalFooterComponent.tsx";
+
+interface VotingModalProps {
+  show: boolean;
+  onHide: () => void;
+  campaignTopic: string;
+  campaignId: string;
+  answersJson: {
+    id: string;
+    name: string;
+    number: string;
+  }[];
+}
+
+interface UserData {
+  pin: string;
+  campaignId?: string;
+  candidate?: { id: string; name: string; number: string };
+}
 
 export function VotingModalComponent({
   show,
@@ -11,19 +29,19 @@ export function VotingModalComponent({
   campaignTopic,
   campaignId,
   answersJson,
-}) {
-  const [pinValue, setPinValue] = useState("");
-  const [isValidPinValue, setIsValidPinValue] = useState(false);
-  const [showQuestions, setShowQuestions] = useState(false);
-  const [checkedId, setCheckedId] = useState(null);
-  const [userData, setUserData] = useState(null);
+}: VotingModalProps) {
+  const [pinValue, setPinValue] = useState<string>("");
+  const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
+  const [showQuestions, setShowQuestions] = useState<boolean>(false);
+  const [checkedId, setCheckedId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
 
-  const validatePinValue = (input) => {
+  const validatePinValue = (input: string): boolean => {
     const regex = /^[0-9]+$/;
     return regex.test(input);
   };
 
-  const handlePinChange = (event) => {
+  const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newPinValue = event.target.value;
     setPinValue(newPinValue);
     setIsValidPinValue(validatePinValue(newPinValue));
@@ -46,7 +64,7 @@ export function VotingModalComponent({
     setShowQuestions(false);
   };
 
-  const handleCheckboxChange = (id, name, number) => {
+  const handleCheckboxChange = (id: string, name: string, number: string) => {
     const dataFromChild = {
       campaignId: campaignId,
       candidate: {
@@ -55,14 +73,15 @@ export function VotingModalComponent({
         name: name,
       },
     };
+
     setUserData((prevData) => {
-      return { ...prevData, ...dataFromChild };
+      return { ...(prevData as UserData), ...dataFromChild };
     });
 
     setCheckedId(id);
   };
 
-  const handleVoteSubmit = (event) => {
+  const handleVoteSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     fetch("http://localhost:8080/api/v1/vote", {
@@ -78,7 +97,7 @@ export function VotingModalComponent({
               alert(successMessage);
             }
 
-            window.location.href = response.headers.get("location");
+            window.location.href = response.headers.get("location") || "";
           });
         } else {
           return response.json();
@@ -119,7 +138,7 @@ export function VotingModalComponent({
               <div className={styles.electionRowContainer}>
                 {answersJson.map((answer) => {
                   return (
-                    <ElectionRow
+                    <ElectionRowComponent
                       key={answer.id}
                       id={answer.id}
                       name={answer.name}

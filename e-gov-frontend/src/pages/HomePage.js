@@ -34,6 +34,7 @@ export function HomePage() {
             важните решения, които засягат бъдещето на нашето общество.
           </p>
         </div>
+
         <ActiveCampaignsContainerComponent />
       </div>
     </div>

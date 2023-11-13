@@ -1,9 +1,19 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import styles from "./VotingModalComponent.module.css";
+import styles from "./PinInputComponent.module.css";
 
-export function PinInputComponent({ pinValue, isValidPinValue, onChange }) {
+interface PinInputProps {
+  pinValue: string;
+  isValidPinValue: boolean;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+function PinInputComponent({
+  pinValue,
+  isValidPinValue,
+  onChange,
+}: PinInputProps) {
   let errorMessage = "";
 
   if (!isValidPinValue) {
@@ -15,7 +25,7 @@ export function PinInputComponent({ pinValue, isValidPinValue, onChange }) {
   }
 
   return (
-    <>
+    <div>
       <h4>Влезли сте като гост</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
       <InputGroup size="sm" className="mb-3">
@@ -30,6 +40,8 @@ export function PinInputComponent({ pinValue, isValidPinValue, onChange }) {
       {errorMessage && pinValue.length > 0 && (
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}
-    </>
+    </div>
   );
 }
+
+export default PinInputComponent;

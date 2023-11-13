@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import { ActiveCampaign } from "./ActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
 
+interface Campaign {
+  id: string;
+  campaignTopic: string;
+  answersJson: string;
+}
+
 export function ActiveCampaignsContainerComponent() {
-  const [activeCampaigns, setActiveCampaigns] = useState([]);
+  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/v1/campaigns/active")

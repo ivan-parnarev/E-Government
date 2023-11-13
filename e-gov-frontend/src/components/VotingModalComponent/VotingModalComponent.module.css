@@ -9,10 +9,6 @@
   color: var(--gray);
 }
 
-.invalidInput {
-  color: var(--red);
-}
-
 .electionRowContainerPosition {
   display: flex;
   flex-direction: column;

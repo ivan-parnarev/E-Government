@@ -1,9 +1,19 @@
 import Button from "react-bootstrap/esm/Button";
-import { VotingModalComponent } from "./VotingModalComponent";
+import { VotingModalComponent } from "./VotingModalComponent/VotingModalComponent.tsx";
 import styles from "./ActiveCampaignComponent.module.css";
 import { useState } from "react";
 
-export function ActiveCampaign({ campaignTopic, campaignId, answersJson }) {
+interface ActiveCampaignProps {
+  campaignTopic: string;
+  campaignId: string;
+  answersJson: {
+    id: string;
+    name: string;
+    number: string;
+  }[];
+}
+
+export function ActiveCampaign({ campaignTopic, campaignId, answersJson }: ActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
   return (

@@ -1,8 +1,18 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import Button from "react-bootstrap/Button";
 import styles from "./ModalFooterComponent.module.css";
 
-export function ModalFooterComponent({
+interface ModalFooterProps {
+  pinValueLength: number;
+  isValidPinValue: boolean;
+  showQuestions: boolean;
+  onContinue: () => void;
+  onBack: () => void;
+  onSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
+  onHide: () => void;
+}
+
+function ModalFooterComponent({
   pinValueLength,
   isValidPinValue,
   showQuestions,
@@ -10,7 +20,7 @@ export function ModalFooterComponent({
   onBack,
   onSubmit,
   onHide,
-}) {
+}: ModalFooterProps) {
   return (
     <>
       {showQuestions ? (
@@ -42,3 +52,5 @@ export function ModalFooterComponent({
     </>
   );
 }
+
+export default ModalFooterComponent;

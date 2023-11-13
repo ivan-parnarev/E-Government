@@ -10,7 +10,7 @@ export function MainNavigation() {
     <div className={styles.navbarNav}>
       <Navbar className={styles.navbar}>
         <Container>
-          <Link href="/" className={styles.navbarLogoImageContainer}>
+          <Link to="/" className={styles.navbarLogoImageContainer}>
             <img src={eGovLogo} alt="logo" className={styles.navbarLogoImage} />
           </Link>
 
