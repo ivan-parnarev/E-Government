@@ -21,14 +21,16 @@ public class Campaign extends BaseEntity {
     @Column
     private CampaignType campaignType;
     @Column
-    private String campaignTopic;
+    private String title;
+    @Column
+    private String description;
     @ManyToOne
     private User from; //with role administrator
     @Column
-    private LocalDateTime date;
+    private LocalDateTime startDate;
     @Column
-    private int duration;
+    private LocalDateTime endDate;
     @Column
-    private String answersJson;
+    private boolean isActive ;
 
 }

@@ -9,15 +9,17 @@ import java.time.LocalDateTime;
 public class CampaignFactory implements CampaignFactoryInterface{
 
     @Override
-    public Campaign createCampaign(CampaignType type, String campaignTopic, User from, int duration, String answersJson) {
+    public Campaign createCampaign(CampaignType type, String title, String description
+            , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive) {
         //check user is administrator
         return Campaign.builder()
                 .campaignType(type)
-                .campaignTopic(campaignTopic)
+                .title(title)
+                .description(description)
                 .from(from)
-                .date(LocalDateTime.now())
-                .duration(duration)
-                .answersJson(answersJson)
+                .startDate(startDate)
+                .endDate(endDate)
+                .isActive(isActive)
                 .build();
     }
 }

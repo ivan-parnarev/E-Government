@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,20 +35,29 @@ public class CampaignService {
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
 
-            String votingAnswerJson = produceSampleVotingCampaignAnswerJson();
-            String censusCampaignAnswersJson = produceSampleCensusCampaignAnswerJson();
-
             Role administratorRole = this.roleService.getRole(RoleEnum.ADMINISTRATOR);
             Optional<User> optUser = this.userService.getUserByRole(administratorRole);
 
             if(optUser.isPresent()){
                 User administrator = optUser.get();
 
-                Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори"
-                        ,administrator, 356, votingAnswerJson);
+                String voteCampaignDescription = "Парламентарните избори са ключов момент в " +
+                        "демократичния живот на една страна, където гражданите имат" +
+                        " възможността да изразят своята воля и да изберат своите представители в законодателния орган.";
 
-                Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване"
-                        ,administrator, 356, censusCampaignAnswersJson);
+                Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
+                        voteCampaignDescription, administrator, LocalDateTime.now(),
+                        LocalDateTime.of(2023, 12, 5, 23, 59),
+                        true);
+
+                String censusCampaignDescription = "Кампанията за преброяване на населението." +
+                        "Този процес помага на правителството" +
+                        " и други институции да разберат демографската структура, социалните и икономическите условия";
+
+                Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване",
+                        censusCampaignDescription, administrator, LocalDateTime.now(),
+                        LocalDateTime.of(2023, 12, 5, 23, 59),
+                        true);
 
                 this.campaignRepository.save(votingCampaign);
                 this.campaignRepository.save(censusCampaign);
@@ -87,8 +97,9 @@ public class CampaignService {
         return this.gson.toJson(List.of(firstCandidate, secondCandidate, thirdCandidate));
     }
 
-    public Campaign launchCampaign(CampaignType type, String campaignTopic, User from, int duration, String answersJson) {
-        return campaignFactory.createCampaign(type, campaignTopic,from, duration, answersJson);
+    public Campaign launchCampaign(CampaignType type, String title, String description
+            , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive) {
+        return campaignFactory.createCampaign(type, title, description, from, startDate, endDate, isActive);
     }
 
     public List<CampaignViewDTO> getActiveCampaigns() {

@@ -4,7 +4,10 @@ import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 
+import java.time.LocalDateTime;
+
 
 public interface CampaignFactoryInterface {
-    Campaign createCampaign(CampaignType type, String campaignTopic, User from, int duration, String answersJson);
+    Campaign createCampaign(CampaignType type, String title, String description
+            , User from, LocalDateTime startDate, java.time.LocalDateTime endDate, boolean isActive);
 }
