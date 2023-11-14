@@ -1,0 +1,29 @@
+.censusRowContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 50px;
+  font-size: 1.5rem;
+}
+
+.censusRowCheck {
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--dark);
+  width: 100%;
+  padding-bottom: 15px;
+}
+
+.censusRowCheckLabel {
+  padding: 0px 20px;
+}
+
+.censusRowCheckbox {
+  width: 30px;
+  height: 30px;
+  padding: 0px 20px;
+  position: relative;
+  margin: 0;
+}

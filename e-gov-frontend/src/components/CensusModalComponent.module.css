@@ -1,0 +1,27 @@
+.censusInfoContainerPosition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0px;
+}
+
+.censusInfoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid var(--dark);
+  border-radius: 10px;
+  padding: 20px 0px;
+  width: 70%;
+}
+
+.censusModalButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.censusModalButton {
+  background-color: var(--blue-dark);
+}

@@ -1,13 +1,14 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import ElectionRowComponent from "../ElectionRowComponent.tsx";
+import ActiveCampaignFormContainer from "../ActiveCampaignFormContainer.js";
 import PinInputComponent from "../PinInputComponent.tsx";
 import ModalFooterComponent from "../ModalFooterComponent.tsx";
 
 interface VotingModalProps {
   show: boolean;
   onHide: () => void;
+  campaignType: string;
   campaignTopic: string;
   campaignId: string;
   answersJson: {
@@ -26,6 +27,7 @@ interface UserData {
 export function VotingModalComponent({
   show,
   onHide,
+  campaignType,
   campaignTopic,
   campaignId,
   answersJson,
@@ -124,6 +126,7 @@ export function VotingModalComponent({
           ✖
         </button>
       </Modal.Header>
+
       <Modal.Body>
         {!showQuestions ? (
           <PinInputComponent
@@ -132,32 +135,22 @@ export function VotingModalComponent({
             onChange={handlePinChange}
           />
         ) : (
-          <>
-            <h5>БЮЛЕТИНА ЗА НАРОДНИ ПРЕДСТАВИТЕЛИ</h5>
-            <div className={styles.electionRowContainerPosition}>
-              <div className={styles.electionRowContainer}>
-                {answersJson.map((answer) => {
-                  return (
-                    <ElectionRowComponent
-                      key={answer.id}
-                      id={answer.id}
-                      name={answer.name}
-                      number={answer.number}
-                      checked={checkedId === answer.id}
-                      onChange={handleCheckboxChange}
-                    />
-                  );
-                })}
-              </div>
-            </div>
-          </>
+          <ActiveCampaignFormContainer
+            campaignType={campaignType}
+            answersJson={answersJson}
+            checkedId={checkedId}
+            handleCheckboxChange={handleCheckboxChange}
+          />
         )}
       </Modal.Body>
+
       <Modal.Footer>
         <ModalFooterComponent
+          campaignType={campaignType}
           pinValueLength={pinValue.length}
           isValidPinValue={isValidPinValue}
           showQuestions={showQuestions}
+          checkedId={checkedId}
           onContinue={handleContinue}
           onBack={handleBack}
           onSubmit={handleVoteSubmit}

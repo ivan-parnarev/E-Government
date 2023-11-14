@@ -1,11 +1,3 @@
-.disabledModalFooterButton {
-  background-color: var(--gray);
-}
-
-.disabledModalFooterButton:hover {
-  background-color: var(--gray);
-}
-
 .modalFooterButtonGroup {
   display: "flex";
   justify-content: "space-between";

@@ -4,6 +4,7 @@ import styles from "./ActiveCampaignComponent.module.css";
 import { useState } from "react";
 
 interface ActiveCampaignProps {
+  campaignType: string;
   campaignTopic: string;
   campaignId: string;
   answersJson: {
@@ -13,7 +14,12 @@ interface ActiveCampaignProps {
   }[];
 }
 
-export function ActiveCampaign({ campaignTopic, campaignId, answersJson }: ActiveCampaignProps) {
+export function ActiveCampaignComponent({
+  campaignType,
+  campaignTopic,
+  campaignId,
+  answersJson,
+}: ActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
   return (
@@ -30,6 +36,7 @@ export function ActiveCampaign({ campaignTopic, campaignId, answersJson }: Activ
       <VotingModalComponent
         show={modalShow}
         onHide={() => setModalShow(false)}
+        campaignType={campaignType}
         campaignTopic={campaignTopic}
         campaignId={campaignId}
         answersJson={answersJson}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { ActiveCampaign } from "./ActiveCampaignComponent";
+import { ActiveCampaignComponent } from "./ActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
 
 interface Campaign {
   id: string;
+  campaignType: string;
   campaignTopic: string;
   answersJson: string;
 }
@@ -28,8 +29,9 @@ export function ActiveCampaignsContainerComponent() {
       <div className={styles.activeCampaignsButtonsGroup}>
         {activeCampaigns.map((campaign) => {
           return (
-            <ActiveCampaign
+            <ActiveCampaignComponent
               key={campaign.id}
+              campaignType={campaign.campaignType}
               campaignTopic={campaign.campaignTopic}
               campaignId={campaign.id}
               answersJson={JSON.parse(campaign.answersJson)}
