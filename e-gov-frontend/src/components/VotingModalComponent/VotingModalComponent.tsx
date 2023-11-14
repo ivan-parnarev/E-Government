@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import ActiveCampaignFormContainer from "../ActiveCampaignFormContainer.js";
+import ActiveCampaignFormContainer from "../ActiveCampaignFormContainer.tsx";
 import PinInputComponent from "../PinInputComponent.tsx";
 import ModalFooterComponent from "../ModalFooterComponent.tsx";
 

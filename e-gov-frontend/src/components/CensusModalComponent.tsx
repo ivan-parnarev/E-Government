@@ -2,10 +2,18 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 import { useState } from "react";
 import styles from "./CensusModalComponent.module.css";
-import CensusDemographicInfoComponent from "./CensusDemographicInfoComponent";
-import CensusEducationInfoComponent from "./CensusEductionInfoComponent";
+import CensusDemographicInfoComponent from "./CensusDemographicInfoComponent.tsx";
+import CensusEducationInfoComponent from "./CensusEductionInfoComponent.tsx";
 
-function CensusModalComponent({ censusCategories, censusData }) {
+interface CensusModalComponentProps {
+  censusCategories: string[];
+  censusData: Record<string, any>[];
+}
+
+function CensusModalComponent({
+  censusCategories,
+  censusData,
+}: CensusModalComponentProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState({});
 
@@ -25,7 +33,7 @@ function CensusModalComponent({ censusCategories, censusData }) {
     }
   };
 
-  const handleInputChange = (fieldName, value) => {
+  const handleInputChange = (fieldName: string, value: string) => {
     setUserData({ ...userData, [fieldName]: value });
   };
 
