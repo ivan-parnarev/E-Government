@@ -1,15 +1,15 @@
 package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
+import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
-import com.egovernment.egovbackend.domain.template.AnswerCategory;
-import com.egovernment.egovbackend.domain.template.CandidateTemplate;
-import com.egovernment.egovbackend.domain.template.QuestionAnswerTemplate;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,8 @@ public class CampaignService {
     private final UserService userService;
     private final RoleService roleService;
     private final ModelMapper modelMapper;
-    Gson gson = new Gson();
+    private final ElectionService electionService;
+    private final CandidateService candidateService;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
@@ -66,37 +67,6 @@ public class CampaignService {
         }
     }
 
-    private String produceSampleCensusCampaignAnswerJson() {
-        QuestionAnswerTemplate firstDemographicQuestion = QuestionAnswerTemplate
-                .builder().question("What is your age?").build();
-        QuestionAnswerTemplate secondDemographicQuestion = QuestionAnswerTemplate
-                .builder().question("What is your gender?").build();
-
-        QuestionAnswerTemplate firstEducationQuestion = QuestionAnswerTemplate
-                .builder().question("Are you currently attending school or college?").build();
-        QuestionAnswerTemplate secondEducationQuestion = QuestionAnswerTemplate
-                .builder().question("What is the field of study for your highest qualification?").build();
-
-        List<QuestionAnswerTemplate> demographicInfo = List.of(firstDemographicQuestion, secondDemographicQuestion);
-        List<QuestionAnswerTemplate> educationInfo = List.of(firstEducationQuestion, secondEducationQuestion);
-
-        AnswerCategory answerCategory = AnswerCategory.builder()
-                .demographicInfo(demographicInfo)
-                .educationInfo(educationInfo)
-                .build();
-
-        return this.gson.toJson(answerCategory);
-    }
-
-    private String produceSampleVotingCampaignAnswerJson() {
-
-        CandidateTemplate firstCandidate = new CandidateTemplate(1, 11, "ГЕРБ");
-        CandidateTemplate secondCandidate = new CandidateTemplate(2, 13, "ПП");
-        CandidateTemplate thirdCandidate = new CandidateTemplate(3, 14, "БЗНС");
-
-        return this.gson.toJson(List.of(firstCandidate, secondCandidate, thirdCandidate));
-    }
-
     public Campaign launchCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive) {
         return campaignFactory.createCampaign(type, title, description, from, startDate, endDate, isActive);
@@ -108,6 +78,43 @@ public class CampaignService {
                 .stream()
                 .map(c -> this.modelMapper.map(c, CampaignViewDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public List<VoteCampaignDTO> getActiveVotingCampaigns(){
+        return this.campaignRepository
+                .findAll()
+                .stream()
+                .filter(c -> c.getCampaignType().equals(CampaignType.VOTING))
+                .filter(Campaign::isActive)
+                .map(this::mapCampaignToVotingCampaignDTO)
+                .collect(Collectors.toList());
+    }
+
+    private VoteCampaignDTO mapCampaignToVotingCampaignDTO(Campaign campaign){
+
+        Optional<Election> election = this.electionService
+                .getElectionByCampaignId(campaign.getId());
+
+        if(election.isEmpty()){
+            return null;
+        }
+
+        List< CandidateTemplateDTO> candidates = this.candidateService
+                .getCandidatesForElection(election.get().getId());
+
+
+            VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
+                    .campaignType(campaign.getCampaignType().name())
+                    .electionType(election.get().getElectionType().name())
+                    .candidates(candidates)
+                    .description(campaign.getDescription())
+                    .title(campaign.getTitle())
+                    .startDate(campaign.getStartDate())
+                    .endDate(campaign.getEndDate())
+                    .build();
+
+
+        return voteCampaignDTO;
     }
 
     public Optional<Campaign> getCampaignById(Long campaignId) {

@@ -9,23 +9,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "votes")
+@Table(name = "candidates")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vote extends BaseEntity {
+public class Candidate extends BaseEntity {
 
     @ManyToOne
-    private User user;
-    @ManyToOne
     private Election election;
-    @ManyToOne
-    private Candidate candidate;
     @Column
-    private LocalDateTime timestamp;
+    private String name;
+    @Column
+    private String party;
+    private Integer candidateNumber;
 
 }

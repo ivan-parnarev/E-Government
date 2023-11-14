@@ -25,24 +25,24 @@ public class VoteService {
     }
 
     public void saveVote(UserVotedInfoDTO voteDTO) {
-        Optional<Campaign> optCampaign = this.campaignService.getCampaignById(voteDTO.getCampaignId());
-        if(optCampaign.isPresent()){
-
-            Campaign campaign = optCampaign.get();
-            Gson gson = new Gson();
-            String answerJson = gson.toJson(voteDTO.getCandidate());
-
-            User votedUser = this.userService.createUserWithUserPin(voteDTO.getPin());
-
-            Vote vote = Vote.builder()
-                    .campaign(campaign)
-                    .user(votedUser)
-                    .answer(answerJson)
-                    .date(LocalDate.now())
-                    .build();
-
-            this.voteRepository.save(vote);
-        }
+//        Optional<Campaign> optCampaign = this.campaignService.getCampaignById(voteDTO.getCampaignId());
+//        if(optCampaign.isPresent()){
+//
+//            Campaign campaign = optCampaign.get();
+//            Gson gson = new Gson();
+//            String answerJson = gson.toJson(voteDTO.getCandidate());
+//
+//            User votedUser = this.userService.createUserWithUserPin(voteDTO.getPin());
+//
+//            Vote vote = Vote.builder()
+//                    .campaign(campaign)
+//                    .user(votedUser)
+//                    .answer(answerJson)
+//                    .date(LocalDate.now())
+//                    .build();
+//
+//            this.voteRepository.save(vote);
+//        }
 
     }
 }

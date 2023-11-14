@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VoteRepository extends JpaRepository<Vote, Long> {
-    @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Vote v WHERE v.user.PIN = :userPin AND v.campaign.id = :campaignId")
+    @Query("SELECT CASE WHEN COUNT(v) > 0 THEN true ELSE false END FROM Vote v WHERE v.user.PIN = :userPin AND v.election.campaign.id = :campaignId")
     boolean voteExistsByUserPinAndCampaignId(@Param("userPin") String userPin, @Param("campaignId") Long campaignId);
 }

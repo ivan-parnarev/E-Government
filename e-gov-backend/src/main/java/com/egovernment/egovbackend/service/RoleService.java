@@ -3,19 +3,17 @@ package com.egovernment.egovbackend.service;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class RoleService {
 
     private final RoleRepository roleRepository;
-
-    public RoleService(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     public void initRoles(){
         if(this.roleRepository.count() == 0){
