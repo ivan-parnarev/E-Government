@@ -22,7 +22,7 @@ public class VoteService {
     private final UserService userService;
 
     public boolean hasUserVotedForCampaign(String userPin, Long electionId) {
-        return this.voteRepository.voteExistsByUserPinAndCampaignId(userPin, electionId);
+        return this.voteRepository.voteExistsByUserPinAndElectionId(userPin, electionId);
     }
 
     public void saveVote(UserVotedInfoDTO voteDTO) {

@@ -1,10 +1,10 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
-import com.egovernment.egovbackend.domain.entity.Campaign;
+import com.egovernment.egovbackend.domain.entity.Candidate;
+import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Vote;
-import com.egovernment.egovbackend.domain.enums.CampaignType;
+import com.egovernment.egovbackend.domain.enums.ElectionType;
 import com.egovernment.egovbackend.repository.VoteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,127 +21,43 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class VoteServiceTest {
 
-//    @Mock
-//    private  VoteRepository voteRepository;
-//    @Mock
-//    private  CampaignService campaignService;
-//
-//    @Mock
-//    private UserService userService;
-//
-//    private VoteService voteServiceToTest;
-//
-//    @BeforeEach
-//    void setUp() {
-//        this.voteServiceToTest = new VoteService(voteRepository, campaignService, userService);
-//    }
-//
-//    @Test
-//    void testVoteIsSavedCorrectlyWhenCampaignIsPresent(){
-//
-//        Campaign campaign = Campaign.builder()
-//                .campaignType(CampaignType.VOTING)
-//                .campaignTopic("Парламентарни избори")
-//                .build();
-//
-//        CandidateTemplateDTO candidate = CandidateTemplateDTO.builder()
-//                .name("ПП")
-//                .number(12)
-//                .id(3)
-//                .build();
-//
-//        UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-//                .pin("0000000000")
-//                .campaignId(1L)
-//                .candidate(candidate)
-//                .build();
-//
-//        when(this.campaignService.getCampaignById(1L)).thenReturn(Optional.of(campaign));
-//
-//        this.voteServiceToTest.saveVote(voteDTO);
-//
-//        verify(voteRepository, times(1)).save(any(Vote.class));
-//
-//    }
-//
-//    @Test
-//    void testVoteIsSavedCorrectlyWhenCampaignIsNotPresent(){
-//        UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-//                .campaignId(1L)
-//                .build();
-//
-//        when(this.campaignService.getCampaignById(1L)).thenReturn(Optional.empty());
-//
-//        this.voteServiceToTest.saveVote(voteDTO);
-//
-//        verify(voteRepository, never()).save(any(Vote.class));
-//    }
-//
-//    @Test
-//    void testHasUserVotedForCampaignReturnsFalseWhenUserVoted(){
-//        String userPin = "0000000000";
-//        Long campaignId = 1L;
-//
-//        when(this.voteRepository
-//                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
-//                .thenReturn(true);
-//
-//        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);
-//
-//        assertTrue(result);
-//
-//    }
-//
-//    @Test
-//    void testHasUserVotedForCampaignReturnsTrueWhenUserHasNotVoted(){
-//        String userPin = "0000000000";
-//        Long campaignId = 1L;
-//
-//        when(this.voteRepository
-//                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
-//                .thenReturn(false);
-//
-//        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);
-//
-//        assertFalse(result);
-//
-//    }
     @Mock
     private  VoteRepository voteRepository;
     @Mock
-    private  CampaignService campaignService;
+    private  CandidateService candidateService;
 
     @Mock
     private UserService userService;
+    @Mock
+    private ElectionService electionService;
+
 
     private VoteService voteServiceToTest;
 
     @BeforeEach
     void setUp() {
-        this.voteServiceToTest = new VoteService(voteRepository, campaignService, userService);
+        this.voteServiceToTest = new VoteService(voteRepository, electionService, candidateService, userService);
     }
 
     @Test
     void testVoteIsSavedCorrectlyWhenCampaignIsPresent(){
 
-        Campaign campaign = Campaign.builder()
-                .campaignType(CampaignType.VOTING)
-                .title("Парламентарни избори")
+        Candidate candidate = Candidate.builder()
+                .name("Test Candiadte")
                 .build();
 
-        CandidateTemplateDTO candidate = CandidateTemplateDTO.builder()
-                .name("ПП")
-                .candidateNumber(12)
-                .id(3)
+        Election election = Election.builder()
+                .electionType(ElectionType.PARLIAMENT)
                 .build();
 
         UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .pin("0000000000")
-                .campaignId(1L)
-                .candidate(candidate)
+                .userPin("0000000000")
+                .electionId(1L)
+                .candidateId(1L)
                 .build();
 
-        when(this.campaignService.getCampaignById(1L)).thenReturn(Optional.of(campaign));
+        when(this.candidateService.getCandidateById(1L)).thenReturn(Optional.of(candidate));
+        when(this.electionService.getElectionById(1L)).thenReturn(Optional.of(election));
 
         this.voteServiceToTest.saveVote(voteDTO);
 
@@ -152,10 +68,10 @@ public class VoteServiceTest {
     @Test
     void testVoteIsSavedCorrectlyWhenCampaignIsNotPresent(){
         UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .campaignId(1L)
+                .electionId(1L)
                 .build();
 
-        when(this.campaignService.getCampaignById(1L)).thenReturn(Optional.empty());
+        when(this.electionService.getElectionById(1L)).thenReturn(Optional.empty());
 
         this.voteServiceToTest.saveVote(voteDTO);
 
@@ -163,15 +79,15 @@ public class VoteServiceTest {
     }
 
     @Test
-    void testHasUserVotedForCampaignReturnsFalseWhenUserVoted(){
+    void testHasUserVotedForElectionReturnsFalseWhenUserVoted(){
         String userPin = "0000000000";
-        Long campaignId = 1L;
+        Long electionId = 1L;
 
         when(this.voteRepository
-                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
+                .voteExistsByUserPinAndElectionId("0000000000", 1L))
                 .thenReturn(true);
 
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);
+        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, electionId);
 
         assertTrue(result);
 
@@ -180,17 +96,16 @@ public class VoteServiceTest {
     @Test
     void testHasUserVotedForCampaignReturnsTrueWhenUserHasNotVoted(){
         String userPin = "0000000000";
-        Long campaignId = 1L;
+        Long electionId = 1L;
 
         when(this.voteRepository
-                .voteExistsByUserPinAndCampaignId("0000000000", 1L))
+                .voteExistsByUserPinAndElectionId("0000000000", 1L))
                 .thenReturn(false);
 
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, campaignId);
+        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, electionId);
 
         assertFalse(result);
 
     }
-
 
 }
