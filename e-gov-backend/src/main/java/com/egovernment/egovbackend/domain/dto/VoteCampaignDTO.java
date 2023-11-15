@@ -14,11 +14,12 @@ import java.util.List;
 @Builder
 public class VoteCampaignDTO {
     private String campaignType;
-    private String title;
-    private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String campaignTitle;
+    private String campaignDescription;
+    private LocalDateTime campaignStartDate;
+    private LocalDateTime campaignEndDate;
     private String electionType;
-    private List<CandidateTemplateDTO> candidates;
+    private Long electionId;
+    private List<CandidateTemplateDTO> electionCandidates;
 
 }

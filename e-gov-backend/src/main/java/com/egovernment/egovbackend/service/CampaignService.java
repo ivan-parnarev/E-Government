@@ -11,7 +11,6 @@ import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
 import com.egovernment.egovbackend.repository.CampaignRepository;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -105,12 +104,13 @@ public class CampaignService {
 
             VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
                     .campaignType(campaign.getCampaignType().name())
+                    .campaignDescription(campaign.getDescription())
+                    .campaignTitle(campaign.getTitle())
+                    .campaignStartDate(campaign.getStartDate())
+                    .campaignEndDate(campaign.getEndDate())
                     .electionType(election.get().getElectionType().name())
-                    .candidates(candidates)
-                    .description(campaign.getDescription())
-                    .title(campaign.getTitle())
-                    .startDate(campaign.getStartDate())
-                    .endDate(campaign.getEndDate())
+                    .electionId(election.get().getId())
+                    .electionCandidates(candidates)
                     .build();
 
 

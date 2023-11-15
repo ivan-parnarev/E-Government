@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CandidateTemplateDTO {
 
-    private int id;
+    private int candidateId;
     @NotBlank(message = "Candidate name is required but not found.")
-    private String name;
+    private String candidateName;
     @NotBlank(message = "Candidate name is required but not found.")
-    private String party;
+    private String candidateParty;
     private Integer candidateNumber;
 }
