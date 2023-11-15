@@ -41,12 +41,12 @@ public class VoteServiceTest {
 
         Campaign campaign = Campaign.builder()
                 .campaignType(CampaignType.VOTING)
-                .campaignTopic("Парламентарни избори")
+                .title("Парламентарни избори")
                 .build();
 
         CandidateTemplateDTO candidate = CandidateTemplateDTO.builder()
                 .name("ПП")
-                .number(12)
+                .candidateNumber(12)
                 .id(3)
                 .build();
 

@@ -21,7 +21,7 @@ public class UserService {
     public void initAdministrator() {
         if(this.userRepository.count() == 0){
             User user = User.builder()
-                    .name("admin")
+                    .firstName("admin")
                     .roles(List.of(this.roleService.getRole(RoleEnum.ADMINISTRATOR)))
                     .build();
             this.userRepository.save(user);
