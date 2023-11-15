@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
 import com.egovernment.egovbackend.service.CampaignService;
 import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;

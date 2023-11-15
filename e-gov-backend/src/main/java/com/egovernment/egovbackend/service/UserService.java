@@ -41,4 +41,8 @@ public class UserService {
         this.userRepository.save(user);
         return user;
     }
+
+    public Optional<User> getUserByPin(String pin) {
+        return this.userRepository.findByPIN(pin);
+    }
 }

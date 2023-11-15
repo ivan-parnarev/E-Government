@@ -44,4 +44,8 @@ public class CandidateService {
                     .map(c -> this.modelMapper.map(c, CandidateTemplateDTO.class))
                     .collect(Collectors.toList());
     }
+
+    public Optional<Candidate> getCandidateById(Long candidateId) {
+        return this.candidateRepository.findById(candidateId);
+    }
 }

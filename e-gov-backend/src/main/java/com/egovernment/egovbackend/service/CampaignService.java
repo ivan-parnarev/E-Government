@@ -2,7 +2,7 @@ package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
-import com.egovernment.egovbackend.domain.dto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;

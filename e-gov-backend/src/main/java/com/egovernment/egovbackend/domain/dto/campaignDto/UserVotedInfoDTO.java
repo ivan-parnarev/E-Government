@@ -1,7 +1,6 @@
-package com.egovernment.egovbackend.domain.dto;
+package com.egovernment.egovbackend.domain.dto.campaignDto;
 
 import com.egovernment.egovbackend.domain.annotation.vote.UniqueVoteConstraint;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,11 +16,11 @@ import lombok.NoArgsConstructor;
 public class UserVotedInfoDTO {
 
     @NotBlank(message = "User PIN is required but it is not found.")
-    private String pin;
-    @NotNull(message = "Campaign id is required but it is not found.")
-    private Long campaignId;
-    @Valid
-    @NotNull(message = "Information about the voted candidate is required but it is not found.")
-    private CandidateTemplateDTO candidate;
+    private String userPin;
+    @NotNull(message = "Election id is required but it is not found.")
+    private Long electionId;
+    @NotNull(message = "Candidate id is required but it is not found.")
+    private Long candidateId;
+
 
 }

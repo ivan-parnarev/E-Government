@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.domain.annotation.vote;
 
-import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -22,6 +22,6 @@ public class UniqueVoteValidator implements ConstraintValidator<UniqueVoteConstr
             return false;
         }
 
-        return !this.voteService.hasUserVotedForCampaign(userVotedInfoDTO.getPin(), userVotedInfoDTO.getCampaignId());
+        return !this.voteService.hasUserVotedForCampaign(userVotedInfoDTO.getUserPin(), userVotedInfoDTO.getElectionId());
     }
 }

@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.web;
 
-import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
 import com.egovernment.egovbackend.web.interfaces.VoteControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;

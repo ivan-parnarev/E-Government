@@ -1,6 +1,5 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.UserVotedInfoDTO;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
