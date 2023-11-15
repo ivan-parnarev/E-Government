@@ -9,18 +9,20 @@ interface VotingModalProps {
   show: boolean;
   onHide: () => void;
   campaignType: string;
-  campaignTopic: string;
-  campaignId: string;
-  answersJson: {
-    id: string;
-    name: string;
-    number: string;
+  campaignTitle: string;
+  campaignDescription: string;
+  electionId: string;
+  electionCandidates: {
+    candidateId: string;
+    candidateName: string;
+    candidateParty: string;
+    candidateNumber: string;
   }[];
 }
 
 interface UserData {
-  pin: string;
-  campaignId?: string;
+  userPin: string;
+  electionId?: string;
   candidate?: { id: string; name: string; number: string };
 }
 
@@ -28,9 +30,10 @@ export function VotingModalComponent({
   show,
   onHide,
   campaignType,
-  campaignTopic,
-  campaignId,
-  answersJson,
+  campaignTitle,
+  campaignDescription,
+  electionId,
+  electionCandidates,
 }: VotingModalProps) {
   const [pinValue, setPinValue] = useState<string>("");
   const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
@@ -57,7 +60,7 @@ export function VotingModalComponent({
     } else if (!isValidPinValue) {
       setShowQuestions(false);
     } else {
-      setUserData({ pin: pinValue });
+      setUserData({ userPin: pinValue });
       setShowQuestions(true);
     }
   };
@@ -66,21 +69,17 @@ export function VotingModalComponent({
     setShowQuestions(false);
   };
 
-  const handleCheckboxChange = (id: string, name: string, number: string) => {
+  const handleCheckboxChange = (candidateId: string) => {
     const dataFromChild = {
-      campaignId: campaignId,
-      candidate: {
-        id: id,
-        number: number,
-        name: name,
-      },
+      electionId: electionId,
+      candidateId: candidateId,
     };
 
     setUserData((prevData) => {
       return { ...(prevData as UserData), ...dataFromChild };
     });
 
-    setCheckedId(id);
+    setCheckedId(candidateId);
   };
 
   const handleVoteSubmit = (event: MouseEvent<HTMLButtonElement>) => {
@@ -95,7 +94,7 @@ export function VotingModalComponent({
         if (response.status === 201) {
           return response.json().then((data) => {
             if (data) {
-              const successMessage = `Успешно гласувахте за кандидат ${data.candidate.number}. ${data.candidate.name}!`;
+              const successMessage = `Гласувахте успешно!`;
               alert(successMessage);
             }
 
@@ -119,7 +118,7 @@ export function VotingModalComponent({
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           <h2>
-            <b>{campaignTopic}</b>
+            <b>{campaignTitle}</b>
           </h2>
         </Modal.Title>
         <button className={styles.modalHeaderCloseButton} onClick={onHide}>
@@ -137,7 +136,8 @@ export function VotingModalComponent({
         ) : (
           <ActiveCampaignFormContainer
             campaignType={campaignType}
-            answersJson={answersJson}
+            campaignDescription={campaignDescription}
+            electionCandidates={electionCandidates}
             checkedId={checkedId}
             handleCheckboxChange={handleCheckboxChange}
           />

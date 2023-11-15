@@ -4,35 +4,39 @@ import CensusModalComponent from "./CensusModalComponent.tsx";
 
 interface ActiveCampaignFormContainerProps {
   campaignType: string;
-  answersJson: Array<{
-    id: string;
-    name: string;
-    number: string;
+  campaignDescription: string;
+  electionCandidates: Array<{
+    candidateId: string;
+    candidateName: string;
+    candidateParty: string;
+    candidateNumber: string;
   }>;
   checkedId: string | null;
-  handleCheckboxChange: (id: string, name: string, number: string) => void;
+  handleCheckboxChange: (candidateId: string) => void;
 }
 
 function ActiveCampaignFormContainer({
   campaignType,
-  answersJson,
+  campaignDescription,
+  electionCandidates,
   checkedId,
   handleCheckboxChange,
 }: ActiveCampaignFormContainerProps) {
   return (
     <>
-      {/* <h5>БЮЛЕТИНА ЗА НАРОДНИ ПРЕДСТАВИТЕЛИ</h5> */}
+      <h5>{campaignDescription}</h5>
       {campaignType === "VOTING" ? (
         <div className={styles.electionRowContainerPosition}>
           <div className={styles.electionRowContainer}>
-            {answersJson.map((answer) => {
+            {electionCandidates.map((candidate) => {
               return (
                 <ElectionRowComponent
-                  key={answer.id}
-                  id={answer.id}
-                  name={answer.name}
-                  number={answer.number}
-                  checked={checkedId === answer.id}
+                  key={candidate.candidateId}
+                  candidateId={candidate.candidateId}
+                  candidateName={candidate.candidateName}
+                  candidateParty={candidate.candidateParty}
+                  candidateNumber={candidate.candidateNumber}
+                  checked={checkedId === candidate.candidateId}
                   onChange={handleCheckboxChange}
                 />
               );
@@ -45,8 +49,8 @@ function ActiveCampaignFormContainer({
 
       {campaignType === "CENSUS" ? (
         <CensusModalComponent
-          censusCategories={Object.keys(answersJson)}
-          censusData={Object.entries(answersJson)}
+          censusCategories={Object.keys(electionCandidates)}
+          censusData={Object.entries(electionCandidates)}
         />
       ) : (
         ""

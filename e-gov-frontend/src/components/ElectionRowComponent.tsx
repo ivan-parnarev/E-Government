@@ -3,36 +3,40 @@ import Form from "react-bootstrap/Form";
 import styles from "./ElectionRowComponent.module.css";
 
 interface ElectionRowProps {
-  id: string;
-  name: string;
-  number: string;
+  candidateId: string;
+  candidateName: string;
+  candidateParty: string;
+  candidateNumber: string;
   checked: boolean;
   onChange: (id: string, name: string, number: string) => void;
 }
 
 function ElectionRowComponent({
-  id,
-  name,
-  number,
+  candidateId,
+  candidateName,
+  candidateParty,
+  candidateNumber,
   checked,
   onChange,
 }: ElectionRowProps) {
   return (
     <Form className={styles.electionRowContainer}>
-      <div key={id} className="mb-3">
+      <div key={candidateId} className="mb-3">
         <Form.Check
           type="checkbox"
-          id={`check-${id}`}
+          id={`check-${candidateId}`}
           className={styles.electionRowCheck}
         >
           <Form.Check.Input
             type="checkbox"
             checked={checked}
-            onChange={() => onChange(id, name, number)}
+            onChange={() =>
+              onChange(candidateId, candidateParty, candidateNumber)
+            }
             className={styles.electionRowCheckbox}
           />{" "}
           <Form.Check.Label className={styles.electionRowCheckLabel}>
-            {number}. {name}
+            {candidateNumber}. {candidateParty}
           </Form.Check.Label>
         </Form.Check>
       </div>

@@ -5,20 +5,23 @@ import { useState } from "react";
 
 interface ActiveCampaignProps {
   campaignType: string;
-  campaignTopic: string;
-  campaignId: string;
-  answersJson: {
-    id: string;
-    name: string;
-    number: string;
+  campaignTitle: string;
+  campaignDescription: string;
+  electionId: string;
+  electionCandidates: {
+    candidateId: string;
+    candidateName: string;
+    candidateParty: string;
+    candidateNumber: string;
   }[];
 }
 
 export function ActiveCampaignComponent({
   campaignType,
-  campaignTopic,
-  campaignId,
-  answersJson,
+  campaignTitle,
+  campaignDescription,
+  electionId,
+  electionCandidates,
 }: ActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -30,16 +33,17 @@ export function ActiveCampaignComponent({
         className={styles.activeCampaignsButton}
         onClick={() => setModalShow(true)}
       >
-        {campaignTopic}
+        {campaignTitle}
       </Button>
 
       <VotingModalComponent
         show={modalShow}
         onHide={() => setModalShow(false)}
         campaignType={campaignType}
-        campaignTopic={campaignTopic}
-        campaignId={campaignId}
-        answersJson={answersJson}
+        campaignTitle={campaignTitle}
+        campaignDescription={campaignDescription}
+        electionId={electionId}
+        electionCandidates={electionCandidates}
       />
     </div>
   );

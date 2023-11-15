@@ -3,17 +3,23 @@ import { ActiveCampaignComponent } from "./ActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
 
 interface Campaign {
-  id: string;
+  electionId: string;
   campaignType: string;
-  campaignTopic: string;
-  answersJson: string;
+  campaignTitle: string;
+  campaignDescription: string;
+  electionCandidates: {
+    candidateId: string;
+    candidateName: string;
+    candidateParty: string;
+    candidateNumber: string;
+  }[];
 }
 
 export function ActiveCampaignsContainerComponent() {
   const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/campaigns/active")
+    fetch("http://localhost:8080/api/v1/campaigns/active/vote")
       .then((response) => response.json())
       .then((data) => {
         setActiveCampaigns(data);
@@ -30,11 +36,12 @@ export function ActiveCampaignsContainerComponent() {
         {activeCampaigns.map((campaign) => {
           return (
             <ActiveCampaignComponent
-              key={campaign.id}
+              key={campaign.electionId}
               campaignType={campaign.campaignType}
-              campaignTopic={campaign.campaignTopic}
-              campaignId={campaign.id}
-              answersJson={JSON.parse(campaign.answersJson)}
+              campaignTitle={campaign.campaignTitle}
+              campaignDescription={campaign.campaignDescription}
+              electionId={campaign.electionId}
+              electionCandidates={campaign.electionCandidates}
             />
           );
         })}
