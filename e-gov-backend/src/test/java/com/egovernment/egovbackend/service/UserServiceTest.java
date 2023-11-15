@@ -68,12 +68,12 @@ public class UserServiceTest {
 
         User firstTestUser = User.builder()
                 .roles(firstUserRoles)
-                .name("Administartor")
+                .firstName("Administartor")
                 .build();
 
         User secondTestUser = User.builder()
                 .roles(secondUserRoles)
-                .name("Not Administrator")
+                .firstName("Not Administrator")
                 .build();
 
         when(this.userRepository.findAll()).thenReturn(List.of(firstTestUser, secondTestUser));
@@ -82,7 +82,7 @@ public class UserServiceTest {
         Assertions.assertTrue(userByRole.isPresent());
 
         User user = userByRole.get();
-        assertEquals(firstTestUser.getName(), user.getName());
+        assertEquals(firstTestUser.getFirstName(), user.getFirstName());
 
     }
 

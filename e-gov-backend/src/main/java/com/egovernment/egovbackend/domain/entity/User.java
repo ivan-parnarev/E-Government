@@ -18,7 +18,11 @@ import java.util.List;
 public class User extends BaseEntity {
 
     @Column
-    private String name;
+    private String firstName;
+    @Column
+    private String middleName;
+    @Column
+    private String lastName;
     @Column
     private String email;
     @Column
@@ -26,8 +30,10 @@ public class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<>();
     @Column
-    private String organisation;
-    @Column
     private String PIN;
+    @Column
+    private boolean canVote;
+    @Column
+    private boolean isGuest;
 
 }
