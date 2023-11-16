@@ -15,6 +15,8 @@ public class DataInit implements CommandLineRunner {
     private final ElectionService electionService;
     private final CandidateService candidateService;
 
+    private final CensusQuestionService censusQuestionService;
+
     @Override
     public void run(String... args) throws Exception {
         this.roleService.initRoles();
@@ -23,5 +25,6 @@ public class DataInit implements CommandLineRunner {
         this.electionService
                 .initSampleElections(this.campaignService.getCampaignById(1L).get());
         this.candidateService.initSampleCandidates();
+        this.censusQuestionService.initTestQuestions();
     }
 }

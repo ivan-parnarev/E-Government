@@ -20,7 +20,7 @@ public class CensusQuestion extends BaseEntity {
 
     @Column
     private String text;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Campaign> campaign;
     @Enumerated(EnumType.STRING)
     private CensusAnswerType type;
