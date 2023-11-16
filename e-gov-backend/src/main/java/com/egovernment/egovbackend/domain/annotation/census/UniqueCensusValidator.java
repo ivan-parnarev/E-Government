@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.domain.annotation.census;
 
 import com.egovernment.egovbackend.domain.dto.CensusDTO;
-import com.egovernment.egovbackend.service.CensusAnswerService;
+import com.egovernment.egovbackend.service.UserAnswerService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UniqueCensusValidator implements ConstraintValidator<UniqueCensusConstraint, CensusDTO> {
 
-    private final CensusAnswerService censusAnswerService;
+    private final UserAnswerService userAnswerService;
 
     @Override
     public void initialize(UniqueCensusConstraint constraintAnnotation) {
@@ -23,6 +23,6 @@ public class UniqueCensusValidator implements ConstraintValidator<UniqueCensusCo
             return false;
         }
 
-        return !this.censusAnswerService.hasUserCensusedInCampaign(censusDTO.getPin(), censusDTO.getCampaignId());
+        return !this.userAnswerService.hasUserCensusedInCampaign(censusDTO.getPin(), censusDTO.getCampaignId());
     }
 }

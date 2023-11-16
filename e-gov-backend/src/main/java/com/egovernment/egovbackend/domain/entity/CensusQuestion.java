@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.domain.entity;
 
 import com.egovernment.egovbackend.domain.enums.CensusAnswerType;
+import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +24,6 @@ public class CensusQuestion extends BaseEntity {
     private List<Campaign> campaign;
     @Enumerated(EnumType.STRING)
     private CensusAnswerType type;
+    @Enumerated(EnumType.STRING)
+    private QuestionCategory questionCategory;
 }
