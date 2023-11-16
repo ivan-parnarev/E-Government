@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -79,7 +79,7 @@ public class UserServiceTest {
         when(this.userRepository.findAll()).thenReturn(List.of(firstTestUser, secondTestUser));
 
         Optional<User> userByRole = this.userServiceToTest.getUserByRole(administratorRole);
-        Assertions.assertTrue(userByRole.isPresent());
+        assertTrue(userByRole.isPresent());
 
         User user = userByRole.get();
         assertEquals(firstTestUser.getFirstName(), user.getFirstName());
@@ -93,6 +93,40 @@ public class UserServiceTest {
         Optional<User> result = this.userServiceToTest.getUserByRole(administratorRole);
 
         Assertions.assertFalse(result.isPresent());
+    }
+
+    @Test
+    void createUserWithUserPinShouldSaveAndReturnUser() {
+        String pin = "123456";
+        User user = User.builder().PIN(pin).build();
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        User createdUser = userServiceToTest.createUserWithUserPin(pin);
+
+        assertNotNull(createdUser);
+        assertEquals(pin, createdUser.getPIN());
+        verify(userRepository, times(1)).save(user);
+    }
+
+    @Test
+    void getUserByPinShouldReturnUserIfExists() {
+        String pin = "123456";
+        User userToTest = User.builder().PIN(pin).build();
+        Optional<User> expectedUser = Optional.of(userToTest);
+        when(userRepository.findByPIN(pin)).thenReturn(expectedUser);
+
+        Optional<User> foundUser = userServiceToTest.getUserByPin(pin);
+
+        assertTrue(foundUser.isPresent());
+        assertEquals(pin, foundUser.get().getPIN());
+    }
+
+    @Test
+    void getUserByPinShouldReturnEmptyIfNotExists() {
+        String pin = "123456";
+        when(userRepository.findByPIN(pin)).thenReturn(Optional.empty());
+        Optional<User> foundUser = userServiceToTest.getUserByPin(pin);
+        assertFalse(foundUser.isPresent());
     }
 
 }
