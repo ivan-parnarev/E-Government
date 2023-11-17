@@ -3,6 +3,8 @@ package com.egovernment.egovbackend.service;
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;
@@ -11,6 +13,7 @@ import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
 import com.egovernment.egovbackend.repository.CampaignRepository;
+import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ public class CampaignService {
     private final ModelMapper modelMapper;
     private final ElectionService electionService;
     private final CandidateService candidateService;
+    private final CensusQuestionService censusQuestionService;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
@@ -119,5 +123,27 @@ public class CampaignService {
 
     public Optional<Campaign> getCampaignById(Long campaignId) {
         return this.campaignRepository.findById(campaignId);
+    }
+
+    public CensusCampaignDTO getActiveCensusCampaign() {
+        Optional<Campaign> activeCensusCampaign = this.campaignRepository.getByCampaignType(CampaignType.CENSUS);
+
+        if (activeCensusCampaign.isPresent()) {
+            List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
+                    .getCensusQuestionsForCampaign(activeCensusCampaign.get().getId());
+            return mapCampaignToCensusCampaignDTO(activeCensusCampaign.get(), censusQuestionsForCampaign);
+        }
+        return null;
+    }
+
+    private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
+        return CensusCampaignDTO.builder()
+                .campaignType(String.valueOf(campaign.getCampaignType()))
+                .campaignTitle(campaign.getTitle())
+                .campaignDescription(campaign.getDescription())
+                .campaignStartDate(campaign.getStartDate())
+                .campaignEndDate(campaign.getEndDate())
+                .censusQuestions(questions)
+                .build();
     }
 }

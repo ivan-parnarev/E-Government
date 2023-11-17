@@ -42,12 +42,15 @@ public class CampaignServiceTest {
     @Mock
     private CandidateService candidateService;
 
+    @Mock
+    private CensusQuestionService censusQuestionService;
+
     private CampaignService campaignServiceToTest;
 
     @BeforeEach
     void setUp() {
         this.campaignServiceToTest = new CampaignService(campaignRepository,
-                userService, roleService, modelMapper, electionService, candidateService);
+                userService, roleService, modelMapper, electionService, candidateService, censusQuestionService);
     }
 
     @Test

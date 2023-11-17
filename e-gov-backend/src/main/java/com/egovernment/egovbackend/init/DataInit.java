@@ -14,7 +14,6 @@ public class DataInit implements CommandLineRunner {
     private final CampaignService campaignService;
     private final ElectionService electionService;
     private final CandidateService candidateService;
-
     private final CensusQuestionService censusQuestionService;
 
     @Override

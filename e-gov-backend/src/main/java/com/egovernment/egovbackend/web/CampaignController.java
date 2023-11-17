@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
 import com.egovernment.egovbackend.service.CampaignService;
 import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
@@ -53,5 +54,12 @@ public class CampaignController implements CampaignControllerInterface {
         List<VoteCampaignDTO> activeVotingCampaigns = this.campaignService
                 .getActiveVotingCampaigns();
         return ResponseEntity.ok(activeVotingCampaigns);
+    }
+
+    @Override
+    @GetMapping("/active/census")
+    public ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign() {
+        CensusCampaignDTO activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaign();
+        return ResponseEntity.ok(activeCensusCampaignDTO);
     }
 }

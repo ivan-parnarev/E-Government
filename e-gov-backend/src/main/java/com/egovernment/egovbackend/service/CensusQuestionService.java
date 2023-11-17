@@ -1,5 +1,6 @@
 package com.egovernment.egovbackend.service;
 
+import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.CensusQuestion;
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
@@ -11,15 +12,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CensusQuestionService {
 
     private final CampaignRepository campaignRepository;
-
     private final CensusQuestionRepository censusQuestionRepository;
     private final QuestionFactory questionFactory = new QuestionFactory();
+
+    public List<CensusQuestionDTO> getCensusQuestionsForCampaign(Long campaignId) {
+        return this.censusQuestionRepository.findAllByCampaignId(campaignId)
+                .stream().map(this::mapQuestionToDTO)
+                .collect(Collectors.toList());
+    }
 
     public void initTestQuestions() {
 
@@ -41,5 +48,12 @@ public class CensusQuestionService {
                 testQuestion5, testQuestion6, testQuestion7, testQuestion8, testQuestion9);
 
         this.censusQuestionRepository.saveAll(testCensusQuestions);
+    }
+
+    private CensusQuestionDTO mapQuestionToDTO(CensusQuestion question) {
+        return CensusQuestionDTO.builder()
+                .text(question.getText())
+                .QuestionCategory(String.valueOf(question.getQuestionCategory()))
+                .build();
     }
 }
