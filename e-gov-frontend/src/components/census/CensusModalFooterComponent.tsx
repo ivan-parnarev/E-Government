@@ -7,7 +7,7 @@ interface CensusModalFooterComponentProps {
   isValidPinValue: boolean;
   showQuestions: boolean;
   onContinue: () => void;
-  onSubmit: () => void;
+  onSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
   onBack: () => void;
   onHide: () => void;
 }

@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import PinInputComponent from "../PinInputComponent.tsx";
 import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
@@ -85,7 +85,30 @@ function CensusModalComponent({
     }
   };
 
-  const handleFormSubmit = () => {};
+  const handleFormSubmit = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    fetch("http://localhost:8080/api/v1/census", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userData),
+    })
+      .then((response) => {
+        if (response.status === 201) {
+          return response.json().then((data) => {
+            if (data) {
+              const successMessage = `Успешно изпращане на данни за преброяване.`;
+              alert(successMessage);
+            }
+
+            window.location.href = response.headers.get("location") || "";
+          });
+        } else {
+          return response.json();
+        }
+      })
+      .catch((error) => console.error("Error:", error.message));
+  };
 
   const handleBack = () => {
     if (currentStep > 0) {
