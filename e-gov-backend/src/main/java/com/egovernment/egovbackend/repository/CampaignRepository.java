@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
-    Optional<Campaign> findCampaignByCampaignType(CampaignType campaignType);
 
-    Optional<Campaign> getByCampaignType(CampaignType campaignType);
+    List<Campaign> getAllByCampaignType(CampaignType campaignType);
 }

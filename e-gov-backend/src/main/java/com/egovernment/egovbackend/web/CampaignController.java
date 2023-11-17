@@ -56,6 +56,15 @@ public class CampaignController implements CampaignControllerInterface {
         return ResponseEntity.ok(activeVotingCampaigns);
     }
 
+    @Operation(summary = "Method Name: getActiveCensusCampaign; Retrieves active campaign for CENSUS.")
+    @ApiResponses(
+            value =  @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved active CENSUS campaign",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(
+                                    type = "object",
+                                    implementation = CensusCampaignDTO.class))})
+    )
     @Override
     @GetMapping("/active/census")
     public ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign() {

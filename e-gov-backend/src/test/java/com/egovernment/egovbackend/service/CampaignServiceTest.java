@@ -2,6 +2,7 @@ package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
@@ -114,6 +115,31 @@ public class CampaignServiceTest {
         assertEquals(campaignToTest.getCampaignType().name(), campaignViewDTO.getCampaignType());
         assertEquals(campaignToTest.getTitle(), campaignViewDTO.getCampaignTitle());
         assertEquals(campaignToTest.getDescription(), campaignViewDTO.getCampaignDescription());
+    }
+
+    @Test
+    void testGetActiveCensusCampaign() {
+        Campaign campaignToTest = Campaign.builder()
+                .campaignType(CampaignType.CENSUS)
+                .title("Test Census Campaign Title")
+                .description("Test census campaign description")
+                .isActive(true)
+                .build();
+
+        when(campaignRepository.getAllByCampaignType(CampaignType.CENSUS)).thenReturn(List.of(campaignToTest));
+
+        CensusCampaignDTO censusCampaignDTO = CensusCampaignDTO.builder()
+                .campaignTitle(campaignToTest.getTitle())
+                .campaignDescription(campaignToTest.getDescription())
+                .campaignType(String.valueOf(CampaignType.CENSUS))
+                .build();
+
+        CensusCampaignDTO result = campaignServiceToTest.getActiveCensusCampaign();
+
+        assertNotNull(result);
+        assertEquals(censusCampaignDTO.getCampaignTitle(), result.getCampaignTitle());
+        assertEquals(censusCampaignDTO.getCampaignDescription(), result.getCampaignDescription());
+        assertEquals(censusCampaignDTO.getCampaignType(), result.getCampaignType());
     }
 
     @Test

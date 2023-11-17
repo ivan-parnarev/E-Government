@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(ApiPaths.BASE_API_PATH + ApiPaths.CENSUS_PATH)
 public interface CensusControllerInterface {
 
-    ResponseEntity<CensusDTO> saveUserVoteData(@Valid @RequestBody CensusDTO census);
+    ResponseEntity<CensusDTO> saveUserCensusData(@Valid @RequestBody CensusDTO census);
 
 }

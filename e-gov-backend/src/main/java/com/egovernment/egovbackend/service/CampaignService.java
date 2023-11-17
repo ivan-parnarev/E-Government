@@ -126,12 +126,18 @@ public class CampaignService {
     }
 
     public CensusCampaignDTO getActiveCensusCampaign() {
-        Optional<Campaign> activeCensusCampaign = this.campaignRepository.getByCampaignType(CampaignType.CENSUS);
+        List<Campaign> censusCampaigns = this.campaignRepository
+                .getAllByCampaignType(CampaignType.CENSUS);
 
-        if (activeCensusCampaign.isPresent()) {
+        Optional<Campaign> campaign = censusCampaigns
+                .stream()
+                .filter(Campaign::isActive)
+                .findFirst();
+
+        if (campaign.isPresent()) {
             List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
-                    .getCensusQuestionsForCampaign(activeCensusCampaign.get().getId());
-            return mapCampaignToCensusCampaignDTO(activeCensusCampaign.get(), censusQuestionsForCampaign);
+                    .getCensusQuestionsForCampaign(campaign.get().getId());
+            return mapCampaignToCensusCampaignDTO(campaign.get(), censusQuestionsForCampaign);
         }
         return null;
     }

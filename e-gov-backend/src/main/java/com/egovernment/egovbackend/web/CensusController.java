@@ -16,7 +16,7 @@ public class CensusController implements CensusControllerInterface {
 
     @Override
     @PostMapping
-    public ResponseEntity<CensusDTO> saveUserVoteData(@Valid @RequestBody CensusDTO census) {
+    public ResponseEntity<CensusDTO> saveUserCensusData(@Valid @RequestBody CensusDTO census) {
 
         return ResponseEntity.ok(census);
     }
