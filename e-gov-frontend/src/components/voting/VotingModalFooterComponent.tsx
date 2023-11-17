@@ -39,14 +39,6 @@ function VotingModalFooterComponent({
           >
             Гласувай
           </Button>
-
-          {/* {campaignType === "CENSUS" ? (
-            <Button className={styles.modalFooterButton} onClick={onSubmit}>
-              Изпрати
-            </Button>
-          ) : (
-            ""
-          )} */}
         </>
       ) : (
         <Button
