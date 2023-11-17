@@ -1,14 +1,14 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import ActiveCampaignFormContainer from "../ActiveCampaignFormContainer.tsx";
-import PinInputComponent from "../PinInputComponent.tsx";
-import ModalFooterComponent from "../ModalFooterComponent.tsx";
+import ActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
+import PinInputComponent from "../../PinInputComponent.tsx";
+import VotingModalFooterComponent from "../VotingModalFooterComponent.tsx";
+import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
 
 interface VotingModalProps {
   show: boolean;
   onHide: () => void;
-  campaignType: string;
   campaignTitle: string;
   campaignDescription: string;
   electionId: string;
@@ -29,7 +29,6 @@ interface UserData {
 export function VotingModalComponent({
   show,
   onHide,
-  campaignType,
   campaignTitle,
   campaignDescription,
   electionId,
@@ -134,8 +133,7 @@ export function VotingModalComponent({
             onChange={handlePinChange}
           />
         ) : (
-          <ActiveCampaignFormContainer
-            campaignType={campaignType}
+          <VotingActiveCampaignFormContainer
             campaignDescription={campaignDescription}
             electionCandidates={electionCandidates}
             checkedId={checkedId}
@@ -145,8 +143,7 @@ export function VotingModalComponent({
       </Modal.Body>
 
       <Modal.Footer>
-        <ModalFooterComponent
-          campaignType={campaignType}
+        <VotingModalFooterComponent
           pinValueLength={pinValue.length}
           isValidPinValue={isValidPinValue}
           showQuestions={showQuestions}

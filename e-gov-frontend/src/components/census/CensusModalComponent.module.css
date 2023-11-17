@@ -25,3 +25,14 @@
 .censusModalButton {
   background-color: var(--blue-dark);
 }
+
+.modalHeaderCloseButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.modalHeaderCloseButton:hover {
+  color: var(--gray);
+}

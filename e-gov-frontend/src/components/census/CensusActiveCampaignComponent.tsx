@@ -1,28 +1,22 @@
 import Button from "react-bootstrap/esm/Button";
-import { VotingModalComponent } from "./VotingModalComponent/VotingModalComponent.tsx";
-import styles from "./ActiveCampaignComponent.module.css";
+import styles from "./CensusActiveCampaignComponent.module.css";
 import { useState } from "react";
+import CensusModalComponent from "./CensusModalComponent.tsx";
 
-interface ActiveCampaignProps {
-  campaignType: string;
+interface CensusActiveCampaignComponent {
   campaignTitle: string;
   campaignDescription: string;
-  electionId: string;
-  electionCandidates: {
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
+  censusQuestions: {
+    text: string;
+    questionCategory: string;
   }[];
 }
 
-export function ActiveCampaignComponent({
-  campaignType,
+export function CensusActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
-  electionId,
-  electionCandidates,
-}: ActiveCampaignProps) {
+  censusQuestions,
+}: CensusActiveCampaignComponent) {
   const [modalShow, setModalShow] = useState(false);
 
   return (
@@ -36,14 +30,12 @@ export function ActiveCampaignComponent({
         {campaignTitle}
       </Button>
 
-      <VotingModalComponent
+      <CensusModalComponent
         show={modalShow}
         onHide={() => setModalShow(false)}
-        campaignType={campaignType}
         campaignTitle={campaignTitle}
         campaignDescription={campaignDescription}
-        electionId={electionId}
-        electionCandidates={electionCandidates}
+        censusQuestions={censusQuestions}
       />
     </div>
   );

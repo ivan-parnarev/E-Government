@@ -1,30 +1,26 @@
 import React, { MouseEvent } from "react";
 import Button from "react-bootstrap/Button";
-import styles from "./ModalFooterComponent.module.css";
+import styles from "./CensusModalFooterComponent.module.css";
 
-interface ModalFooterProps {
-  campaignType: string;
+interface CensusModalFooterComponentProps {
   pinValueLength: number;
   isValidPinValue: boolean;
   showQuestions: boolean;
-  checkedId: string | null;
   onContinue: () => void;
+  onSubmit: () => void;
   onBack: () => void;
-  onSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
   onHide: () => void;
 }
 
-function ModalFooterComponent({
-  campaignType,
+function CensusModalFooterComponent({
   pinValueLength,
   isValidPinValue,
   showQuestions,
-  checkedId,
   onContinue,
-  onBack,
   onSubmit,
+  onBack,
   onHide,
-}: ModalFooterProps) {
+}: CensusModalFooterComponentProps) {
   return (
     <>
       {showQuestions ? (
@@ -34,24 +30,10 @@ function ModalFooterComponent({
               Назад
             </Button>
           </div>
-          {campaignType === "VOTING" ? (
-            <Button
-              disabled={!checkedId}
-              className={styles.modalFooterButton}
-              onClick={onSubmit}
-            >
-              Гласувай
-            </Button>
-          ) : (
-            ""
-          )}
-          {campaignType === "CENSUS" ? (
-            <Button className={styles.modalFooterButton} onClick={onSubmit}>
-              Изпрати
-            </Button>
-          ) : (
-            ""
-          )}
+
+          <Button className={styles.modalFooterButton} onClick={onSubmit}>
+            Изпрати
+          </Button>
         </>
       ) : (
         <Button
@@ -71,4 +53,4 @@ function ModalFooterComponent({
   );
 }
 
-export default ModalFooterComponent;
+export default CensusModalFooterComponent;

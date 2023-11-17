@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { ActiveCampaignComponent } from "./ActiveCampaignComponent";
+import { VotingActiveCampaignComponent } from "./voting/VotingActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
+import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComponent";
 
-interface Campaign {
+interface CommonCampaignProps {
   electionId: string;
   campaignType: string;
   campaignTitle: string;
   campaignDescription: string;
+}
+
+interface VoteCampaignProps extends CommonCampaignProps {
   electionCandidates: {
     candidateId: string;
     candidateName: string;
@@ -15,35 +19,87 @@ interface Campaign {
   }[];
 }
 
+interface CensusCampaignProps extends CommonCampaignProps {
+  censusQuestions: {
+    text: string;
+    questionCategory: string;
+  }[];
+}
+
 export function ActiveCampaignsContainerComponent() {
-  const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
+  const [voteCampaigns, setVoteCampaigns] = useState<VoteCampaignProps[]>([]);
+  const [censusCampaigns, setCensusCampaigns] = useState<CensusCampaignProps[]>(
+    []
+  );
+  // const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/v1/campaigns/active/vote")
-      .then((response) => response.json())
-      .then((data) => {
-        setActiveCampaigns(data);
-      })
-      .catch((error) =>
-        console.error("Error fetching active campaigns:", error)
-      );
+    const fetchVoteData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/v1/campaigns/active/vote"
+        );
+        const data = await response.json();
+
+        setVoteCampaigns(data);
+      } catch (error) {
+        console.error("Error fetching vote campaigns:", error);
+      }
+    };
+
+    const fetchCensusData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:8080/api/v1/campaigns/active/census"
+        );
+        const data = await response.json();
+
+        setCensusCampaigns([data]);
+      } catch (error) {
+        console.error("Error fetching census campaigns:", error);
+      }
+    };
+
+    fetchVoteData();
+    fetchCensusData();
   }, []);
+
+  const activeCampaigns = [...voteCampaigns, ...censusCampaigns];
 
   return (
     <div className={styles.activeCampaignsSection}>
       <h2 className={styles.subTitle}>Активни кампании:</h2>
       <div className={styles.activeCampaignsButtonsGroup}>
         {activeCampaigns.map((campaign) => {
-          return (
-            <ActiveCampaignComponent
-              key={campaign.electionId}
-              campaignType={campaign.campaignType}
-              campaignTitle={campaign.campaignTitle}
-              campaignDescription={campaign.campaignDescription}
-              electionId={campaign.electionId}
-              electionCandidates={campaign.electionCandidates}
-            />
-          );
+          switch (campaign.campaignType) {
+            case "VOTING":
+              if ("electionCandidates" in campaign) {
+                return (
+                  <VotingActiveCampaignComponent
+                    key={campaign.electionId}
+                    campaignTitle={campaign.campaignTitle}
+                    campaignDescription={campaign.campaignDescription}
+                    electionId={campaign.electionId}
+                    electionCandidates={campaign.electionCandidates}
+                  />
+                );
+              }
+            case "CENSUS":
+              if ("censusQuestions" in campaign) {
+                // console.log(campaign);
+
+                return (
+                  <CensusActiveCampaignComponent
+                    key={campaign.campaignTitle}
+                    campaignTitle={campaign.campaignTitle}
+                    campaignDescription={campaign.campaignDescription}
+                    censusQuestions={campaign.censusQuestions}
+                  />
+                );
+              }
+            default:
+              break;
+          }
         })}
       </div>
     </div>
