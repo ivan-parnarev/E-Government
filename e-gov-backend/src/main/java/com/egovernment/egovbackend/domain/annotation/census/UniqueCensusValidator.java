@@ -23,6 +23,6 @@ public class UniqueCensusValidator implements ConstraintValidator<UniqueCensusCo
             return false;
         }
 
-        return !this.userAnswerService.hasUserCensusedInCampaign(censusDTO.getPin(), censusDTO.getCampaignId());
+        return !this.userAnswerService.hasUserCensusedInCampaign(censusDTO.getUserPin(), censusDTO.getCampaignId());
     }
 }

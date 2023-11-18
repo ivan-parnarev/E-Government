@@ -144,6 +144,7 @@ public class CampaignService {
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
         return CensusCampaignDTO.builder()
+                .id(campaign.getId())
                 .campaignType(String.valueOf(campaign.getCampaignType()))
                 .campaignTitle(campaign.getTitle())
                 .campaignDescription(campaign.getDescription())

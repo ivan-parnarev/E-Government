@@ -17,9 +17,9 @@ public class UserAnswer extends BaseEntity {
 
     @ManyToOne
     private User user;
-    @OneToOne
+    @ManyToOne
     private CensusQuestion censusQuestion;
-    @OneToOne
+    @ManyToOne
     private Campaign campaign;
     @Enumerated(EnumType.STRING)
     private QuestionCategory questionCategory;

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserAnswerRepository extends JpaRepository<UserAnswer, Long> {
 
-    @Query("SELECT CASE WHEN COUNT(answer) > 0 THEN true ELSE false END FROM UserAnswer answer WHERE answer.user.PIN = :userPin AND answer.censusQuestion.campaign = :campaignId")
-    boolean censusExistsByUserIdAndCampaignId(@Param("userPin") String userPin, @Param("campaignId") Long campaignId);
+    @Query("SELECT CASE WHEN COUNT(answer) > 0 THEN true ELSE false END FROM UserAnswer answer WHERE answer.user.PIN = :userPin AND answer.campaign.id = :campaignId")
+    boolean censusExistsByUserPinAndCampaignId(@Param("userPin") String userPin, @Param("campaignId") Long campaignId);
 }

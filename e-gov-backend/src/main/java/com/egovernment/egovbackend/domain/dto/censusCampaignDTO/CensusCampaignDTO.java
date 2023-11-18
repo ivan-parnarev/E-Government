@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CensusCampaignDTO {
 
+    private Long id;
     private String campaignType;
     private String campaignTitle;
     private String campaignDescription;

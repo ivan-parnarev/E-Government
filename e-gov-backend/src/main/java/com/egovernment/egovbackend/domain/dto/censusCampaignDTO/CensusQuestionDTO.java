@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CensusQuestionDTO {
 
+    private Long id;
     private String text;
     private String QuestionCategory;
 }

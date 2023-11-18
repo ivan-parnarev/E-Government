@@ -52,8 +52,13 @@ public class CensusQuestionService {
 
     private CensusQuestionDTO mapQuestionToDTO(CensusQuestion question) {
         return CensusQuestionDTO.builder()
+                .id(question.getId())
                 .text(question.getText())
                 .QuestionCategory(String.valueOf(question.getQuestionCategory()))
                 .build();
+    }
+
+    public CensusQuestion getQuestionById(Long questionId) {
+        return this.censusQuestionRepository.findById(questionId).get();
     }
 }
