@@ -20,7 +20,9 @@ interface VoteCampaignProps extends CommonCampaignProps {
 }
 
 interface CensusCampaignProps extends CommonCampaignProps {
+  id: string;
   censusQuestions: {
+    id: string;
     text: string;
     questionCategory: string;
   }[];
@@ -31,7 +33,6 @@ export function ActiveCampaignsContainerComponent() {
   const [censusCampaigns, setCensusCampaigns] = useState<CensusCampaignProps[]>(
     []
   );
-  // const [activeCampaigns, setActiveCampaigns] = useState<Campaign[]>([]);
 
   useEffect(() => {
     const fetchVoteData = async () => {
@@ -86,13 +87,12 @@ export function ActiveCampaignsContainerComponent() {
               }
             case "CENSUS":
               if ("censusQuestions" in campaign) {
-                // console.log(campaign);
-
                 return (
                   <CensusActiveCampaignComponent
-                    key={campaign.campaignTitle}
+                    key={campaign.id}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
+                    censusId={campaign.id}
                     censusQuestions={campaign.censusQuestions}
                   />
                 );

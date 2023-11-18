@@ -6,7 +6,9 @@ import CensusModalComponent from "./CensusModalComponent.tsx";
 interface CensusActiveCampaignComponent {
   campaignTitle: string;
   campaignDescription: string;
+  censusId: string;
   censusQuestions: {
+    id: string;
     text: string;
     questionCategory: string;
   }[];
@@ -15,6 +17,7 @@ interface CensusActiveCampaignComponent {
 export function CensusActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
+  censusId,
   censusQuestions,
 }: CensusActiveCampaignComponent) {
   const [modalShow, setModalShow] = useState(false);
@@ -35,6 +38,7 @@ export function CensusActiveCampaignComponent({
         onHide={() => setModalShow(false)}
         campaignTitle={campaignTitle}
         campaignDescription={campaignDescription}
+        censusId={censusId}
         censusQuestions={censusQuestions}
       />
     </div>

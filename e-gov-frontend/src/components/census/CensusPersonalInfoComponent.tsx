@@ -4,9 +4,13 @@ import { ChangeEvent } from "react";
 import styles from "./CensusPersonalInfo.module.css";
 
 interface CensusPersonalInfoComponentProps {
-  censusQuestions: Array<{ text: string; questionCategory: string }>;
+  censusQuestions: Array<{
+    id: string;
+    text: string;
+    questionCategory: string;
+  }>;
   onContinue: () => void;
-  onInputChange: (text: string, value: string) => void;
+  onInputChange: (questionId: string, text: string, value: string) => void;
 }
 
 function CensusPersonalInfoComponent({
@@ -18,15 +22,15 @@ function CensusPersonalInfoComponent({
       <h3 className={styles.inputGroupTitle}>
         <b>Лична информация</b>
       </h3>
-      {censusQuestions.map(({ text, questionCategory }) => (
-        <InputGroup className={styles.inputGroup} key={text}>
+      {censusQuestions.map(({ id, text, questionCategory }) => (
+        <InputGroup className={styles.inputGroup} key={id}>
           <p className={styles.inputGroupInputLabel}>{text}:</p>
           <Form.Control
             placeholder=""
             aria-label=""
             aria-describedby="basic-addon1"
             className={styles.inputGroupInputField}
-            onChange={(event) => onInputChange(text, event.target.value)}
+            onChange={(event) => onInputChange(id, text, event.target.value)}
           />
         </InputGroup>
       ))}

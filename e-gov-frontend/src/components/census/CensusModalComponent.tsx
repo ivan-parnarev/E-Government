@@ -12,7 +12,9 @@ interface CensusModalComponentProps {
   onHide: () => void;
   campaignTitle: string;
   campaignDescription: string;
+  censusId: string;
   censusQuestions: {
+    id: string;
     text: string;
     questionCategory: string;
   }[];
@@ -20,7 +22,9 @@ interface CensusModalComponentProps {
 
 interface UserData {
   userPin: string;
+  campaignId: string;
   censusAnswers: Array<{
+    questionId: string;
     text: string;
     answer: string;
     questionCategory: string;
@@ -32,6 +36,7 @@ function CensusModalComponent({
   onHide,
   campaignTitle,
   campaignDescription,
+  censusId,
   censusQuestions,
 }: CensusModalComponentProps) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -40,6 +45,7 @@ function CensusModalComponent({
   const [showQuestions, setShowQuestions] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     userPin: "",
+    campaignId: "",
     censusAnswers: [],
   });
 
@@ -79,6 +85,7 @@ function CensusModalComponent({
       setUserData((prevData) => ({
         ...prevData,
         userPin: pinValue,
+        campaignId: censusId,
         censusAnswers: prevData.censusAnswers,
       }));
       setShowQuestions(true);
@@ -120,7 +127,7 @@ function CensusModalComponent({
     setShowQuestions(false);
   };
 
-  const handleInputChange = (fieldName: string, value: string) => {
+  const handleInputChange = (id: string, fieldName: string, value: string) => {
     setUserData((prevData) => {
       const index = prevData.censusAnswers.findIndex(
         (question) =>
@@ -131,6 +138,7 @@ function CensusModalComponent({
       if (index !== -1) {
         const updatedAnswers = [...prevData.censusAnswers];
         updatedAnswers[index] = {
+          questionId: id,
           text: fieldName,
           answer: value,
           questionCategory: "PERSONAL",
@@ -141,7 +149,12 @@ function CensusModalComponent({
           ...prevData,
           censusAnswers: [
             ...prevData.censusAnswers,
-            { text: fieldName, answer: value, questionCategory: "PERSONAL" },
+            {
+              questionId: id,
+              text: fieldName,
+              answer: value,
+              questionCategory: "PERSONAL",
+            },
           ],
         };
       }
@@ -158,7 +171,9 @@ function CensusModalComponent({
           <CensusPersonalInfoComponent
             censusQuestions={currentQuestions}
             onContinue={handleContinue}
-            onInputChange={(field, value) => handleInputChange(field, value)}
+            onInputChange={(id, field, value) =>
+              handleInputChange(id, field, value)
+            }
           />
         );
       default:
