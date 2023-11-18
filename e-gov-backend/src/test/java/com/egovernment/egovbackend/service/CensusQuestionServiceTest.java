@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -48,5 +49,21 @@ public class CensusQuestionServiceTest {
         Assertions.assertEquals(result.size(), 2);
         Assertions.assertEquals(result.get(0).getText(), firstQuestion.getText());
         Assertions.assertEquals(result.get(0).getQuestionCategory(), firstQuestion.getQuestionCategory().name());
+    }
+
+    @Test
+    void testGetQuestionByIdQuestionReturned() {
+        CensusQuestion censusQuestion = CensusQuestion.builder()
+                .questionCategory(QuestionCategory.PERSONAL)
+                .text(Questions.FIRST_NAME)
+                .build();
+
+        when(censusQuestionRepository.findById(any())).thenReturn(Optional.of(censusQuestion));
+
+        CensusQuestion questionById = censusQuestionService.getQuestionById(1L);
+
+        Assertions.assertNotNull(questionById);
+        Assertions.assertEquals(questionById.getText(), censusQuestion.getText());
+        Assertions.assertEquals(questionById.getQuestionCategory(), censusQuestion.getQuestionCategory());
     }
 }

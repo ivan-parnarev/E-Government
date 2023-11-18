@@ -12,6 +12,7 @@ import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
+import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -138,8 +139,9 @@ public class CampaignService {
             List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
                     .getCensusQuestionsForCampaign(campaign.get().getId());
             return mapCampaignToCensusCampaignDTO(campaign.get(), censusQuestionsForCampaign);
+        } else {
+            throw new ActiveCensusCampaignNotFoundException();
         }
-        return null;
     }
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {

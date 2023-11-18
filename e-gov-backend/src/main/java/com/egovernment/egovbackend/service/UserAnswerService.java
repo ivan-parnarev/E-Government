@@ -22,12 +22,13 @@ public class UserAnswerService {
     private final UserService userService;
     private final CampaignService campaignService;
 
-    public boolean hasUserCensusedInCampaign(String userPin, Long campaignId){
+    public boolean hasUserCensusedInCampaign(String userPin, Long campaignId) {
         return this.userAnswerRepository.censusExistsByUserPinAndCampaignId(userPin, campaignId);
     }
 
     public void saveUserCensusData(CensusDTO censusDTO) {
         Optional<User> optUser = this.userService.getUserByPin(censusDTO.getUserPin());
+        Campaign campaign = this.campaignService.getCampaignById(censusDTO.getCampaignId()).get();
 
         User censusUser;
 
@@ -37,21 +38,17 @@ public class UserAnswerService {
             censusUser = this.userService.createUserWithUserPin(censusDTO.getUserPin());
         }
 
-        Campaign campaign = this.campaignService.getCampaignById(censusDTO.getCampaignId()).get();
+        List<UserAnswerDTO> answersFromDto = censusDTO.getCensusAnswers();
 
-        List<UserAnswerDTO> answers = censusDTO.getCensusAnswers();
+        List<UserAnswer> answers = answersFromDto.stream().map(userAnswerDTO -> UserAnswer.builder()
+                .user(censusUser)
+                .answer(userAnswerDTO.getAnswer())
+                .campaign(campaign)
+                .questionCategory(userAnswerDTO.getQuestionCategory())
+                .censusQuestion(this.censusQuestionService.getQuestionById(userAnswerDTO.getQuestionId()))
+                .build()).collect(Collectors.toList());
 
-        List<UserAnswer> collect = answers.stream().map(userAnswerDTO -> {
-            return UserAnswer.builder()
-                    .user(censusUser)
-                    .answer(userAnswerDTO.getAnswer())
-                    .campaign(campaign)
-                    .questionCategory(userAnswerDTO.getQuestionCategory())
-                    .censusQuestion(this.censusQuestionService.getQuestionById(userAnswerDTO.getQuestionId()))
-                    .build();
-        }).collect(Collectors.toList());
-
-        this.userAnswerRepository.saveAll(collect);
+        this.userAnswerRepository.saveAll(answers);
     }
 
 }

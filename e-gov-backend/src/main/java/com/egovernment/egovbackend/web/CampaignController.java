@@ -3,6 +3,7 @@ package com.egovernment.egovbackend.web;
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
+import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
 import com.egovernment.egovbackend.service.CampaignService;
 import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,23 +26,23 @@ public class CampaignController implements CampaignControllerInterface {
 
     @Operation(summary = "Method Name: getAllActiveCampaigns; Retrieves a list of all active campaigns.")
     @ApiResponses(
-            value =  @ApiResponse(responseCode = "200",
+            value = @ApiResponse(responseCode = "200",
                     description = "Successfully retrieved list of active campaigns",
                     content = {@Content(mediaType = "application/json",
-                              schema = @Schema(
-                                      type = "array",
-                                      implementation = CampaignViewDTO.class))})
+                            schema = @Schema(
+                                    type = "array",
+                                    implementation = CampaignViewDTO.class))})
     )
     @Override
     @GetMapping("/active")
-    public ResponseEntity<List<CampaignViewDTO>> getAllActiveCampaigns(){
+    public ResponseEntity<List<CampaignViewDTO>> getAllActiveCampaigns() {
         List<CampaignViewDTO> campaigns = this.campaignService.getActiveCampaigns();
         return ResponseEntity.ok(campaigns);
     }
 
     @Operation(summary = "Method Name: getAllActiveVoteCampaigns; Retrieves a list of all active campaigns for VOTING.")
     @ApiResponses(
-            value =  @ApiResponse(responseCode = "200",
+            value = @ApiResponse(responseCode = "200",
                     description = "Successfully retrieved list of active VOTING campaigns",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(
@@ -50,7 +51,7 @@ public class CampaignController implements CampaignControllerInterface {
     )
     @Override
     @GetMapping("/active/vote")
-    public ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns(){
+    public ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns() {
         List<VoteCampaignDTO> activeVotingCampaigns = this.campaignService
                 .getActiveVotingCampaigns();
         return ResponseEntity.ok(activeVotingCampaigns);
@@ -58,17 +59,26 @@ public class CampaignController implements CampaignControllerInterface {
 
     @Operation(summary = "Method Name: getActiveCensusCampaign; Retrieves active campaign for CENSUS.")
     @ApiResponses(
-            value =  @ApiResponse(responseCode = "200",
+            value = {@ApiResponse(responseCode = "200",
                     description = "Successfully retrieved active CENSUS campaign",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(
                                     type = "object",
                                     implementation = CensusCampaignDTO.class))})
+                    ,@ApiResponse(responseCode = "400",
+                    description = "Bad Request - Active census campaign not found.",
+                    content = {@Content(mediaType = "application/json")}
+            )
+            }
     )
     @Override
     @GetMapping("/active/census")
     public ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign() {
-        CensusCampaignDTO activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaign();
-        return ResponseEntity.ok(activeCensusCampaignDTO);
+        try {
+            CensusCampaignDTO activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaign();
+            return ResponseEntity.ok(activeCensusCampaignDTO);
+        } catch (ActiveCensusCampaignNotFoundException ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
