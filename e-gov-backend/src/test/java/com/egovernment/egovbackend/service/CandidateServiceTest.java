@@ -27,6 +27,8 @@ public class CandidateServiceTest {
     @Mock
     private  ModelMapper modelMapper;
     private CandidateService candidateServiceToTest;
+    private final String TEST_NAME = "Test Name";
+    private final String TEST_PARTY = "Test Party";
 
     @BeforeEach
     public void setUp() {
@@ -46,15 +48,14 @@ public class CandidateServiceTest {
     @Test
     public void testCreateCandidate() {
         Election testElection = Election.builder().electionType(ElectionType.PARLIAMENT).build();
-        String name = "Test Name";
-        String party = "Test Party";
+
         Integer candidateNumber = 123;
 
-        Candidate result = candidateServiceToTest.createCandidate(name, party, testElection, candidateNumber);
+        Candidate result = candidateServiceToTest.createCandidate(TEST_NAME, TEST_PARTY, testElection, candidateNumber);
 
         assertNotNull(result);
-        assertEquals(name, result.getName());
-        assertEquals(party, result.getParty());
+        assertEquals(TEST_NAME, result.getName());
+        assertEquals(TEST_PARTY, result.getParty());
         assertEquals(candidateNumber, result.getCandidateNumber());
         assertEquals(testElection, result.getElection());
     }
@@ -63,9 +64,9 @@ public class CandidateServiceTest {
     public void testGetCandidateByIdReturnsTheRightCandidate() {
         Long candidateId = 1L;
         Candidate mockCandidate = Candidate.builder()
-                .name("TestName")
+                .name(TEST_NAME)
                 .candidateNumber(123)
-                .party("TestParty")
+                .party(TEST_PARTY)
                 .build();
         when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(mockCandidate));
 
