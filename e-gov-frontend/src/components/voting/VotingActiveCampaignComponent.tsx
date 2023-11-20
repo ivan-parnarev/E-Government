@@ -2,25 +2,14 @@ import Button from "react-bootstrap/esm/Button";
 import { VotingModalComponent } from "./VotingModalComponent/VotingModalComponent.tsx";
 import styles from "./VotingActiveCampaignComponent.module.css";
 import { useState } from "react";
-
-interface VotingActiveCampaignComponent {
-  campaignTitle: string;
-  campaignDescription: string;
-  electionId: string;
-  electionCandidates: {
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
-  }[];
-}
+import { VotingActiveCampaignProps } from "../../interfaces/voting/VotingActiveCampaignInterface.ts";
 
 export function VotingActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
   electionId,
   electionCandidates,
-}: VotingActiveCampaignComponent) {
+}: VotingActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
   return (

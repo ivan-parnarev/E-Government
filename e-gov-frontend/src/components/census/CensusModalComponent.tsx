@@ -6,30 +6,10 @@ import styles from "./CensusModalComponent.module.css";
 import PinInputComponent from "../PinInputComponent.tsx";
 import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
 import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
-
-interface CensusModalComponentProps {
-  show: boolean;
-  onHide: () => void;
-  campaignTitle: string;
-  campaignDescription: string;
-  censusId: string;
-  censusQuestions: {
-    id: string;
-    text: string;
-    questionCategory: string;
-  }[];
-}
-
-interface UserData {
-  userPin: string;
-  campaignId: string;
-  censusAnswers: Array<{
-    questionId: string;
-    text: string;
-    answer: string;
-    questionCategory: string;
-  }>;
-}
+import {
+  CensusModalProps,
+  UserData,
+} from "../../interfaces/census/CensusModalInterface.ts";
 
 function CensusModalComponent({
   show,
@@ -38,7 +18,7 @@ function CensusModalComponent({
   campaignDescription,
   censusId,
   censusQuestions,
-}: CensusModalComponentProps) {
+}: CensusModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [pinValue, setPinValue] = useState<string>("");
   const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);

@@ -1,30 +1,13 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import ActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
 import PinInputComponent from "../../PinInputComponent.tsx";
 import VotingModalFooterComponent from "../VotingModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
-
-interface VotingModalProps {
-  show: boolean;
-  onHide: () => void;
-  campaignTitle: string;
-  campaignDescription: string;
-  electionId: string;
-  electionCandidates: {
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
-  }[];
-}
-
-interface UserData {
-  userPin: string;
-  electionId?: string;
-  candidate?: { id: string; name: string; number: string };
-}
+import {
+  UserData,
+  VotingModalProps,
+} from "../../../interfaces/voting/VotingModalInterface.ts";
 
 export function VotingModalComponent({
   show,

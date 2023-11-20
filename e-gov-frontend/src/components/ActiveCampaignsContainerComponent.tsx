@@ -2,31 +2,10 @@ import { useEffect, useState } from "react";
 import { VotingActiveCampaignComponent } from "./voting/VotingActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
 import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComponent";
-
-interface CommonCampaignProps {
-  electionId: string;
-  campaignType: string;
-  campaignTitle: string;
-  campaignDescription: string;
-}
-
-interface VoteCampaignProps extends CommonCampaignProps {
-  electionCandidates: {
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
-  }[];
-}
-
-interface CensusCampaignProps extends CommonCampaignProps {
-  id: string;
-  censusQuestions: {
-    id: string;
-    text: string;
-    questionCategory: string;
-  }[];
-}
+import {
+  CensusCampaignProps,
+  VoteCampaignProps,
+} from "../interfaces/ActiveCampaignsContainerInterface";
 
 export function ActiveCampaignsContainerComponent() {
   const [voteCampaigns, setVoteCampaigns] = useState<VoteCampaignProps[]>([]);

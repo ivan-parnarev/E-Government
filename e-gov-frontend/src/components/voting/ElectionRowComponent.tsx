@@ -1,15 +1,7 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
 import styles from "./ElectionRowComponent.module.css";
-
-interface ElectionRowProps {
-  candidateId: string;
-  candidateName: string;
-  candidateParty: string;
-  candidateNumber: string;
-  checked: boolean;
-  onChange: (id: string, name: string, number: string) => void;
-}
+import { ElectionRowProps } from "../../interfaces/voting/ElectionRowInterface";
 
 function ElectionRowComponent({
   candidateId,
