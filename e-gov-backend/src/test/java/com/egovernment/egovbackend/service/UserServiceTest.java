@@ -25,9 +25,9 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private RoleService roleService;
-
     private UserService userServiceToTest;
     Role administratorRole;
+    private final String USER_PIN = "123456";
 
     @BeforeEach
     void setUp() {
@@ -110,22 +110,20 @@ public class UserServiceTest {
 
     @Test
     void getUserByPinShouldReturnUserIfExists() {
-        String pin = "123456";
-        User userToTest = User.builder().PIN(pin).build();
+        User userToTest = User.builder().PIN(USER_PIN).build();
         Optional<User> expectedUser = Optional.of(userToTest);
-        when(userRepository.findByPIN(pin)).thenReturn(expectedUser);
+        when(userRepository.findByPIN(USER_PIN)).thenReturn(expectedUser);
 
-        Optional<User> foundUser = userServiceToTest.getUserByPin(pin);
+        Optional<User> foundUser = userServiceToTest.getUserByPin(USER_PIN);
 
         assertTrue(foundUser.isPresent());
-        assertEquals(pin, foundUser.get().getPIN());
+        assertEquals(USER_PIN, foundUser.get().getPIN());
     }
 
     @Test
     void getUserByPinShouldReturnEmptyIfNotExists() {
-        String pin = "123456";
-        when(userRepository.findByPIN(pin)).thenReturn(Optional.empty());
-        Optional<User> foundUser = userServiceToTest.getUserByPin(pin);
+        when(userRepository.findByPIN(USER_PIN)).thenReturn(Optional.empty());
+        Optional<User> foundUser = userServiceToTest.getUserByPin(USER_PIN);
         assertFalse(foundUser.isPresent());
     }
 

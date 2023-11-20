@@ -25,6 +25,8 @@ public class ElectionServiceTest {
     private ElectionRepository electionRepository;
 
     private ElectionService electionServiceToTest;
+    private final String CAMPAIGN_TITLE = "Test Title";
+    private final Long ID = 1L;
 
     @BeforeEach
     public void setUp() {
@@ -44,7 +46,7 @@ public class ElectionServiceTest {
     @Test
     public void testLaunchElection() {
         Campaign mockCampaign = Campaign.builder()
-                .title("Test Title")
+                .title(CAMPAIGN_TITLE)
                 .build();
 
         Election result = electionServiceToTest.launchElection(ElectionType.PARLIAMENT, mockCampaign);
@@ -56,14 +58,14 @@ public class ElectionServiceTest {
 
     @Test
     public void testGetElectionByIdFound() {
-        long electionId = 1L;
+
         Election mockElection = Election.builder()
                 .electionType(ElectionType.PARLIAMENT)
                 .build();
 
-        when(electionRepository.findById(electionId)).thenReturn(Optional.of(mockElection));
+        when(electionRepository.findById(ID)).thenReturn(Optional.of(mockElection));
 
-        Optional<Election> result = electionServiceToTest.getElectionById(electionId);
+        Optional<Election> result = electionServiceToTest.getElectionById(ID);
 
         assertTrue(result.isPresent());
         assertEquals(mockElection, result.get());
@@ -72,24 +74,22 @@ public class ElectionServiceTest {
 
     @Test
     public void testGetElectionByIdNotFound() {
-        long electionId = 1L;
-        when(electionRepository.findById(electionId)).thenReturn(Optional.empty());
+        when(electionRepository.findById(ID)).thenReturn(Optional.empty());
 
-        Optional<Election> result = electionServiceToTest.getElectionById(electionId);
+        Optional<Election> result = electionServiceToTest.getElectionById(ID);
 
         assertFalse(result.isPresent());
     }
 
     @Test
     public void testGetElectionByCampaignIdFound() {
-        Long campaignId = 1L;
 
         Election mockElection = Election.builder()
                 .electionType(ElectionType.PARLIAMENT)
                 .build();
-        when(electionRepository.findByCampaignId(campaignId)).thenReturn(Optional.of(mockElection));
+        when(electionRepository.findByCampaignId(ID)).thenReturn(Optional.of(mockElection));
 
-        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(campaignId);
+        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(ID);
 
         assertTrue(result.isPresent());
         assertEquals(mockElection, result.get());
@@ -99,10 +99,9 @@ public class ElectionServiceTest {
 
     @Test
     public void testGetElectionByCampaignIdNotFound() {
-        Long campaignId = 1L;
-        when(electionRepository.findByCampaignId(campaignId)).thenReturn(Optional.empty());
+        when(electionRepository.findByCampaignId(ID)).thenReturn(Optional.empty());
 
-        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(campaignId);
+        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(ID);
 
         assertFalse(result.isPresent());
     }

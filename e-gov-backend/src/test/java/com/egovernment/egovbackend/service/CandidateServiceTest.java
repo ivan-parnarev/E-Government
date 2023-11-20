@@ -29,6 +29,7 @@ public class CandidateServiceTest {
     private CandidateService candidateServiceToTest;
     private final String TEST_NAME = "Test Name";
     private final String TEST_PARTY = "Test Party";
+    private final Long ID = 1L;
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +39,7 @@ public class CandidateServiceTest {
     @Test
     public void testInitSampleCandidates() {
         Election testElection = Election.builder().electionType(ElectionType.PARLIAMENT).build();
-        when(electionService.getElectionById(1L)).thenReturn(Optional.of(testElection));
+        when(electionService.getElectionById(ID)).thenReturn(Optional.of(testElection));
 
         candidateServiceToTest.initSampleCandidates();
 
@@ -62,15 +63,14 @@ public class CandidateServiceTest {
 
     @Test
     public void testGetCandidateByIdReturnsTheRightCandidate() {
-        Long candidateId = 1L;
         Candidate mockCandidate = Candidate.builder()
                 .name(TEST_NAME)
                 .candidateNumber(123)
                 .party(TEST_PARTY)
                 .build();
-        when(candidateRepository.findById(candidateId)).thenReturn(Optional.of(mockCandidate));
+        when(candidateRepository.findById(ID)).thenReturn(Optional.of(mockCandidate));
 
-        Optional<Candidate> result = candidateServiceToTest.getCandidateById(candidateId);
+        Optional<Candidate> result = candidateServiceToTest.getCandidateById(ID);
 
         assertTrue(result.isPresent());
         assertEquals(mockCandidate.getName(), result.get().getName());
@@ -81,15 +81,13 @@ public class CandidateServiceTest {
 
     @Test
     public void testGetCandidateByIdReturnsOptionalOfEmptyIfThereIsNoCandidateWithThatId() {
-        Long candidateId = 1L;
-        when(candidateRepository.findById(candidateId)).thenReturn(Optional.empty());
-        Optional<Candidate> result = candidateServiceToTest.getCandidateById(candidateId);
+        when(candidateRepository.findById(ID)).thenReturn(Optional.empty());
+        Optional<Candidate> result = candidateServiceToTest.getCandidateById(ID);
         assertTrue(result.isEmpty());
     }
 
     @Test
     public void testGetCandidatesForElectionWithCandidates() {
-        Long electionId = 1L;
         Candidate firstCandidate = Candidate.builder()
                 .party("FirstTestCandidateParty")
                 .name("FirstTest")
@@ -101,7 +99,7 @@ public class CandidateServiceTest {
                 .build();
 
         List<Candidate> candidateList = List.of(firstCandidate, secondCandidate);
-        when(candidateRepository.findByElectionId(electionId)).thenReturn(candidateList);
+        when(candidateRepository.findByElectionId(ID)).thenReturn(candidateList);
 
         CandidateTemplateDTO firstCandidateDTO = CandidateTemplateDTO.builder()
                 .candidateName(firstCandidate.getName())
@@ -120,7 +118,7 @@ public class CandidateServiceTest {
                 .thenReturn(secondCandidateDTO);
 
 
-        List<CandidateTemplateDTO> result = candidateServiceToTest.getCandidatesForElection(electionId);
+        List<CandidateTemplateDTO> result = candidateServiceToTest.getCandidatesForElection(ID);
 
         assertNotNull(result);
         assertEquals(candidateList.size(), result.size());

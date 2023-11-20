@@ -27,26 +27,24 @@ public class CampaignServiceTest {
 
     @Mock
     private CampaignRepository campaignRepository;
-
     @Mock
     private UserService userService;
-
     @Mock
     private RoleService roleService;
-
     @Mock
     private ModelMapper modelMapper;
-
     @Mock
     private ElectionService electionService;
-
     @Mock
     private CandidateService candidateService;
-
     @Mock
     private CensusQuestionService censusQuestionService;
-
     private CampaignService campaignServiceToTest;
+    private final String VOTE_CAMPAIGN_TITLE = "Test Vote Campaign";
+    private final String VOTE_CAMPAIGN_DESCRIPTION = "Test description vote campaign";
+    private final String CENSUS_CAMPAIGN_TITLE = "Test Census Campaign Title";
+    private final String CENSUS_CAMPAIGN_DESCRIPTION = "Test census campaign description";
+    private final String TEST_USER = "Test User";
 
     @BeforeEach
     void setUp() {
@@ -96,8 +94,8 @@ public class CampaignServiceTest {
     void testGetActiveVotingCampaigns() {
         Campaign campaignToTest = Campaign.builder()
                 .campaignType(CampaignType.VOTING)
-                .title("Test Vote Campaign")
-                .description("Test description vote campaign")
+                .title(VOTE_CAMPAIGN_TITLE)
+                .description(VOTE_CAMPAIGN_DESCRIPTION)
                 .build();
 
         when(campaignRepository.findAll()).thenReturn(List.of(campaignToTest));
@@ -121,8 +119,8 @@ public class CampaignServiceTest {
     void testGetActiveCensusCampaign() {
         Campaign campaignToTest = Campaign.builder()
                 .campaignType(CampaignType.CENSUS)
-                .title("Test Census Campaign Title")
-                .description("Test census campaign description")
+                .title(CENSUS_CAMPAIGN_TITLE)
+                .description(CENSUS_CAMPAIGN_DESCRIPTION)
                 .isActive(true)
                 .build();
 
@@ -146,8 +144,8 @@ public class CampaignServiceTest {
     void testGetCampaignByIdReturnsTheRightCampaignWhenIsPresent() {
         Campaign campaignToTest = Campaign.builder()
                 .campaignType(CampaignType.VOTING)
-                .title("Test Vote Campaign")
-                .description("Test description vote campaign")
+                .title(VOTE_CAMPAIGN_TITLE)
+                .description(VOTE_CAMPAIGN_DESCRIPTION)
                 .build();
 
         when(campaignRepository.findById(anyLong())).thenReturn(Optional.of(campaignToTest));
@@ -171,12 +169,12 @@ public class CampaignServiceTest {
 
     @Test
     void launchCampaignCreatesCampaign() {
-        User testUserFrom = User.builder().firstName("TestUser").build();
+        User testUserFrom = User.builder().firstName(TEST_USER).build();
 
         Campaign campaign = Campaign.builder()
                 .campaignType(CampaignType.VOTING)
-                .title("Campaign Test Topic")
-                .description("Test Description")
+                .title(VOTE_CAMPAIGN_TITLE)
+                .description(VOTE_CAMPAIGN_DESCRIPTION)
                 .from(testUserFrom)
                 .isActive(true)
                 .startDate(null)
@@ -184,7 +182,7 @@ public class CampaignServiceTest {
                 .build();
 
         Campaign resultCampaign = this.campaignServiceToTest.launchCampaign(CampaignType.VOTING,
-                "Campaign Test Topic", "Test Description", testUserFrom, null, null, true);
+                VOTE_CAMPAIGN_TITLE, VOTE_CAMPAIGN_DESCRIPTION, testUserFrom, null, null, true);
 
         assertNotNull(resultCampaign);
         assertEquals(campaign.getCampaignType(), resultCampaign.getCampaignType());

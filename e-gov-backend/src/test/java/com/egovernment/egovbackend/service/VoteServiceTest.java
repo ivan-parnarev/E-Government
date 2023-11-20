@@ -33,6 +33,9 @@ public class VoteServiceTest {
 
 
     private VoteService voteServiceToTest;
+    private final String CANDIDATE_NAME = "Test Candidate";
+    private final String USER_PIN = "0000000000";
+    private final Long ID = 1L;
 
     @BeforeEach
     void setUp() {
@@ -43,7 +46,7 @@ public class VoteServiceTest {
     void testVoteIsSavedCorrectlyWhenCampaignIsPresent(){
 
         Candidate candidate = Candidate.builder()
-                .name("Test Candiadte")
+                .name(CANDIDATE_NAME)
                 .build();
 
         Election election = Election.builder()
@@ -51,13 +54,13 @@ public class VoteServiceTest {
                 .build();
 
         UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .userPin("0000000000")
-                .electionId(1L)
-                .candidateId(1L)
+                .userPin(USER_PIN)
+                .electionId(ID)
+                .candidateId(ID)
                 .build();
 
-        when(this.candidateService.getCandidateById(1L)).thenReturn(Optional.of(candidate));
-        when(this.electionService.getElectionById(1L)).thenReturn(Optional.of(election));
+        when(this.candidateService.getCandidateById(ID)).thenReturn(Optional.of(candidate));
+        when(this.electionService.getElectionById(ID)).thenReturn(Optional.of(election));
 
         this.voteServiceToTest.saveVote(voteDTO);
 
@@ -68,10 +71,10 @@ public class VoteServiceTest {
     @Test
     void testVoteIsSavedCorrectlyWhenCampaignIsNotPresent(){
         UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .electionId(1L)
+                .electionId(ID)
                 .build();
 
-        when(this.electionService.getElectionById(1L)).thenReturn(Optional.empty());
+        when(this.electionService.getElectionById(ID)).thenReturn(Optional.empty());
 
         this.voteServiceToTest.saveVote(voteDTO);
 
@@ -80,14 +83,12 @@ public class VoteServiceTest {
 
     @Test
     void testHasUserVotedForElectionReturnsFalseWhenUserVoted(){
-        String userPin = "0000000000";
-        Long electionId = 1L;
 
         when(this.voteRepository
-                .voteExistsByUserPinAndElectionId("0000000000", 1L))
+                .voteExistsByUserPinAndElectionId("0000000000", ID))
                 .thenReturn(true);
 
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, electionId);
+        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID);
 
         assertTrue(result);
 
@@ -95,14 +96,12 @@ public class VoteServiceTest {
 
     @Test
     void testHasUserVotedForCampaignReturnsTrueWhenUserHasNotVoted(){
-        String userPin = "0000000000";
-        Long electionId = 1L;
 
         when(this.voteRepository
-                .voteExistsByUserPinAndElectionId("0000000000", 1L))
+                .voteExistsByUserPinAndElectionId("0000000000", ID))
                 .thenReturn(false);
 
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(userPin, electionId);
+        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID);
 
         assertFalse(result);
 
