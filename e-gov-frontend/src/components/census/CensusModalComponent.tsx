@@ -11,6 +11,10 @@ import {
   UserData,
 } from "../../interfaces/census/CensusModalInterface.ts";
 
+const PERSONAL_INFO_DATA = {
+  questionCategory: "PERSONAL",
+};
+
 function CensusModalComponent({
   show,
   onHide,
@@ -112,7 +116,7 @@ function CensusModalComponent({
       const index = prevData.censusAnswers.findIndex(
         (question) =>
           question.text === fieldName &&
-          question.questionCategory === "PERSONAL"
+          question.questionCategory === PERSONAL_INFO_DATA.questionCategory
       );
 
       if (index !== -1) {
@@ -121,7 +125,7 @@ function CensusModalComponent({
           questionId: id,
           text: fieldName,
           answer: value,
-          questionCategory: "PERSONAL",
+          ...PERSONAL_INFO_DATA,
         };
         return { ...prevData, censusAnswers: updatedAnswers };
       } else {
@@ -133,7 +137,7 @@ function CensusModalComponent({
               questionId: id,
               text: fieldName,
               answer: value,
-              questionCategory: "PERSONAL",
+              ...PERSONAL_INFO_DATA,
             },
           ],
         };
@@ -146,7 +150,7 @@ function CensusModalComponent({
     const currentQuestions = censusQuestions;
 
     switch (currentCategory) {
-      case "PERSONAL":
+      case PERSONAL_INFO_DATA.questionCategory:
         return (
           <CensusPersonalInfoComponent
             censusQuestions={currentQuestions}
