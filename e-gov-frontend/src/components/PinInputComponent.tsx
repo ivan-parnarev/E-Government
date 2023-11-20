@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./PinInputComponent.module.css";
@@ -9,15 +9,32 @@ function PinInputComponent({
   isValidPinValue,
   onChange,
 }: PinInputProps) {
-  let errorMessage = "";
+  const [errorMessage, setErrorMessage] = useState<string | null>("");
+  const timeoutDuration = 2000;
 
-  if (!isValidPinValue) {
-    errorMessage = "Въведеното ЕГН трябва да съдържа само цифри.";
-  } else if (pinValue.length < 10) {
-    errorMessage = "Въведеното ЕГН съдържа по-малко от 10 цифри.";
-  } else if (pinValue.length > 10) {
-    errorMessage = "Въведеното ЕГН съдържа повече от 10 цифри.";
-  }
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout | undefined;
+
+    setErrorMessage(null);
+
+    if (!isValidPinValue) {
+      timeoutId = setTimeout(() => {
+        setErrorMessage("Въведеното ЕГН трябва да съдържа само цифри.");
+      }, timeoutDuration);
+    } else if (pinValue.length < 10) {
+      timeoutId = setTimeout(() => {
+        setErrorMessage("Въведеното ЕГН съдържа по-малко от 10 цифри.");
+      }, timeoutDuration);
+    } else if (pinValue.length > 10) {
+      timeoutId = setTimeout(() => {
+        setErrorMessage("Въведеното ЕГН съдържа повече от 10 цифри.");
+      }, timeoutDuration);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [pinValue, isValidPinValue]);
 
   return (
     <div>
