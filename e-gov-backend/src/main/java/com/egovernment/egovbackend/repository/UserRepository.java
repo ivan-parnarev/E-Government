@@ -1,10 +1,13 @@
-package com.egovernment.egovbackend.repositories;
+package com.egovernment.egovbackend.repository;
 
-import com.egovernment.egovbackend.domain.entities.User;
+import com.egovernment.egovbackend.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    Optional<User> findByPIN(String pin);
 }
