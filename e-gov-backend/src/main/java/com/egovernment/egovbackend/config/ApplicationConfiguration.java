@@ -21,5 +21,4 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
-
 }

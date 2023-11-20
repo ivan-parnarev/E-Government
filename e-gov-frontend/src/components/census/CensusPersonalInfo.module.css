@@ -1,0 +1,17 @@
+.inputGroupTitle {
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroupInputLabel {
+  margin-bottom: 0px !important;
+}
+
+.inputGroupInputField {
+  width: 100% !important;
+}
