@@ -2,67 +2,46 @@ import { useEffect, useState } from "react";
 import { VotingActiveCampaignComponent } from "./voting/VotingActiveCampaignComponent";
 import styles from "./ActiveCampaignsContainerComponent.module.css";
 import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComponent";
+import {
+  CensusCampaignProps,
+  VoteCampaignProps,
+} from "../interfaces/ActiveCampaignsContainerInterface";
 
-interface CommonCampaignProps {
-  electionId: string;
-  campaignType: string;
-  campaignTitle: string;
-  campaignDescription: string;
-}
-
-interface VoteCampaignProps extends CommonCampaignProps {
-  electionCandidates: {
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
-  }[];
-}
-
-interface CensusCampaignProps extends CommonCampaignProps {
-  id: string;
-  censusQuestions: {
-    id: string;
-    text: string;
-    questionCategory: string;
-  }[];
+async function fetchCampaignData(url: string): Promise<any> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching campaigns:", error);
+    return null;
+  }
 }
 
 export function ActiveCampaignsContainerComponent() {
+  const activeCampaignsUrl = "http://localhost:8080/api/v1/campaigns/active";
   const [voteCampaigns, setVoteCampaigns] = useState<VoteCampaignProps[]>([]);
   const [censusCampaigns, setCensusCampaigns] = useState<CensusCampaignProps[]>(
     []
   );
 
   useEffect(() => {
-    const fetchVoteData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/campaigns/active/vote"
-        );
-        const data = await response.json();
+    const fetchCampaigns = async () => {
+      const voteData = await fetchCampaignData(`${activeCampaignsUrl}/vote`);
+      const censusData = await fetchCampaignData(
+        `${activeCampaignsUrl}/census`
+      );
 
-        setVoteCampaigns(data);
-      } catch (error) {
-        console.error("Error fetching vote campaigns:", error);
+      if (voteData) {
+        setVoteCampaigns(voteData);
+      }
+
+      if (censusData) {
+        setCensusCampaigns([censusData]);
       }
     };
 
-    const fetchCensusData = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:8080/api/v1/campaigns/active/census"
-        );
-        const data = await response.json();
-
-        setCensusCampaigns([data]);
-      } catch (error) {
-        console.error("Error fetching census campaigns:", error);
-      }
-    };
-
-    fetchVoteData();
-    fetchCensusData();
+    fetchCampaigns();
   }, []);
 
   const activeCampaigns = [...voteCampaigns, ...censusCampaigns];

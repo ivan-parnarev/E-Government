@@ -1,17 +1,7 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import styles from "./VotingModalFooterComponent.module.css";
-
-interface VotingModalFooterComponentProps {
-  pinValueLength: number;
-  isValidPinValue: boolean;
-  showQuestions: boolean;
-  checkedId: string | null;
-  onContinue: () => void;
-  onBack: () => void;
-  onSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
-  onHide: () => void;
-}
+import { VotingModalFooterProps } from "../../interfaces/voting/VotingModalFooterInterface";
 
 function VotingModalFooterComponent({
   pinValueLength,
@@ -22,7 +12,7 @@ function VotingModalFooterComponent({
   onBack,
   onSubmit,
   onHide,
-}: VotingModalFooterComponentProps) {
+}: VotingModalFooterProps) {
   return (
     <>
       {showQuestions ? (

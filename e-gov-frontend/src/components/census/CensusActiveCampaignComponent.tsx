@@ -2,24 +2,14 @@ import Button from "react-bootstrap/esm/Button";
 import styles from "./CensusActiveCampaignComponent.module.css";
 import { useState } from "react";
 import CensusModalComponent from "./CensusModalComponent.tsx";
-
-interface CensusActiveCampaignComponent {
-  campaignTitle: string;
-  campaignDescription: string;
-  censusId: string;
-  censusQuestions: {
-    id: string;
-    text: string;
-    questionCategory: string;
-  }[];
-}
+import { CensusActiveCampaignProps } from "../../interfaces/census/CensusActiveCampaignInterface.ts";
 
 export function CensusActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
   censusId,
   censusQuestions,
-}: CensusActiveCampaignComponent) {
+}: CensusActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
   return (

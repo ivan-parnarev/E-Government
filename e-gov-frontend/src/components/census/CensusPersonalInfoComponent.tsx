@@ -1,22 +1,11 @@
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { ChangeEvent } from "react";
 import styles from "./CensusPersonalInfo.module.css";
-
-interface CensusPersonalInfoComponentProps {
-  censusQuestions: Array<{
-    id: string;
-    text: string;
-    questionCategory: string;
-  }>;
-  onContinue: () => void;
-  onInputChange: (questionId: string, text: string, value: string) => void;
-}
 
 function CensusPersonalInfoComponent({
   censusQuestions,
   onInputChange,
-}: CensusPersonalInfoComponentProps) {
+}: CensusPersonalInfoProps) {
   return (
     <div>
       <h3 className={styles.inputGroupTitle}>

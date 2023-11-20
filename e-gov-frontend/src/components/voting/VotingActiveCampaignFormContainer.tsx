@@ -1,18 +1,6 @@
+import { VotingActiveCampaignFormContainerProps } from "../../interfaces/voting/VotingActiveCampaignFormContainerInterface.ts";
 import ElectionRowComponent from "./ElectionRowComponent.tsx";
 import styles from "./VotingActiveCampaignFormContainer.module.css";
-// import CensusModalComponent from "./CensusModalComponent.tsx";
-
-interface VotingActiveCampaignFormContainerProps {
-  campaignDescription: string;
-  electionCandidates: Array<{
-    candidateId: string;
-    candidateName: string;
-    candidateParty: string;
-    candidateNumber: string;
-  }>;
-  checkedId: string | null;
-  handleCheckboxChange: (candidateId: string) => void;
-}
 
 function VotingActiveCampaignFormContainer({
   campaignDescription,

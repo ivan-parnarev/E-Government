@@ -1,16 +1,7 @@
-import React, { MouseEvent } from "react";
+import React from "react";
 import Button from "react-bootstrap/Button";
 import styles from "./CensusModalFooterComponent.module.css";
-
-interface CensusModalFooterComponentProps {
-  pinValueLength: number;
-  isValidPinValue: boolean;
-  showQuestions: boolean;
-  onContinue: () => void;
-  onSubmit: (event: MouseEvent<HTMLButtonElement>) => void;
-  onBack: () => void;
-  onHide: () => void;
-}
+import { CensusModalFooterProps } from "../../interfaces/census/CensusModalFooterInterface";
 
 function CensusModalFooterComponent({
   pinValueLength,
@@ -20,7 +11,7 @@ function CensusModalFooterComponent({
   onSubmit,
   onBack,
   onHide,
-}: CensusModalFooterComponentProps) {
+}: CensusModalFooterProps) {
   return (
     <>
       {showQuestions ? (

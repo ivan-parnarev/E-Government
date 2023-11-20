@@ -1,35 +1,19 @@
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import PinInputComponent from "../PinInputComponent.tsx";
 import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
 import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
+import {
+  CensusModalProps,
+  UserData,
+} from "../../interfaces/census/CensusModalInterface.ts";
 
-interface CensusModalComponentProps {
-  show: boolean;
-  onHide: () => void;
-  campaignTitle: string;
-  campaignDescription: string;
-  censusId: string;
-  censusQuestions: {
-    id: string;
-    text: string;
-    questionCategory: string;
-  }[];
-}
-
-interface UserData {
-  userPin: string;
-  campaignId: string;
-  censusAnswers: Array<{
-    questionId: string;
-    text: string;
-    answer: string;
-    questionCategory: string;
-  }>;
-}
+const PERSONAL_INFO_DATA = {
+  questionCategory: "PERSONAL",
+};
 
 function CensusModalComponent({
   show,
@@ -38,7 +22,7 @@ function CensusModalComponent({
   campaignDescription,
   censusId,
   censusQuestions,
-}: CensusModalComponentProps) {
+}: CensusModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [pinValue, setPinValue] = useState<string>("");
   const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
@@ -132,7 +116,7 @@ function CensusModalComponent({
       const index = prevData.censusAnswers.findIndex(
         (question) =>
           question.text === fieldName &&
-          question.questionCategory === "PERSONAL"
+          question.questionCategory === PERSONAL_INFO_DATA.questionCategory
       );
 
       if (index !== -1) {
@@ -141,7 +125,7 @@ function CensusModalComponent({
           questionId: id,
           text: fieldName,
           answer: value,
-          questionCategory: "PERSONAL",
+          ...PERSONAL_INFO_DATA,
         };
         return { ...prevData, censusAnswers: updatedAnswers };
       } else {
@@ -153,7 +137,7 @@ function CensusModalComponent({
               questionId: id,
               text: fieldName,
               answer: value,
-              questionCategory: "PERSONAL",
+              ...PERSONAL_INFO_DATA,
             },
           ],
         };
@@ -166,7 +150,7 @@ function CensusModalComponent({
     const currentQuestions = censusQuestions;
 
     switch (currentCategory) {
-      case "PERSONAL":
+      case PERSONAL_INFO_DATA.questionCategory:
         return (
           <CensusPersonalInfoComponent
             censusQuestions={currentQuestions}
