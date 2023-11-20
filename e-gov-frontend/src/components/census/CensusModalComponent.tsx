@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import PinInputComponent from "../PinInputComponent.tsx";
 import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
