@@ -1,0 +1,10 @@
+.activeCampaignContainer {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 20px;
+}
+
+.activeCampaignsButton {
+  font-size: 1.7rem;
+  margin-right: 10px;
+}
