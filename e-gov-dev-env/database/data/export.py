@@ -17,7 +17,6 @@ db_params = {
 # Establish a connection to the PostgreSQL database
 connection = psycopg2.connect(**db_params)
 
-# If necessary use other tables
 db_table = 'users'
 query = f'COPY {db_table} TO STDOUT WITH CSV HEADER'
 output_file_path = '../../output.csv'
