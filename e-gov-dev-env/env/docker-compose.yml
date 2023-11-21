@@ -13,7 +13,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234qwer
     volumes:
-      - e-gov-db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-volumes:
-  e-gov-db-data:
+
