@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.domain.dto;
 
 import com.egovernment.egovbackend.domain.annotation.census.UniqueCensusConstraint;
+import com.egovernment.egovbackend.domain.annotation.pin.ValidUserPin;
 import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.UserAnswerDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,7 @@ import java.util.List;
 @UniqueCensusConstraint
 public class CensusDTO {
 
+    @ValidUserPin
     @NotBlank(message = "User PIN is required but it is not found.")
     private String userPin;
     @NotNull(message = "Campaign id is required but it is not found.")
