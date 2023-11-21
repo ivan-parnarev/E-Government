@@ -1,7 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
-import PinInputComponent from "../../PinInputComponent.tsx";
+import UserAuthenticationComponent from "../../user/UserAuthenticationComponent.js";
 import VotingModalFooterComponent from "../VotingModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
 import {
@@ -108,9 +108,9 @@ export function VotingModalComponent({
         </button>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body className={styles.modalBodyContainer}>
         {!showQuestions ? (
-          <PinInputComponent
+          <UserAuthenticationComponent
             pinValue={pinValue}
             isValidPinValue={isValidPinValue}
             onChange={handlePinChange}

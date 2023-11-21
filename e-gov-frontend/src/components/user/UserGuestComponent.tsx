@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import styles from "./PinInputComponent.module.css";
-import { PinInputProps } from "../interfaces/PinInputInterface";
+import styles from "./UserGuestComponent.module.css";
+import { PinInputProps } from "../../interfaces/PinInputInterface";
 
-function PinInputComponent({
+function UserGuestComponent({
   pinValue,
   isValidPinValue,
   onChange,
@@ -38,11 +38,12 @@ function PinInputComponent({
 
   return (
     <div>
-      <h4>Влезли сте като гост</h4>
+      <h4>Продължете като гост</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
-      <InputGroup size="sm" className="mb-3">
-        <InputGroup.Text id="inputGroup-sizing-sm">ЕГН:</InputGroup.Text>
+      <InputGroup size="sm" className={styles.guestInputGroup}>
+        <p className={styles.inputGroupInputLabel}>ЕГН:</p>
         <Form.Control
+          className={styles.inputGroupInputField}
           aria-label="Small"
           aria-describedby="inputGroup-sizing-sm"
           value={pinValue}
@@ -56,4 +57,4 @@ function PinInputComponent({
   );
 }
 
-export default PinInputComponent;
+export default UserGuestComponent;

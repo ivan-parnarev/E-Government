@@ -3,7 +3,7 @@ import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
-import PinInputComponent from "../PinInputComponent.tsx";
+import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
 import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
 import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
 import {
@@ -169,6 +169,7 @@ function CensusModalComponent({
 
   return (
     <Modal
+      className={styles.censusInfoContainerPosition}
       show={show}
       onHide={onHide}
       size="lg"
@@ -186,9 +187,9 @@ function CensusModalComponent({
         </button>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body className={styles.modalBodyContainer}>
         {!showQuestions ? (
-          <PinInputComponent
+          <UserAuthenticationComponent
             pinValue={pinValue}
             isValidPinValue={isValidPinValue}
             onChange={handlePinChange}
