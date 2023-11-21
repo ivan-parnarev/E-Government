@@ -4,7 +4,6 @@ import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDT
 import com.egovernment.egovbackend.domain.entity.CensusQuestion;
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import com.egovernment.egovbackend.repository.CensusQuestionRepository;
-import com.egovernment.egovbackend.utils.Questions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,9 +20,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class CensusQuestionServiceTest {
 
+    private static final String TEST_FIRSTNAME_QUESTION = "Лично име";
+    private static final String TEST_AGE_QUESTION = "Възраст";
     @Mock
     private CensusQuestionRepository censusQuestionRepository;
-
     @InjectMocks
     private CensusQuestionService censusQuestionService;
 
@@ -31,12 +31,12 @@ public class CensusQuestionServiceTest {
     void testGetCensusQuestionsForCampaignQuestionsReturned() {
 
         CensusQuestion firstQuestion = CensusQuestion.builder()
-                .text(Questions.FIRST_NAME)
+                .text(TEST_FIRSTNAME_QUESTION)
                 .questionCategory(QuestionCategory.PERSONAL)
                 .build();
 
          CensusQuestion secondQuestion = CensusQuestion.builder()
-                 .text(Questions.AGE)
+                 .text(TEST_AGE_QUESTION)
                  .questionCategory(QuestionCategory.PERSONAL)
                  .build();
 
@@ -55,7 +55,7 @@ public class CensusQuestionServiceTest {
     void testGetQuestionByIdQuestionReturned() {
         CensusQuestion censusQuestion = CensusQuestion.builder()
                 .questionCategory(QuestionCategory.PERSONAL)
-                .text(Questions.FIRST_NAME)
+                .text(TEST_FIRSTNAME_QUESTION)
                 .build();
 
         when(censusQuestionRepository.findById(any())).thenReturn(Optional.of(censusQuestion));

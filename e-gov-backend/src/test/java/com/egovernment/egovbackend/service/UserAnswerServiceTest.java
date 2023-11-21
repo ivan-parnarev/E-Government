@@ -21,14 +21,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserAnswerServiceTest {
 
+    private static final String TEST_USER_PIN = "8888888888";
+    private static final String TEST_CAMPAIGN_TITLE = "Test Campaign title";
+    private static final String TEST_FIRSTNAME_ANSWER = "George";
+
     @Mock
     private UserAnswerRepository userAnswerRepository;
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private CensusQuestionService censusQuestionService;
 
     @Mock
     private CampaignService campaignService;
@@ -39,29 +40,29 @@ public class UserAnswerServiceTest {
     @Test
     void saveUserCensusDataUserAnswersSaved() {
         UserAnswerDTO userAnswerDTO = UserAnswerDTO.builder()
-                .answer("George")
+                .answer(TEST_FIRSTNAME_ANSWER)
                 .build();
 
         List<UserAnswerDTO> answersFromDto = List.of(userAnswerDTO);
 
         CensusDTO censusDTO = CensusDTO.builder()
-                .userPin("8888888888")
+                .userPin(TEST_USER_PIN)
                 .censusAnswers(answersFromDto)
                 .build();
 
         User user = User.builder()
-                .PIN("8888888888")
+                .PIN(TEST_USER_PIN)
                 .build();
 
         Campaign campaign = Campaign.builder()
-                .title("Test Campaign title")
+                .title(TEST_CAMPAIGN_TITLE)
                 .isActive(true)
                 .build();
 
         UserAnswer userAnswer = UserAnswer.builder()
                 .user(user)
                 .campaign(campaign)
-                .answer("George")
+                .answer(TEST_FIRSTNAME_ANSWER)
                 .build();
 
         when(userService.getUserByPin(any())).thenReturn(Optional.of(user));
