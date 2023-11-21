@@ -27,6 +27,6 @@ db_params = {
 # Establish a connection to the PostgreSQL database
 connection = psycopg2.connect(**db_params)
 
-table_name = "users"  # Change this to your target table name
+table_name = "users"
 input_file_path = "../../output.csv"
 import_csv_data_to_database(connection, table_name, input_file_path)
