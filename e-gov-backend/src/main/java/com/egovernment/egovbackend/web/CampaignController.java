@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.CreateCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
 import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
@@ -88,8 +88,10 @@ public class CampaignController implements CampaignControllerInterface {
 
     @Override
     @PostMapping("/create")
-    public ResponseEntity<CreateCampaignDTO> saveNewCampaign(@Valid @RequestBody CreateCampaignDTO createCampaignDTO) {
-        return ResponseEntity.ok(createCampaignDTO);
+    public ResponseEntity<CreateVotingCampaignDTO> saveNewCampaign(@Valid @RequestBody
+                                                                   CreateVotingCampaignDTO createVotingCampaignDTO) {
+        this.campaignService.createCampaign(createVotingCampaignDTO);
+        return ResponseEntity.ok(createVotingCampaignDTO);
     }
 
 
