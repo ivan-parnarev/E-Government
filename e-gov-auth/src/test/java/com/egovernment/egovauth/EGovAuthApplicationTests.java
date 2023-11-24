@@ -1,4 +1,4 @@
-package com.example.egovauth;
+package com.egovernment.egovauth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
