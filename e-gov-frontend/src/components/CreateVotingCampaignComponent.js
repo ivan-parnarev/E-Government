@@ -72,7 +72,7 @@ export function CreateVotingCampaignComponent({
     fetch("http://localhost:8080/api/v1/campaigns/create/vote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(currUserData),
     })
       .then((response) => {
         if (response.status === 201) {
