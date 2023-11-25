@@ -1,18 +1,18 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
-import styles from "./VotingModalFooterComponent.module.css";
-import { VotingModalFooterProps } from "../../interfaces/voting/VotingModalFooterInterface";
+import styles from "./CampaignModalFooterComponent.module.css";
+import { CampaignModalFooterProps } from "../interfaces/CampaignModalFooterInterface";
 
-function VotingModalFooterComponent({
-  pinValueLength,
-  isValidPinValue,
+function CampaignModalFooterComponent({
   showQuestions,
-  checkedId,
+  submitButtonDisabled,
+  continueButtonDisabled,
+  buttonText,
   onContinue,
   onBack,
   onSubmit,
   onHide,
-}: VotingModalFooterProps) {
+}: CampaignModalFooterProps) {
   return (
     <>
       {showQuestions ? (
@@ -23,18 +23,16 @@ function VotingModalFooterComponent({
             </Button>
           </div>
           <Button
-            disabled={!checkedId}
+            disabled={!submitButtonDisabled}
             className={styles.modalFooterButton}
             onClick={onSubmit}
           >
-            Гласувай
+            {buttonText}
           </Button>
         </>
       ) : (
         <Button
-          disabled={
-            pinValueLength < 10 || pinValueLength > 10 || !isValidPinValue
-          }
+          disabled={continueButtonDisabled}
           className={styles.modalFooterButton}
           onClick={onContinue}
         >
@@ -48,4 +46,4 @@ function VotingModalFooterComponent({
   );
 }
 
-export default VotingModalFooterComponent;
+export default CampaignModalFooterComponent;

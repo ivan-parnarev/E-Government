@@ -6,7 +6,7 @@ import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComp
 import {
   CensusCampaignProps,
   VoteCampaignProps,
-} from "../interfaces/ActiveCampaignsContainerInterface";
+} from "../interfaces/ActiveCampaignsContainerInterface.ts";
 
 async function fetchCampaignData(url: string): Promise<any> {
   try {

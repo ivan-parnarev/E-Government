@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 import styles from "./UserGuestComponent.module.css";
-import { PinInputProps } from "../../interfaces/PinInputInterface";
+import { UserGuestProps } from "../../interfaces/UserGuestInterface.ts";
 
 function UserGuestComponent({
   pinValue,
   isValidPinValue,
   onChange,
-}: PinInputProps) {
+}: UserGuestProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
 
@@ -40,16 +40,15 @@ function UserGuestComponent({
     <div>
       <h4>Продължете като гост</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
-      <InputGroup size="sm" className={styles.guestInputGroup}>
-        <p className={styles.inputGroupInputLabel}>ЕГН:</p>
+      <FloatingLabel controlId="floatingInput" label="ЕГН:" className="mb-3">
         <Form.Control
-          className={styles.inputGroupInputField}
-          aria-label="Small"
-          aria-describedby="inputGroup-sizing-sm"
+          type="text"
+          placeholder=""
           value={pinValue}
           onChange={onChange}
         />
-      </InputGroup>
+      </FloatingLabel>
+
       {errorMessage && pinValue.length > 0 && (
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}

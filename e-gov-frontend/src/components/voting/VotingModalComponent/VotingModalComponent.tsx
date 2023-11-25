@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import UserAuthenticationComponent from "../../user/UserAuthenticationComponent.js";
-import VotingModalFooterComponent from "../VotingModalFooterComponent.tsx";
+import CampaignModalFooterComponent from "../../CampaignModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
 import {
   UserData,
@@ -126,11 +126,13 @@ export function VotingModalComponent({
       </Modal.Body>
 
       <Modal.Footer>
-        <VotingModalFooterComponent
-          pinValueLength={pinValue.length}
-          isValidPinValue={isValidPinValue}
+        <CampaignModalFooterComponent
           showQuestions={showQuestions}
-          checkedId={checkedId}
+          submitButtonDisabled={checkedId}
+          continueButtonDisabled={
+            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
+          }
+          buttonText="Гласувай"
           onContinue={handleContinue}
           onBack={handleBack}
           onSubmit={handleVoteSubmit}
