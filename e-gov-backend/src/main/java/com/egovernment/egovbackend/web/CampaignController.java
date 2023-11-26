@@ -87,7 +87,7 @@ public class CampaignController implements CampaignControllerInterface {
     }
 
     @Override
-    @PostMapping("/create")
+    @PostMapping("/create/vote")
     public ResponseEntity<CreateVotingCampaignDTO> saveNewCampaign(@Valid @RequestBody
                                                                    CreateVotingCampaignDTO createVotingCampaignDTO) {
         this.campaignService.createCampaign(createVotingCampaignDTO);

@@ -2,6 +2,7 @@ package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
@@ -14,7 +15,6 @@ import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
 import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
-import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -146,7 +146,7 @@ public class CampaignService {
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
         return CensusCampaignDTO.builder()
-                .id(campaign.getId())
+                .campaignId(campaign.getId())
                 .campaignType(String.valueOf(campaign.getCampaignType()))
                 .campaignTitle(campaign.getTitle())
                 .campaignDescription(campaign.getDescription())
@@ -154,5 +154,19 @@ public class CampaignService {
                 .campaignEndDate(campaign.getEndDate())
                 .censusQuestions(questions)
                 .build();
+    }
+
+    public void createCampaign(CreateVotingCampaignDTO createVotingCampaignDTO) {
+        CampaignType campaignType = CampaignType.valueOf(createVotingCampaignDTO.getCampaignType());
+
+        Campaign campaign = launchCampaign(campaignType, createVotingCampaignDTO.getCampaignTitle(),
+                createVotingCampaignDTO.getCampaignDescription(), null,
+                createVotingCampaignDTO.getCampaignStartDate(), createVotingCampaignDTO.getCampaignEndDate(), true);
+
+        this.campaignRepository.save(campaign);
+
+        Election election = this.electionService.createElection(createVotingCampaignDTO, campaign);
+        this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates(), election);
+
     }
 }

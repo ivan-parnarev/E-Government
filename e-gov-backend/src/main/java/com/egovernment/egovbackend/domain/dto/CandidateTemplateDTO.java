@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.domain.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,8 @@ public class CandidateTemplateDTO {
     private int candidateId;
     @NotBlank(message = "Candidate name is required but not found.")
     private String candidateName;
-    @NotBlank(message = "Candidate name is required but not found.")
+    @NotBlank(message = "Candidate party is required but not found.")
     private String candidateParty;
+    @NotNull(message = "Candidate number cannot be null")
     private Integer candidateNumber;
 }

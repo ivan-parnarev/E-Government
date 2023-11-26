@@ -48,4 +48,14 @@ public class CandidateService {
     public Optional<Candidate> getCandidateById(Long candidateId) {
         return this.candidateRepository.findById(candidateId);
     }
+
+    public void createCandidates(List<CandidateTemplateDTO> candidatesList, Election election) {
+        List<Candidate> candidates = candidatesList
+                .stream()
+                .map(c -> this.modelMapper.map(c, Candidate.class))
+                .peek(c -> c.setElection(election))
+                .toList();
+        this.candidateRepository.saveAll(candidates);
+
+    }
 }
