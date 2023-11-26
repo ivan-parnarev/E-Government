@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.censusCampaignDTO;
+package com.egovernment.egovbackend.domain.dto.censusCampaign;
 
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import lombok.AllArgsConstructor;

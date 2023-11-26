@@ -1,11 +1,11 @@
 package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
-import com.egovernment.egovbackend.domain.dto.CreateVotingCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;
@@ -14,6 +14,7 @@ import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
 import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
+import com.egovernment.egovbackend.exceptions.CustomValidationException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
@@ -159,8 +161,14 @@ public class CampaignService {
     public void createVotingCampaign(CreateVotingCampaignDTO createVotingCampaignDTO) {
         CampaignType campaignType = CampaignType.valueOf(createVotingCampaignDTO.getCampaignType());
 
+        if(!this.userService.userIsAdmin(createVotingCampaignDTO.getCreatorUserPin())){
+            throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
+        }
+
+        User owner = userService.getUserByPin(createVotingCampaignDTO.getCreatorUserPin()).get();
+
         Campaign campaign = launchCampaign(campaignType, createVotingCampaignDTO.getCampaignTitle(),
-                createVotingCampaignDTO.getCampaignDescription(), null,
+                createVotingCampaignDTO.getCampaignDescription(), owner,
                 createVotingCampaignDTO.getCampaignStartDate(), createVotingCampaignDTO.getCampaignEndDate(), true);
 
         this.campaignRepository.save(campaign);

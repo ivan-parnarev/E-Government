@@ -1,9 +1,9 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.CreateVotingCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
 import com.egovernment.egovbackend.service.CampaignService;
 import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -88,10 +89,12 @@ public class CampaignController implements CampaignControllerInterface {
 
     @Override
     @PostMapping("/create/vote")
-    public ResponseEntity<CreateVotingCampaignDTO> saveNewCampaign(@Valid @RequestBody
+    public ResponseEntity<String> saveNewCampaign(@Valid @RequestBody
                                                                    CreateVotingCampaignDTO createVotingCampaignDTO) {
         this.campaignService.createVotingCampaign(createVotingCampaignDTO);
-        return ResponseEntity.ok(createVotingCampaignDTO);
+        URI location = URI.create("http://localhost:3000");
+        return  ResponseEntity.created(location)
+                .body("Успешно съзадедна кампания");
     }
 
 

@@ -1,9 +1,9 @@
 package com.egovernment.egovbackend.web.interfaces;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.CreateVotingCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.egovbackend.web.path.ApiPaths;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
@@ -18,5 +18,5 @@ public interface CampaignControllerInterface {
      ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns();
 
      ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign();
-     ResponseEntity<CreateVotingCampaignDTO> saveNewCampaign(@Valid @RequestBody CreateVotingCampaignDTO createVotingCampaignDTO);
+     ResponseEntity<String> saveNewCampaign(@Valid @RequestBody CreateVotingCampaignDTO createVotingCampaignDTO);
 }

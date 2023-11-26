@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.entity.Candidate;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.factory.candidate.CandidateFactory;

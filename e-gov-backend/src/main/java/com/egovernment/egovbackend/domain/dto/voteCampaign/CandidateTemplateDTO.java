@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto;
+package com.egovernment.egovbackend.domain.dto.voteCampaign;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

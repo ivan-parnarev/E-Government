@@ -1,24 +1,21 @@
-package com.egovernment.egovbackend.domain.dto;
+package com.egovernment.egovbackend.domain.dto.common;
 
 import com.egovernment.egovbackend.domain.annotation.pin.ValidUserPin;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateVotingCampaignDTO {
-
+public class CreateCampaignCommon {
     @NotBlank(message = "Campaign type is a required but not found.")
     private String campaignType;
     @NotBlank(message = "Campaign title is a required but not found.")
@@ -32,10 +29,4 @@ public class CreateVotingCampaignDTO {
     private LocalDateTime campaignStartDate;
     @Future
     private LocalDateTime campaignEndDate;
-    @NotBlank(message = "Election type is a required but not found.")
-    private String electionType;
-    @Valid
-    private List<CandidateTemplateDTO> candidates;
-
-
 }
