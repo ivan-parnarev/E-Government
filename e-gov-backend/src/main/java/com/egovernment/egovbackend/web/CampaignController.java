@@ -90,7 +90,7 @@ public class CampaignController implements CampaignControllerInterface {
     @PostMapping("/create/vote")
     public ResponseEntity<CreateVotingCampaignDTO> saveNewCampaign(@Valid @RequestBody
                                                                    CreateVotingCampaignDTO createVotingCampaignDTO) {
-        this.campaignService.createCampaign(createVotingCampaignDTO);
+        this.campaignService.createVotingCampaign(createVotingCampaignDTO);
         return ResponseEntity.ok(createVotingCampaignDTO);
     }
 

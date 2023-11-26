@@ -156,7 +156,7 @@ public class CampaignService {
                 .build();
     }
 
-    public void createCampaign(CreateVotingCampaignDTO createVotingCampaignDTO) {
+    public void createVotingCampaign(CreateVotingCampaignDTO createVotingCampaignDTO) {
         CampaignType campaignType = CampaignType.valueOf(createVotingCampaignDTO.getCampaignType());
 
         Campaign campaign = launchCampaign(campaignType, createVotingCampaignDTO.getCampaignTitle(),
