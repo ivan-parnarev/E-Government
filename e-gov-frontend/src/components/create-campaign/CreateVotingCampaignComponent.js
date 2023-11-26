@@ -6,8 +6,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./CreateVotingCampaignComponent.module.css";
 import { useState } from "react";
-import UserAuthenticationComponent from "./user/UserAuthenticationComponent.js";
-import CampaignModalFooterComponent from "./CampaignModalFooterComponent";
+import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
+import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
 import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
 
 export function CreateVotingCampaignComponent({
@@ -113,7 +113,6 @@ export function CreateVotingCampaignComponent({
         ) : (
           <>
             <FloatingLabel
-              controlId="floatingSelect"
               label="Тип на изборната кампания:"
               className={styles.createVotingCampaignInputGroup}
             >
@@ -129,11 +128,7 @@ export function CreateVotingCampaignComponent({
               </Form.Select>
             </FloatingLabel>
 
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Име на кампанията:"
-              className="mb-3"
-            >
+            <FloatingLabel label="Име на кампанията:" className="mb-3">
               <Form.Control
                 type="text"
                 placeholder=""
@@ -141,11 +136,7 @@ export function CreateVotingCampaignComponent({
               />
             </FloatingLabel>
 
-            <FloatingLabel
-              controlId="floatingInput"
-              label="Описание на кампанията:"
-              className="mb-3"
-            >
+            <FloatingLabel label="Описание на кампанията:" className="mb-3">
               <Form.Control
                 type="text"
                 placeholder=""
@@ -168,10 +159,7 @@ export function CreateVotingCampaignComponent({
               </Row>
               <Row>
                 <Col>
-                  <FloatingLabel
-                    controlId="floatingStartDate"
-                    label="Начална дата"
-                  >
+                  <FloatingLabel label="Начална дата">
                     <input
                       type="datetime-local"
                       className="form-control"
@@ -182,10 +170,7 @@ export function CreateVotingCampaignComponent({
                 </Col>
 
                 <Col>
-                  <FloatingLabel
-                    controlId="floatingEndDate"
-                    label="Крайна дата"
-                  >
+                  <FloatingLabel label="Крайна дата">
                     <input
                       type="datetime-local"
                       className="form-control"

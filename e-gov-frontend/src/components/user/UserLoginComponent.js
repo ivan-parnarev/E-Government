@@ -19,11 +19,7 @@ function UserLoginComponent() {
     <div>
       <h4>Влезте в профила си</h4>
 
-      <FloatingLabel
-        controlId="floatingInput"
-        label="Потребителско име:"
-        className="mb-3"
-      >
+      <FloatingLabel label="Потребителско име:" className="mb-3">
         <Form.Control
           type="text"
           placeholder=""
@@ -32,7 +28,7 @@ function UserLoginComponent() {
         />
       </FloatingLabel>
 
-      <FloatingLabel controlId="floatingInput" label="Парола:" className="mb-3">
+      <FloatingLabel label="Парола:" className="mb-3">
         <Form.Control
           type="password"
           placeholder=""
