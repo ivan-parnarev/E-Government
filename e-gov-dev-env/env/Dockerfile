@@ -3,7 +3,7 @@ FROM postgres:latest
 
 # Set environment variables
 ENV POSTGRES_DB=e-gov-db
-ENV POSTGRES_USER=postgres
+ENV POSTGRES_USER=postgres-user
 ENV POSTGRES_PASSWORD=1234qwer
 
 # Copy the initialization script to the /docker-entrypoint-initdb.d/ directory
