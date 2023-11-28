@@ -4,5 +4,5 @@ import com.egovernment.egovauth.domain.entity.User;
 
 public interface UserFactoryInterface {
 
-    User createUser(String firstName, String middleName, String lastName, String userPin, String address);
+    User createUser(String userPin,String firstName, String middleName, String lastName, String address);
 }
