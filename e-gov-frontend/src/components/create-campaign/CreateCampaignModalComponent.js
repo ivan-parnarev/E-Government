@@ -3,6 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/esm/Button";
 import styles from "./CreateCampaignModalComponent.module.css";
 import { CreateVotingCampaignComponent } from "./CreateVotingCampaignComponent";
+import { CreateCensusCampaignComponent } from "./CreateCensusCampaignComponent";
 
 function CreateCampaignModalComponent({ show, onHide }) {
   const [userData, setUserData] = useState(null);
@@ -10,6 +11,8 @@ function CreateCampaignModalComponent({ show, onHide }) {
   const [isValidPinValue, setIsValidPinValue] = useState(false);
   const [showQuestions, setShowQuestions] = useState(false);
   const [createVotingCampaignModalShow, setCreateVotingCampaignModalShow] =
+    useState(false);
+  const [createCensusCampaignModalShow, setCreateCensusCampaignModalShow] =
     useState(false);
 
   const validatePinValue = (input) => {
@@ -37,6 +40,10 @@ function CreateCampaignModalComponent({ show, onHide }) {
   };
 
   const handleVotingModalBack = () => {
+    setCreateVotingCampaignModalShow(false);
+  };
+
+  const handleCensusModalBack = () => {
     setCreateVotingCampaignModalShow(false);
   };
 
@@ -70,7 +77,7 @@ function CreateCampaignModalComponent({ show, onHide }) {
             variant="outline-light"
             size="lg"
             className={styles.createCampaignButton}
-            // onClick={() => setCreateCampaignModalShow(true)}
+            onClick={() => setCreateCensusCampaignModalShow(true)}
           >
             Преброяване
           </Button>
@@ -96,6 +103,23 @@ function CreateCampaignModalComponent({ show, onHide }) {
             onContinue={handleContinue}
             onBack={handleVotingModalBack}
             onHide={() => setCreateVotingCampaignModalShow(false)}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          />
+        )}
+
+        {createCensusCampaignModalShow && (
+          <CreateCensusCampaignComponent
+            userData={userData}
+            pinValue={pinValue}
+            isValidPinValue={isValidPinValue}
+            handlePinChange={handlePinChange}
+            show={show}
+            showQuestions={showQuestions}
+            onContinue={handleContinue}
+            onBack={handleCensusModalBack}
+            onHide={() => setCreateCensusCampaignModalShow(false)}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered

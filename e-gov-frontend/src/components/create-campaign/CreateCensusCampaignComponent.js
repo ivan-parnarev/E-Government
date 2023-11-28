@@ -10,7 +10,36 @@ import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js"
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
 import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
 
-export function CreateVotingCampaignComponent({
+const mockupCensusData = {
+  campaignType: "CENSUS",
+  campaignTitle: "campaignTitle",
+  campaignDescription: "campaignDescr",
+  fromUserPin: "1234",
+  campaignStartDate: "...",
+  campaignEndDate: "...",
+  questions: [
+    {
+      questionText: "Some text",
+      questionCategory: "PERSONAL",
+      answers: [
+        {
+          answerText: "some text",
+        },
+      ],
+    },
+    {
+      questionText: "Another text",
+      questionCategory: "HOUSING",
+      answers: [
+        {
+          answerText: "some text",
+        },
+      ],
+    },
+  ],
+};
+
+export function CreateCensusCampaignComponent({
   userData,
   pinValue,
   isValidPinValue,
@@ -40,22 +69,6 @@ export function CreateVotingCampaignComponent({
 
   const handleCampaignDescriptionChange = (e) => {
     setCampaignDescription(e.target.value);
-  };
-
-  const handleStartDateChange = (e) => {
-    const startDate = e.target.value;
-    setCampaignStartDate(startDate);
-
-    if (!campaignEndDate) {
-      const endDate = new Date(
-        new Date(startDate).getTime() + 24 * 60 * 60 * 1000
-      );
-      setCampaignEndDate(formatDate(endDate));
-    }
-  };
-
-  const handleEndDateChange = (e) => {
-    setCampaignEndDate(e.target.value);
   };
 
   const formatDate = (dateString) => {
@@ -94,16 +107,14 @@ export function CreateVotingCampaignComponent({
         if (response.status === 201) {
           return response.json().then((data) => {
             if (data) {
-              const successMessage = `${data.message} `;
+              const successMessage = `Създаване на кампанията за гласуване е успешно!`;
               alert(successMessage);
             }
 
             window.location.href = response.headers.get("location") || "";
           });
         } else {
-          return response.json().then((errorData) => {
-            console.error("Error:", errorData);
-          });
+          return response.json();
         }
       })
       .catch((error) => console.error("Error:", error.message));
@@ -118,7 +129,7 @@ export function CreateVotingCampaignComponent({
       centered
     >
       <Modal.Header>
-        <h2>Създаване на кампания за избори</h2>
+        <h2>Създаване на кампания за преброяване</h2>
       </Modal.Header>
 
       <Modal.Body className={styles.createVotingCampaignContainer}>
@@ -130,75 +141,17 @@ export function CreateVotingCampaignComponent({
           />
         ) : (
           <>
-            <FloatingLabel
-              label="Тип на изборната кампания:"
-              className={styles.createVotingCampaignInputGroup}
-            >
-              <Form.Select
-                aria-label="Floating label select example"
-                onChange={handleElectionTypeChange}
-              >
-                <option></option>
-                <option value="MAYOR">Местни избори</option>
-                <option value="PRESIDENT">Президентски избори</option>
-                <option value="PARLIAMENT">Парламентарни избори</option>
-                <option value="COUNCIL">Изброи за Европейски парламент</option>
-              </Form.Select>
-            </FloatingLabel>
-
-            <FloatingLabel label="Име на кампанията:" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder=""
-                onChange={handleCampaignTitleChange}
-              />
-            </FloatingLabel>
-
-            <FloatingLabel label="Описание на кампанията:" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder=""
-                onChange={handleCampaignDescriptionChange}
-              />
-            </FloatingLabel>
-
-            <CreateVotingAddCandidateComponent
-              candidates={candidates}
-              setCandidates={setCandidates}
-            />
-
-            <InputGroup
-              className={styles.createVotingCampaignCandidateInputDateGroup}
-            >
-              <Row>
-                <p className={styles.createVotingCampaignInputGroupInputLabel}>
-                  Избери начало и край на кампанията:
-                </p>
-              </Row>
-              <Row>
-                <Col>
-                  <FloatingLabel label="Начална дата">
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      value={formatDate(campaignStartDate)}
-                      onChange={handleStartDateChange}
-                    />
-                  </FloatingLabel>
-                </Col>
-
-                <Col>
-                  <FloatingLabel label="Крайна дата">
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      value={formatDate(campaignEndDate)}
-                      onChange={handleEndDateChange}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-            </InputGroup>
+            {mockupCensusData.questions.map(
+              ({ questionText, questionCategory, answers }) => {
+                return (
+                  <>
+                    <p>{questionText}</p>
+                    <p>{questionCategory}</p>
+                    {/* <p>questionText</p> */}
+                  </>
+                );
+              }
+            )}
           </>
         )}
       </Modal.Body>

@@ -233,7 +233,7 @@ function CensusModalComponent({
           continueButtonDisabled={
             pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
           }
-          buttonText="Създай"
+          buttonText="Изпрати"
           onContinue={handleFormContinue}
           onSubmit={handleFormSubmit}
           onBack={handleFormBack}
