@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CensusDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.UserAnswerDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.UserAnswerDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.entity.UserAnswer;
