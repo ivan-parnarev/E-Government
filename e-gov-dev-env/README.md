@@ -1,4 +1,4 @@
-Running Docker Compose Configuration
+# Running Docker Compose Configuration
 This repository utilizes Docker Compose to streamline the deployment process. Follow the steps below to set up the environment and launch the application.
 1. Start the Docker Engine
 Ensure that the Docker Engine is installed and running on your machine. If you haven't installed Docker yet, you can download it from the official Docker website.
