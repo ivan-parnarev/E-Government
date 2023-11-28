@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.web.interfaces;
 
-import com.egovernment.egovbackend.domain.dto.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
 import com.egovernment.egovbackend.web.path.ApiPaths;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

@@ -1,7 +1,6 @@
 package com.egovernment.egovbackend.web;
 
-import com.egovernment.egovbackend.domain.dto.CensusDTO;
-import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
 import com.egovernment.egovbackend.service.UserAnswerService;
 import com.egovernment.egovbackend.web.interfaces.CensusControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.egovbackend.domain.entity.CensusQuestion;
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import com.egovernment.egovbackend.repository.CensusQuestionRepository;
