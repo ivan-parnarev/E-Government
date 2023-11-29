@@ -30,7 +30,12 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
         try {
             String token = this.authenticationService.authenticateUser(authRequest.getUserPin());
-            return ResponseEntity.ok().header("Authorization", token).build();
+
+            AuthenticationResponse response = AuthenticationResponse.builder()
+                    .publicKey(authenticationService.getPublicKey()).build();
+
+            return ResponseEntity.ok().header("Authorization", "Bearer " + token)
+                    .body(response);
         } catch (UserNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

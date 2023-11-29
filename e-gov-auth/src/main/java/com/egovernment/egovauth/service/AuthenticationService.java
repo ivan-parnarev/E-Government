@@ -17,6 +17,8 @@ public class AuthenticationService {
 
     private final JwtService jwtService;
 
+    private final KeyService keyService;
+
     public String authenticateUser(String userPin) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
         Optional<User> optionalUser = userService.findUserByUserPin(userPin);
 
@@ -25,5 +27,9 @@ public class AuthenticationService {
         } else {
             throw new UserNotFoundException();
         }
+    }
+
+    public String getPublicKey() throws IOException {
+        return this.keyService.extractPublicKey();
     }
 }
