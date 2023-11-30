@@ -30,6 +30,7 @@ public class AuthenticationService {
     }
 
     public String getPublicKey() throws IOException {
-        return this.keyService.extractPublicKey();
+        String pemFilePath = "src/main/resources/keys/public.pem";
+        return this.keyService.extractPublicKey(pemFilePath);
     }
 }

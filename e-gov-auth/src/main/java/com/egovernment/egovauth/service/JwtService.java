@@ -41,7 +41,8 @@ public class JwtService {
     }
 
     private PrivateKey getPrivateKey() throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        String rsaPrivateKey = this.keyService.extractPrivateKey();
+        String pemFilePath = "src/main/resources/keys/private.pem";
+        String rsaPrivateKey = this.keyService.extractPrivateKey(pemFilePath);
         Security.addProvider(new BouncyCastleProvider());
 
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(rsaPrivateKey));

@@ -8,9 +8,8 @@ import java.nio.file.Paths;
 
 @Service
 class KeyService {
-    public String extractPrivateKey() throws IOException {
-        String pemFilePath = "src/main/resources/keys/private.pem";
-        byte[] privateKeyBytes = Files.readAllBytes(Paths.get(pemFilePath));
+    public String extractPrivateKey(String path) throws IOException {
+        byte[] privateKeyBytes = Files.readAllBytes(Paths.get(path));
         String privateKey = new String(privateKeyBytes);
         privateKey = privateKey
                 .replace("-----BEGIN PRIVATE KEY-----", "")
@@ -20,9 +19,8 @@ class KeyService {
         return privateKey;
     }
 
-    public String extractPublicKey() throws IOException {
-        String pemFilePath = "src/main/resources/keys/public.pem";
-        byte[] publicKeyBytes = Files.readAllBytes(Paths.get(pemFilePath));
+    public String extractPublicKey(String path) throws IOException {
+        byte[] publicKeyBytes = Files.readAllBytes(Paths.get(path));
         String publicKey = new String(publicKeyBytes);
         publicKey = publicKey
                 .replace("-----BEGIN PUBLIC KEY-----", "")

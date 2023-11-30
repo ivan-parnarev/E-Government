@@ -8,7 +8,7 @@ during Voting and Census Campaigns.
 ## Table of Contents
 
 1. [Features](#features)
-1. [Technologies Used](#technologies used)
+1. [Technologies Used](#technologies-used)
 1. [Setup](#setup)
 1. [Usage](#usage)
 1. [License](#license)
@@ -49,13 +49,13 @@ you can generate your own key pair.
 1. Starting the Application:
    * Locate the main method in your Spring Boot application. This is typically found in a class annotated with @SpringBootApplication
    * Right-click on the file containing the main method and select Run EGovAuthApplication.
-   * Backend Application will start on port 8081, you can access it by making requests to http://localhost:8081
+   * Backend Application will start on port 8081, you can access it by making requests to http://localhost:8081/
 
 
 ## Usage
 
 * When you start the application there will be three users already created in the database, each user has:
-    - First Name, middle name, last name and hashed userPin
+    - First Name, Middle Name, Last Name and hashed userPin
 * Send a POST request to http://localhost:8081/api/v1/authenticate with user credentials(hashed userPin).
   The service will verify the user existence in the database and return a JWT token upon successful authentication, as well as Public Key to decrypt the encrypted  token
 
