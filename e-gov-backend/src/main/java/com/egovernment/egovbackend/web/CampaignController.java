@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -80,9 +80,9 @@ public class CampaignController implements CampaignControllerInterface {
     )
     @Override
     @GetMapping("/active/census")
-    public ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign() {
+    public ResponseEntity<List<CensusCampaignDTO>> getActiveCensusCampaigns() {
         try {
-            CensusCampaignDTO activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaign();
+            List<CensusCampaignDTO> activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaigns();
             return ResponseEntity.ok(activeCensusCampaignDTO);
         } catch (ActiveCensusCampaignNotFoundException ex) {
             return ResponseEntity.badRequest().build();
@@ -94,6 +94,17 @@ public class CampaignController implements CampaignControllerInterface {
     public ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody
                                                                    CreateVotingCampaignDTO createVotingCampaignDTO) {
         this.campaignService.createVotingCampaign(createVotingCampaignDTO);
+        URI location = URI.create("http://localhost:3000");
+        ApiCustomResponse apiResponse = ApiCustomResponse.builder()
+                .message("Успешно съзадедна кампания").build();
+        return ResponseEntity.created(location).body(apiResponse);
+    }
+
+    @Override
+    @PostMapping("/create/census")
+    public ResponseEntity<ApiCustomResponse> saveNewCensusCampaign(@Valid @RequestBody
+                                                                   CreateCensusCampaignDTO createCensusCampaignDTO) {
+        this.campaignService.createCensusCampaign(createCensusCampaignDTO);
         URI location = URI.create("http://localhost:3000");
         ApiCustomResponse apiResponse = ApiCustomResponse.builder()
                 .message("Успешно съзадедна кампания").build();

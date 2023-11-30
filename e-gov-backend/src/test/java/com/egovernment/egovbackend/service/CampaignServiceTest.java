@@ -1,6 +1,5 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
@@ -72,48 +71,48 @@ public class CampaignServiceTest {
         verify(campaignRepository, never()).save(any(Campaign.class));
     }
 
-    @Test
-    void testGetActiveCampaigns() {
-        Campaign campaignToTest = Campaign.builder()
-                .campaignType(CampaignType.VOTING).build();
-        when(campaignRepository.findAll()).thenReturn(List.of(campaignToTest));
-
-        CampaignViewDTO campaignViewDTO = CampaignViewDTO.builder()
-//                .campaignType(CampaignType.VOTING.name())
-                .build();
-
-        when(modelMapper.map(campaignToTest, CampaignViewDTO.class)).thenReturn(campaignViewDTO);
-
-        List<CampaignViewDTO> result = campaignServiceToTest.getActiveCampaigns();
-
-        assertNotNull(result);
-//        assertEquals(campaignToTest.getCampaignType().name(), campaignViewDTO.getCampaignType());
-    }
-
 //    @Test
-//    void testGetActiveVotingCampaigns() {
+//    void testGetActiveCampaigns() {
 //        Campaign campaignToTest = Campaign.builder()
-//                .campaignType(CampaignType.VOTING)
-//                .title(VOTE_CAMPAIGN_TITLE)
-//                .description(VOTE_CAMPAIGN_DESCRIPTION)
-//                .build();
-//
+//                .campaignType(CampaignType.VOTING).build();
 //        when(campaignRepository.findAll()).thenReturn(List.of(campaignToTest));
 //
-//        VoteCampaignDTO campaignViewDTO = VoteCampaignDTO.builder()
+//        CampaignViewDTO campaignViewDTO = CampaignViewDTO.builder()
 //                .campaignType(CampaignType.VOTING.name())
-//                .campaignTitle(campaignToTest.getTitle())
-//                .campaignDescription(campaignToTest.getDescription())
 //                .build();
 //
+//        when(modelMapper.map(campaignToTest, CampaignViewDTO.class)).thenReturn(campaignViewDTO);
 //
-//        List<VoteCampaignDTO> result = campaignServiceToTest.getActiveVotingCampaigns();
+//        List<CampaignViewDTO> result = campaignServiceToTest.getActiveCampaigns();
 //
 //        assertNotNull(result);
 //        assertEquals(campaignToTest.getCampaignType().name(), campaignViewDTO.getCampaignType());
-//        assertEquals(campaignToTest.getTitle(), campaignViewDTO.getCampaignTitle());
-//        assertEquals(campaignToTest.getDescription(), campaignViewDTO.getCampaignDescription());
 //    }
+
+    @Test
+    void testGetActiveVotingCampaigns() {
+        Campaign campaignToTest = Campaign.builder()
+                .campaignType(CampaignType.VOTING)
+                .title(VOTE_CAMPAIGN_TITLE)
+                .description(VOTE_CAMPAIGN_DESCRIPTION)
+                .build();
+
+        when(campaignRepository.findAll()).thenReturn(List.of(campaignToTest));
+
+        VoteCampaignDTO campaignViewDTO = VoteCampaignDTO.builder()
+                .campaignType(CampaignType.VOTING.name())
+                .campaignTitle(campaignToTest.getTitle())
+                .campaignDescription(campaignToTest.getDescription())
+                .build();
+
+
+        List<VoteCampaignDTO> result = campaignServiceToTest.getActiveVotingCampaigns();
+
+        assertNotNull(result);
+        assertEquals(campaignToTest.getCampaignType().name(), campaignViewDTO.getCampaignType());
+        assertEquals(campaignToTest.getTitle(), campaignViewDTO.getCampaignTitle());
+        assertEquals(campaignToTest.getDescription(), campaignViewDTO.getCampaignDescription());
+    }
 
     @Test
     void testGetActiveCensusCampaign() {
@@ -132,7 +131,7 @@ public class CampaignServiceTest {
                 .campaignType(String.valueOf(CampaignType.CENSUS))
                 .build();
 
-        CensusCampaignDTO result = campaignServiceToTest.getActiveCensusCampaign();
+        CensusCampaignDTO result = campaignServiceToTest.getActiveCensusCampaigns().get(0);
 
         assertNotNull(result);
         assertEquals(censusCampaignDTO.getCampaignTitle(), result.getCampaignTitle());

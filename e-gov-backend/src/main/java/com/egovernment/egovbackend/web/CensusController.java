@@ -1,6 +1,8 @@
 package com.egovernment.egovbackend.web;
 
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
+import com.egovernment.egovbackend.service.CensusQuestionService;
 import com.egovernment.egovbackend.service.UserAnswerService;
 import com.egovernment.egovbackend.web.interfaces.CensusControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,18 +14,17 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class CensusController implements CensusControllerInterface {
 
     private final UserAnswerService userAnswerService;
+    private final CensusQuestionService censusQuestionService;
 
     @Operation(summary = "Receives information about census and saves the user census data in the database")
     @ApiResponses(
@@ -57,4 +58,12 @@ public class CensusController implements CensusControllerInterface {
         return ResponseEntity.badRequest().body("There was a problem with the validation of the DTO: " +
                 ex.getMessage());
     }
+
+    @Override
+    @GetMapping("/questions")
+    public ResponseEntity<List<CensusQuestionDTO>> getAllQuestionsAndTheirAnswers() {
+        return ResponseEntity.ok(this.censusQuestionService.getAllQuestionsAndTheirAnswers());
+    }
+
+
 }
