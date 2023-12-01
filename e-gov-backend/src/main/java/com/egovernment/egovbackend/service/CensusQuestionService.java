@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class CensusQuestionService {
 
     private final CampaignRepository campaignRepository;
-    private final CampaignService campaignService;
     private final CensusQuestionRepository censusQuestionRepository;
     private final AnswerService answerService;
     private final QuestionFactory questionFactory = new QuestionFactory();
@@ -40,8 +39,7 @@ public class CensusQuestionService {
 
         if(this.censusQuestionRepository.count() == 0){
 
-            Campaign censusCampaign = this.campaignService.getCampaignById(2L).get();
-//        Campaign censusCampaign = campaignRepository.findById(2L).get();
+            Campaign censusCampaign = this.campaignRepository.findById(2L).get();
 
             List<Answer> incomeAnswers = this.answerService.createAnswers
                     ("933 - 1200; 1201 - 1500; 1501 - 2300; 2301 - 2700; 2701 - 3400; над 3401");

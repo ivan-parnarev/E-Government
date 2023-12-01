@@ -7,6 +7,7 @@ import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.CensusQuestion;
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import com.egovernment.egovbackend.hashing.HashUtil;
+import com.egovernment.egovbackend.repository.CampaignRepository;
 import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ public class CensusQuestionServiceTest {
     @InjectMocks
     private CensusQuestionService censusQuestionService;
     @Mock
-    private CampaignService campaignService;
+    private CampaignRepository campaignRepository;
     @Mock
     private CensusQuestionRepository censusQuestionRepository;
     @Mock
@@ -96,7 +97,7 @@ public class CensusQuestionServiceTest {
     void shouldInitializeQuestionsWhenRepositoryIsEmpty() {
         when(censusQuestionRepository.count()).thenReturn(0L);
         Campaign censusCampaign = Campaign.builder().build();
-        when(this.campaignService.getCampaignById(2L)).thenReturn(Optional.of(censusCampaign));
+        when(this.campaignRepository.findById(2L)).thenReturn(Optional.of(censusCampaign));
 
         censusQuestionService.initTestQuestions();
 
