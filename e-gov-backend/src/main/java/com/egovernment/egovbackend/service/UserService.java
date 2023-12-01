@@ -48,7 +48,8 @@ public class UserService {
     }
 
     public User createUserWithUserPin(String pin) {
-        User user = User.builder().PIN(pin).build();
+        Role guestRole = this.roleService.getRole(RoleEnum.GUEST);
+        User user = User.builder().PIN(pin).roles(List.of(guestRole)).build();
         this.userRepository.save(user);
         return user;
     }
