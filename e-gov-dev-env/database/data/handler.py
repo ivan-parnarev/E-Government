@@ -1,7 +1,7 @@
 import psycopg2
 
 
-class Database:
+class SQLDataHandler:
     def __init__(self, connection, query, output_file_path, input_file_path, table_name):
         self.connection = connection
         self.query = query
@@ -37,7 +37,7 @@ db_params = {
     'password': '1234qwer',
 }
 
-db = Database(
+db = SQLDataHandler(
     connection=psycopg2.connect(**db_params),
     query=f'COPY users TO STDOUT WITH CSV HEADER',
     output_file_path='../../output.csv',
