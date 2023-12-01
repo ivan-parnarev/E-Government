@@ -42,7 +42,7 @@ export function ActiveCampaignsComponent() {
         }
 
         if (censusData) {
-          setCensusCampaigns([censusData]);
+          setCensusCampaigns(censusData);
         }
       } catch (error) {
         console.error("Error fetching campaigns:", error);
@@ -84,7 +84,7 @@ export function ActiveCampaignsComponent() {
                   <CensusActiveCampaignComponent
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
-                    censusId={campaign.id}
+                    censusId={campaign.campaignId}
                     censusQuestions={campaign.censusQuestions}
                   />
                 );

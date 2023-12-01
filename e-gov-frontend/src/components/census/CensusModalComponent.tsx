@@ -5,7 +5,7 @@ import { ChangeEvent, MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
 import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
-import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
+import CensusCategoryInfoComponent from "./CensusCategoryInfoComponent.tsx";
 import {
   CensusModalProps,
   UserData,
@@ -111,21 +111,24 @@ function CensusModalComponent({
     setShowQuestions(false);
   };
 
-  const handleInputChange = (id: string, fieldName: string, value: string) => {
+  const handleInputChange = (
+    fieldName: string,
+    value: string,
+    questionCategory: string
+  ) => {
     setUserData((prevData) => {
       const index = prevData.censusAnswers.findIndex(
         (question) =>
-          question.text === fieldName &&
-          question.questionCategory === PERSONAL_INFO_DATA.questionCategory
+          question.questionText === fieldName &&
+          question.questionCategory === questionCategory
       );
 
       if (index !== -1) {
         const updatedAnswers = [...prevData.censusAnswers];
         updatedAnswers[index] = {
-          questionId: id,
-          text: fieldName,
-          answer: value,
-          ...PERSONAL_INFO_DATA,
+          questionText: fieldName,
+          answerText: value,
+          questionCategory,
         };
         return { ...prevData, censusAnswers: updatedAnswers };
       } else {
@@ -134,10 +137,9 @@ function CensusModalComponent({
           censusAnswers: [
             ...prevData.censusAnswers,
             {
-              questionId: id,
-              text: fieldName,
-              answer: value,
-              ...PERSONAL_INFO_DATA,
+              questionText: fieldName,
+              answerText: value,
+              questionCategory,
             },
           ],
         };
@@ -147,16 +149,52 @@ function CensusModalComponent({
 
   const getCurrentComponent = () => {
     const currentCategory = censusCategories[currentStep];
-    const currentQuestions = censusQuestions;
-
+    const currentQuestions = censusQuestions.filter(
+      (q) => q.questionCategory === currentCategory
+    );
     switch (currentCategory) {
       case PERSONAL_INFO_DATA.questionCategory:
         return (
-          <CensusPersonalInfoComponent
+          <CensusCategoryInfoComponent
+            censusTitle="Лична информация"
             censusQuestions={currentQuestions}
             onContinue={handleContinue}
-            onInputChange={(id, field, value) =>
-              handleInputChange(id, field, value)
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+
+      case "HOUSING":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Жилищна информация"
+            censusQuestions={currentQuestions}
+            onContinue={handleContinue}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+      case "POPULATION":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Гражданска информация"
+            censusQuestions={currentQuestions}
+            onContinue={handleContinue}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+      case "HEALTH":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Здравна информация"
+            censusQuestions={currentQuestions}
+            onContinue={handleContinue}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
             }
           />
         );
@@ -165,7 +203,7 @@ function CensusModalComponent({
     }
   };
 
-  const progressPercentage = (currentStep / totalSteps) * 100;
+  const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
 
   return (
     <Modal

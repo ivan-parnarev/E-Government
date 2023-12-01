@@ -5,8 +5,10 @@ export interface CensusModalProps {
   campaignDescription: string;
   censusId: string;
   censusQuestions: {
-    id: string;
     text: string;
+    answers: Array<{
+      answerText: string;
+    }>;
     questionCategory: string;
   }[];
 }
@@ -15,9 +17,8 @@ export interface UserData {
   userPin: string;
   campaignId: string;
   censusAnswers: Array<{
-    questionId: string;
-    text: string;
-    answer: string;
+    questionText: string;
+    answerText: string;
     questionCategory: string;
   }>;
 }
