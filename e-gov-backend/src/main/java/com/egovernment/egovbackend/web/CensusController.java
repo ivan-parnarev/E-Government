@@ -59,6 +59,17 @@ public class CensusController implements CensusControllerInterface {
                 ex.getMessage());
     }
 
+    @Operation(summary = "Get All Questions with Their Answers",
+            description = "Retrieves a list of all census questions along with their respective answers.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved the list of questions and their answers",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CensusQuestionDTO.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad Request - The request could not be understood by the server due to wrong syntax.",
+                    content = {@Content(mediaType = "application/json")})
+    })
     @Override
     @GetMapping("/questions")
     public ResponseEntity<List<CensusQuestionDTO>> getAllQuestionsAndTheirAnswers() {

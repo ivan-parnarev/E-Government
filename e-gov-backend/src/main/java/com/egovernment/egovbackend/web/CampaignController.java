@@ -89,6 +89,20 @@ public class CampaignController implements CampaignControllerInterface {
         }
     }
 
+    @Operation(summary = "Create a new voting campaign",
+            description = "Creates a new census campaign with the given details. " +
+                    "The response contains a Location header that is used to redirect " +
+                    "the user to the particular URI - http://localhost:3000 - home page")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Voting campaign successfully created",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiCustomResponse.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad Request - Request failed explicit validation checks on fields -" +
+                            " Two exceptions can be causing that - MethodArgumentNotValidException(validation annotations)" +
+                            " and CustomValidationException (explicit checking for a field to see if it is valid)")
+    })
     @Override
     @PostMapping("/create/vote")
     public ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody
@@ -100,6 +114,20 @@ public class CampaignController implements CampaignControllerInterface {
         return ResponseEntity.created(location).body(apiResponse);
     }
 
+    @Operation(summary = "Create a new census campaign",
+            description = "Creates a new census campaign with the given details. " +
+                    "The response contains a Location header that is used to redirect " +
+                    "the user to the particular URI - http://localhost:3000 - home page")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Census campaign successfully created",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ApiCustomResponse.class))}),
+            @ApiResponse(responseCode = "400",
+                    description = "Bad Request - Request failed explicit validation checks on fields -" +
+                            " Two exceptions can be causing that - MethodArgumentNotValidException(validation annotations)" +
+                            " and CustomValidationException (explicit checking for a field to see if it is valid)")
+    })
     @Override
     @PostMapping("/create/census")
     public ResponseEntity<ApiCustomResponse> saveNewCensusCampaign(@Valid @RequestBody
