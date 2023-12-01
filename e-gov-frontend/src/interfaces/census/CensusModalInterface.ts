@@ -18,7 +18,7 @@ export interface UserData {
   campaignId: string;
   censusAnswers: Array<{
     questionText: string;
-    answerText: string;
+    answer: string;
     questionCategory: string;
   }>;
 }

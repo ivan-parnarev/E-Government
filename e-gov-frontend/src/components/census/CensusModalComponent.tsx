@@ -79,6 +79,8 @@ function CensusModalComponent({
   const handleFormSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
+    console.log(userData);
+
     fetch("http://localhost:8080/api/v1/census", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -127,7 +129,7 @@ function CensusModalComponent({
         const updatedAnswers = [...prevData.censusAnswers];
         updatedAnswers[index] = {
           questionText: fieldName,
-          answerText: value,
+          answer: value,
           questionCategory,
         };
         return { ...prevData, censusAnswers: updatedAnswers };
@@ -138,7 +140,7 @@ function CensusModalComponent({
             ...prevData.censusAnswers,
             {
               questionText: fieldName,
-              answerText: value,
+              answer: value,
               questionCategory,
             },
           ],

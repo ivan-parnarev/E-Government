@@ -82,6 +82,7 @@ export function ActiveCampaignsComponent() {
               if ("censusQuestions" in campaign) {
                 return (
                   <CensusActiveCampaignComponent
+                    key={campaign.campaignId}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
                     censusId={campaign.campaignId}
