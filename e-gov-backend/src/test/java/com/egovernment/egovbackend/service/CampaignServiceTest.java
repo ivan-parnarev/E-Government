@@ -1,12 +1,16 @@
 package com.egovernment.egovbackend.service;
 
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
+import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
+import com.egovernment.egovbackend.exceptions.CustomValidationException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,6 +48,7 @@ public class CampaignServiceTest {
     private final String CENSUS_CAMPAIGN_TITLE = "Test Census Campaign Title";
     private final String CENSUS_CAMPAIGN_DESCRIPTION = "Test census campaign description";
     private final String TEST_USER = "Test User";
+    private final String TEST_USER_PIN = "1111111111";
 
     @BeforeEach
     void setUp() {
@@ -71,23 +76,6 @@ public class CampaignServiceTest {
         verify(campaignRepository, never()).save(any(Campaign.class));
     }
 
-//    @Test
-//    void testGetActiveCampaigns() {
-//        Campaign campaignToTest = Campaign.builder()
-//                .campaignType(CampaignType.VOTING).build();
-//        when(campaignRepository.findAll()).thenReturn(List.of(campaignToTest));
-//
-//        CampaignViewDTO campaignViewDTO = CampaignViewDTO.builder()
-//                .campaignType(CampaignType.VOTING.name())
-//                .build();
-//
-//        when(modelMapper.map(campaignToTest, CampaignViewDTO.class)).thenReturn(campaignViewDTO);
-//
-//        List<CampaignViewDTO> result = campaignServiceToTest.getActiveCampaigns();
-//
-//        assertNotNull(result);
-//        assertEquals(campaignToTest.getCampaignType().name(), campaignViewDTO.getCampaignType());
-//    }
 
     @Test
     void testGetActiveVotingCampaigns() {
@@ -192,6 +180,76 @@ public class CampaignServiceTest {
         assertNull(resultCampaign.getEndDate());
         assertTrue(resultCampaign.isActive());
 
+    }
+
+    @Test
+    void testCreateVotingCampaign() {
+        CreateVotingCampaignDTO createVotingCampaignDTO = CreateVotingCampaignDTO.builder()
+                .campaignType("VOTING")
+                .creatorUserPin(TEST_USER_PIN)
+                .campaignDescription(VOTE_CAMPAIGN_DESCRIPTION)
+                .campaignTitle(VOTE_CAMPAIGN_TITLE)
+                .build();
+
+        User mockUser = User.builder().PIN(TEST_USER_PIN).build();
+
+        Campaign mockCampaign = Campaign.builder()
+                .description(VOTE_CAMPAIGN_DESCRIPTION)
+                .title(VOTE_CAMPAIGN_TITLE)
+                .campaignType(CampaignType.VOTING)
+                .build();
+
+        Election mockElection = Election.builder()
+                .campaign(mockCampaign)
+                .build();
+
+        when(userService.userIsAdmin(anyString())).thenReturn(true);
+        when(userService.getUserByPin(anyString())).thenReturn(Optional.of(mockUser));
+        when(campaignRepository.save(any(Campaign.class))).thenReturn(mockCampaign);
+        when(electionService.createElection(any(CreateVotingCampaignDTO.class), any(Campaign.class))).thenReturn(mockElection);
+
+        this.campaignServiceToTest.createVotingCampaign(createVotingCampaignDTO);
+
+        verify(campaignRepository).save(any(Campaign.class));
+        verify(electionService).createElection(any(CreateVotingCampaignDTO.class), any(Campaign.class));
+    }
+
+    @Test
+    void testCreateCensusCampaignSuccessfully() {
+        CreateCensusCampaignDTO createCensusCampaignDTO = CreateCensusCampaignDTO.builder()
+                .campaignType("CENSUS")
+                .creatorUserPin(TEST_USER_PIN)
+                .campaignDescription(CENSUS_CAMPAIGN_DESCRIPTION)
+                .campaignTitle(CENSUS_CAMPAIGN_TITLE)
+                .build();
+
+        when(userService.userIsAdmin(TEST_USER_PIN)).thenReturn(true);
+
+        User mockUser = User.builder().PIN(TEST_USER_PIN).build();
+        when(userService.getUserByPin(TEST_USER_PIN)).thenReturn(Optional.of(mockUser));
+
+        campaignServiceToTest.createCensusCampaign(createCensusCampaignDTO);
+
+        verify(campaignRepository).save(any(Campaign.class));
+    }
+
+
+    @Test
+    void testCreateVotingCampaignThrowsExceptionForNonAdminUser() {
+        CreateVotingCampaignDTO createVotingCampaignDTO = CreateVotingCampaignDTO.builder()
+                .campaignType("VOTING")
+                .creatorUserPin(TEST_USER_PIN)
+                .campaignDescription(VOTE_CAMPAIGN_DESCRIPTION)
+                .campaignTitle(VOTE_CAMPAIGN_TITLE)
+                .build();
+
+        when(userService.userIsAdmin(anyString())).thenReturn(false);
+
+        assertThrows(CustomValidationException.class, () -> {
+            this.campaignServiceToTest.createVotingCampaign(createVotingCampaignDTO);
+        });
+
+        verify(campaignRepository, never()).save(any(Campaign.class));
     }
 
 }
