@@ -42,7 +42,7 @@ public class CensusQuestionService {
             Campaign censusCampaign = this.campaignRepository.findById(2L).get();
 
             List<Answer> incomeAnswers = this.answerService.createAnswers
-                    ("933 - 1200; 1201 - 1500; 1501 - 2300; 2301 - 2700; 2701 - 3400; над 3401");
+                    ("933лв. - 1200лв.; 1201лв. - 1500лв.; 1501лв. - 2300лв.; 2301лв. - 2700лв.; 2701лв. - 3400лв.; над 3401лв.");
             CensusQuestion testQuestion1 = questionFactory.createQuestion(censusCampaign, QuestionCategory.PERSONAL, Questions.INCOME, incomeAnswers);
 
             List<Answer> religionAnswers = this.answerService.createAnswers
