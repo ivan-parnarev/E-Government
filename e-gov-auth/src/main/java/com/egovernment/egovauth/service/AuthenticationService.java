@@ -14,10 +14,7 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserService userService;
-
     private final JwtService jwtService;
-
-    private final KeyService keyService;
 
     public String authenticateUser(String userPin) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
         Optional<User> optionalUser = userService.findUserByUserPin(userPin);
@@ -29,8 +26,4 @@ public class AuthenticationService {
         }
     }
 
-    public String getPublicKey() throws IOException {
-        String pemFilePath = "src/main/resources/keys/public.pem";
-        return this.keyService.extractPublicKey(pemFilePath);
-    }
 }

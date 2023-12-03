@@ -25,13 +25,10 @@ public class AuthenticationServiceTest {
     private static final String USER_PIN = "testHashedUserPin";
     private static final String TEST_JWT = "testToken";
 
-
     @Mock
     private UserService userService;
-
     @Mock
     private JwtService jwtService;
-
     @InjectMocks
     private AuthenticationService authenticationService;
 
@@ -56,7 +53,7 @@ public class AuthenticationServiceTest {
         Assertions.assertEquals(TEST_JWT, token);
     }
 
-    @Test()
+    @Test
     void testAuthenticateUser_UserNonExistent_ErrorThrown() {
         assertThrows(UserNotFoundException.class, () -> {
             authenticationService.authenticateUser(USER_PIN);

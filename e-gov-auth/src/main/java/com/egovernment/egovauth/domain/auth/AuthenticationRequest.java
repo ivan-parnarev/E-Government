@@ -1,8 +1,11 @@
 package com.egovernment.egovauth.domain.auth;
 
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AuthenticationRequest {
 
     String userPin;
