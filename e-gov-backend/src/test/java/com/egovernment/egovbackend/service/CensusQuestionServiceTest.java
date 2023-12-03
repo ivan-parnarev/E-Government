@@ -45,31 +45,32 @@ public class CensusQuestionServiceTest {
     private final Long ID = 1L;
     private final QuestionCategory QUESTION_CATEGORY = QuestionCategory.PERSONAL;
 
+    private final Answer FIRST_ANSWER = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
+
+    private final AnswerDTO FIRST_ANSWER_DTO = AnswerDTO.builder().answerText(FIRST_ANSWER_TEXT).build();
+
 
     @Test
     void testGetCensusQuestionsForCampaign() {
 
-        Answer firstAnswer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
         Answer secondAnswer = Answer.builder().answerText(SECOND_ANSWER_TEXT).build();
 
-        AnswerDTO firstAnswerDTO = AnswerDTO.builder().answerText(FIRST_ANSWER_TEXT).build();
         AnswerDTO secondAnswerDTO = AnswerDTO.builder().answerText(SECOND_ANSWER_TEXT).build();
-
 
         CensusQuestion censusQuestion = CensusQuestion.builder()
                 .questionCategory(QUESTION_CATEGORY)
                 .text(FIRST_QUESTION_TEXT)
-                .answers(List.of(firstAnswer, secondAnswer))
+                .answers(List.of(FIRST_ANSWER, secondAnswer))
                 .build();
 
         CensusQuestionDTO censusQuestionDTO = CensusQuestionDTO.builder()
                 .QuestionCategory(QUESTION_CATEGORY.name())
                 .text(FIRST_QUESTION_TEXT)
-                .answers(List.of(firstAnswerDTO, secondAnswerDTO))
+                .answers(List.of(FIRST_ANSWER_DTO, secondAnswerDTO))
                 .build();
 
         List<CensusQuestion> questions = Arrays.asList(censusQuestion);
-        lenient().when(modelMapper.map(any(Answer.class), eq(AnswerDTO.class))).thenReturn(firstAnswerDTO, secondAnswerDTO);
+        lenient().when(modelMapper.map(any(Answer.class), eq(AnswerDTO.class))).thenReturn(FIRST_ANSWER_DTO, secondAnswerDTO);
 
         lenient().when(modelMapper.map(any(CensusQuestion.class), eq(CensusQuestionDTO.class))).thenReturn(censusQuestionDTO);
 
@@ -106,16 +107,12 @@ public class CensusQuestionServiceTest {
 
     @Test
     void getAllQuestionsAndTheirAnswers() {
-        Answer firstAnswer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
-
-        AnswerDTO firstAnswerDTO = AnswerDTO.builder().answerText(FIRST_ANSWER_TEXT).build();
-
-        when(this.modelMapper.map(firstAnswer, AnswerDTO.class)).thenReturn(firstAnswerDTO);
+        when(this.modelMapper.map(FIRST_ANSWER, AnswerDTO.class)).thenReturn(FIRST_ANSWER_DTO);
 
         CensusQuestion censusQuestion = CensusQuestion.builder()
                 .questionCategory(QUESTION_CATEGORY)
                 .text(FIRST_QUESTION_TEXT)
-                .answers(List.of(firstAnswer))
+                .answers(List.of(FIRST_ANSWER))
                 .build();
 
         when(this.censusQuestionRepository.findAll()).thenReturn(List.of(censusQuestion));
@@ -150,15 +147,11 @@ public class CensusQuestionServiceTest {
 
     @Test
     void createCensusQuestionsAddsTheNewCampaignToCampaignsListIfQuestionExists() {
-        Answer firstAnswer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
-
-        AnswerDTO firstAnswerDTO = AnswerDTO.builder().answerText(FIRST_ANSWER_TEXT).build();
-
         CensusQuestionDTO censusQuestionDTO = CensusQuestionDTO
                 .builder()
                 .text(FIRST_QUESTION_TEXT)
                 .QuestionCategory(QUESTION_CATEGORY.name())
-                .answers(List.of(firstAnswerDTO))
+                .answers(List.of(FIRST_ANSWER_DTO))
                 .build();
 
         Campaign campaign = Campaign.builder().build();
@@ -169,7 +162,7 @@ public class CensusQuestionServiceTest {
                 .build();
 
         when(censusQuestionRepository.findByQuestionHashedText(HashUtil.hashText(FIRST_QUESTION_TEXT))).thenReturn(Optional.of(existingQuestion));
-        when(answerService.createAnswers(FIRST_ANSWER_TEXT)).thenReturn(List.of(firstAnswer));
+        when(answerService.createAnswers(FIRST_ANSWER_TEXT)).thenReturn(List.of(FIRST_ANSWER));
 
         censusQuestionService.createCensusQuestions(List.of(censusQuestionDTO), campaign);
 
@@ -179,29 +172,18 @@ public class CensusQuestionServiceTest {
 
     @Test
     void createCensusQuestionsShouldCreateNewQuestionIfItDoesNotExists() {
-        Answer firstAnswer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
-
-        AnswerDTO firstAnswerDTO = AnswerDTO.builder().answerText(FIRST_ANSWER_TEXT).build();
-
         CensusQuestionDTO censusQuestionDTO = CensusQuestionDTO
                 .builder()
                 .text(FIRST_QUESTION_TEXT)
                 .QuestionCategory(QUESTION_CATEGORY.name())
-                .answers(List.of(firstAnswerDTO))
-                .build();
-
-        CensusQuestion censusQuestion = CensusQuestion
-                .builder()
-                .text(FIRST_QUESTION_TEXT)
-                .questionCategory(QUESTION_CATEGORY)
-                .answers(List.of(firstAnswer))
+                .answers(List.of(FIRST_ANSWER_DTO))
                 .build();
 
         Campaign campaign = Campaign.builder().build();
 
         when(censusQuestionRepository.findByQuestionHashedText( HashUtil.hashText(FIRST_QUESTION_TEXT))).thenReturn(Optional.empty());
 
-        when(answerService.createAnswers(FIRST_ANSWER_TEXT)).thenReturn(List.of(firstAnswer));
+        when(answerService.createAnswers(FIRST_ANSWER_TEXT)).thenReturn(List.of(FIRST_ANSWER));
 
         censusQuestionService.createCensusQuestions(List.of(censusQuestionDTO), campaign);
 

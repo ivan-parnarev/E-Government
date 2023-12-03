@@ -26,12 +26,12 @@ public class AnswerServiceTest {
     private AnswerService answerService;
     private final String FIRST_ANSWER_TEXT = "First Answer Test";
     private final String SECOND_ANSWER_TEXT = "Second Answer Test";
+    private final Answer ANSWER = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
 
     @Test
     void saveAnswer() {
-        Answer answer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
-        answerService.saveAnswer(answer);
-        verify(answerRepository).save(answer);
+        answerService.saveAnswer(ANSWER);
+        verify(answerRepository).save(ANSWER);
     }
 
     @Test
@@ -43,15 +43,14 @@ public class AnswerServiceTest {
 
     @Test
     void getAnswerByTextExistingAnswer() {
-        Answer answer = Answer.builder().answerText(FIRST_ANSWER_TEXT).build();
 
-        when(answerRepository.findByAnswerText(FIRST_ANSWER_TEXT)).thenReturn(Optional.of(answer));
+        when(answerRepository.findByAnswerText(FIRST_ANSWER_TEXT)).thenReturn(Optional.of(ANSWER));
 
         Optional<Answer> result = answerService.getAnswerByText(FIRST_ANSWER_TEXT);
 
         assertTrue(result.isPresent());
-        assertEquals(answer, result.get());
-        assertEquals(answer.getAnswerText(), result.get().getAnswerText());
+        assertEquals(ANSWER, result.get());
+        assertEquals(ANSWER.getAnswerText(), result.get().getAnswerText());
     }
 
     @Test
