@@ -6,6 +6,7 @@ import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignD
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.egovbackend.domain.response.ApiCustomResponse;
+import com.egovernment.egovbackend.domain.response.message.ApiResponseMessage;
 import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
 import com.egovernment.egovbackend.service.CampaignService;
 import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
@@ -110,7 +111,7 @@ public class CampaignController implements CampaignControllerInterface {
         this.campaignService.createVotingCampaign(createVotingCampaignDTO);
         URI location = URI.create("http://localhost:3000");
         ApiCustomResponse apiResponse = ApiCustomResponse.builder()
-                .message("Успешно съзадедна кампания").build();
+                .message(ApiResponseMessage.SUCCESSFULLY_CREATED_CAMPAIGN).build();
         return ResponseEntity.created(location).body(apiResponse);
     }
 
@@ -135,7 +136,7 @@ public class CampaignController implements CampaignControllerInterface {
         this.campaignService.createCensusCampaign(createCensusCampaignDTO);
         URI location = URI.create("http://localhost:3000");
         ApiCustomResponse apiResponse = ApiCustomResponse.builder()
-                .message("Успешно съзадедна кампания").build();
+                .message(ApiResponseMessage.SUCCESSFULLY_CREATED_CAMPAIGN).build();
         return ResponseEntity.created(location).body(apiResponse);
     }
 
