@@ -1,9 +1,0 @@
-.modalFooterButtonGroup {
-  display: "flex";
-  justify-content: "space-between";
-  width: 100%;
-}
-
-.modalFooterButton {
-  background-color: var(--blue-dark);
-}

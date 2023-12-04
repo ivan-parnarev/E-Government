@@ -8,3 +8,9 @@
 .modalHeaderCloseButton:hover {
   color: var(--gray);
 }
+
+.modalBodyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
