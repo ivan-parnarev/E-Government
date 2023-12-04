@@ -24,6 +24,7 @@ public class UserService {
             User user = User.builder()
                     .firstName("admin")
                     .roles(List.of(this.roleService.getRole(RoleEnum.ADMINISTRATOR)))
+                    .PIN("1111111111")
                     .build();
             this.userRepository.save(user);
         }
@@ -38,8 +39,19 @@ public class UserService {
                 .findFirst();
     }
 
+    public boolean userIsAdmin(String userPin){
+        Optional<User> optionalUser = this.getUserByPin(userPin);
+
+        return optionalUser.map(user -> user.getRoles()
+                .stream()
+                .map(Role::getRoleName)
+                .toList()
+                .contains(RoleEnum.ADMINISTRATOR)).orElse(false);
+    }
+
     public User createUserWithUserPin(String pin) {
-        User user = User.builder().PIN(pin).build();
+        Role guestRole = this.roleService.getRole(RoleEnum.GUEST);
+        User user = User.builder().PIN(pin).roles(List.of(guestRole)).build();
         this.userRepository.save(user);
         return user;
     }

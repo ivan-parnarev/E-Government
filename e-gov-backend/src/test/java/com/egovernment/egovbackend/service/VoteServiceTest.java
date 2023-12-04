@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.egovbackend.domain.entity.Candidate;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Vote;
@@ -36,6 +36,11 @@ public class VoteServiceTest {
     private final String CANDIDATE_NAME = "Test Candidate";
     private final String USER_PIN = "0000000000";
     private final Long ID = 1L;
+    private final UserVotedInfoDTO VOTE_DTO = UserVotedInfoDTO.builder()
+            .userPin(USER_PIN)
+            .electionId(ID)
+            .candidateId(ID)
+            .build();
 
     @BeforeEach
     void setUp() {
@@ -53,16 +58,10 @@ public class VoteServiceTest {
                 .electionType(ElectionType.PARLIAMENT)
                 .build();
 
-        UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .userPin(USER_PIN)
-                .electionId(ID)
-                .candidateId(ID)
-                .build();
-
         when(this.candidateService.getCandidateById(ID)).thenReturn(Optional.of(candidate));
         when(this.electionService.getElectionById(ID)).thenReturn(Optional.of(election));
 
-        this.voteServiceToTest.saveVote(voteDTO);
+        this.voteServiceToTest.saveVote(VOTE_DTO);
 
         verify(voteRepository, times(1)).save(any(Vote.class));
 
@@ -70,13 +69,10 @@ public class VoteServiceTest {
 
     @Test
     void testVoteIsSavedCorrectlyWhenCampaignIsNotPresent(){
-        UserVotedInfoDTO voteDTO = UserVotedInfoDTO.builder()
-                .electionId(ID)
-                .build();
 
         when(this.electionService.getElectionById(ID)).thenReturn(Optional.empty());
 
-        this.voteServiceToTest.saveVote(voteDTO);
+        this.voteServiceToTest.saveVote(VOTE_DTO);
 
         verify(voteRepository, never()).save(any(Vote.class));
     }

@@ -23,6 +23,6 @@ public class UserAnswer extends BaseEntity {
     private Campaign campaign;
     @Enumerated(EnumType.STRING)
     private QuestionCategory questionCategory;
-    @Column
-    private String answer;
+    @ManyToOne
+    private Answer answer;
 }

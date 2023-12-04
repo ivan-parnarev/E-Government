@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.censusCampaignDTO;
+package com.egovernment.egovbackend.domain.dto.censusCampaign;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CensusCampaignDTO {
 
-    private Long id;
+    private Long campaignId;
     private String campaignType;
     private String campaignTitle;
     private String campaignDescription;

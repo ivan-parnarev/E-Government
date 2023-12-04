@@ -1,7 +1,7 @@
 package com.egovernment.egovbackend.domain.entity;
 
-import com.egovernment.egovbackend.domain.enums.CensusAnswerType;
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
+import com.egovernment.egovbackend.hashing.HashUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,14 +16,22 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CensusQuestion extends BaseEntity {
+public class CensusQuestion {
 
+    @Id
+    private String questionHashedText;
     @Column
     private String text;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Campaign> campaign;
     @Enumerated(EnumType.STRING)
-    private CensusAnswerType type;
-    @Enumerated(EnumType.STRING)
     private QuestionCategory questionCategory;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Answer> answers;
+
+    @PrePersist
+    private void generateId() {
+        this.questionHashedText = HashUtil.hashText(text);
+    }
+
 }

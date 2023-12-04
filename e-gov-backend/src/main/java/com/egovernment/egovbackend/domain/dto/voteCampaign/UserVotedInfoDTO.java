@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.campaignDto;
+package com.egovernment.egovbackend.domain.dto.voteCampaign;
 
 import com.egovernment.egovbackend.domain.annotation.pin.ValidUserPin;
 import com.egovernment.egovbackend.domain.annotation.vote.UniqueVoteConstraint;
