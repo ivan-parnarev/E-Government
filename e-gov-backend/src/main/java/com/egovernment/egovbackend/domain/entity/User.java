@@ -27,7 +27,7 @@ public class User extends BaseEntity {
     private String email;
     @Column
     private String password;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> roles = new ArrayList<>();
     @Column
     private String PIN;

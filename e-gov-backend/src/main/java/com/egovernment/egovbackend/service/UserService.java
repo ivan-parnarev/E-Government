@@ -4,6 +4,7 @@ import com.egovernment.egovbackend.domain.entity.Role;
 import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public Optional<User> getUserByRole(Role role) {
         return this.userRepository
                 .findAll()

@@ -22,14 +22,15 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class UserAnswerServiceTest {
 
+    private static final String TEST_USER_PIN = "8888888888";
+    private static final String TEST_CAMPAIGN_TITLE = "Test Campaign title";
+    private static final String TEST_FIRSTNAME_ANSWER = "George";
+
     @Mock
     private UserAnswerRepository userAnswerRepository;
 
     @Mock
     private UserService userService;
-
-    @Mock
-    private CensusQuestionService censusQuestionService;
 
     @Mock
     private CampaignService campaignService;
