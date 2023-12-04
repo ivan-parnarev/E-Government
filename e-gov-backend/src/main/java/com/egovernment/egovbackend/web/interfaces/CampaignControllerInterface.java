@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.web.interfaces;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
@@ -18,7 +19,8 @@ public interface CampaignControllerInterface {
      ResponseEntity<List<CampaignViewDTO>> getAllActiveCampaigns();
      ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns();
 
-     ResponseEntity<CensusCampaignDTO> getActiveCensusCampaign();
+     ResponseEntity<List<CensusCampaignDTO>> getActiveCensusCampaigns();
      ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody CreateVotingCampaignDTO createVotingCampaignDTO);
-
+     public ResponseEntity<ApiCustomResponse> saveNewCensusCampaign(@Valid @RequestBody
+                                                                    CreateCensusCampaignDTO createCensusCampaignDTO);
 }

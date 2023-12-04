@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.entity.Candidate;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.enums.ElectionType;
@@ -128,6 +128,28 @@ public class CandidateServiceTest {
 
         assertEquals(secondCandidate.getName(), result.get(1).getCandidateName());
         assertEquals(secondCandidate.getParty(), result.get(1).getCandidateParty());
+    }
+
+    @Test
+    void testCreateCandidatesCreatesTheRightListOfCandidates(){
+
+        Election election = Election.builder().electionType(ElectionType.PARLIAMENT).build();
+
+        CandidateTemplateDTO candidateTemplateDTO = CandidateTemplateDTO.builder()
+                .candidateName(TEST_NAME)
+                .candidateParty(TEST_PARTY)
+                .build();
+
+        Candidate candidate = Candidate.builder()
+                .name(TEST_NAME)
+                .party(TEST_PARTY)
+                .build();
+
+        when(modelMapper.map(candidateTemplateDTO, Candidate.class)).thenReturn(candidate);
+        this.candidateServiceToTest.createCandidates(List.of(candidateTemplateDTO), election);
+
+        verify(candidateRepository, atLeast(1)).saveAll(anyList());
+
     }
 
 

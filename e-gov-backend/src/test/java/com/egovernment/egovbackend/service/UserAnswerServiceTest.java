@@ -2,9 +2,8 @@ package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.UserAnswerDTO;
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.User;
-import com.egovernment.egovbackend.domain.entity.UserAnswer;
+import com.egovernment.egovbackend.domain.entity.*;
+import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import com.egovernment.egovbackend.repository.UserAnswerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,9 +11,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -32,43 +33,60 @@ public class UserAnswerServiceTest {
 
     @Mock
     private CampaignService campaignService;
+    @Mock
+    private AnswerService answerService;
 
     @InjectMocks
     private UserAnswerService userAnswerService;
 
-//    @Test
-//    void saveUserCensusDataUserAnswersSaved() {
-//        UserAnswerDTO userAnswerDTO = UserAnswerDTO.builder()
-//                .answer("George")
-//                .build();
-//
-//        List<UserAnswerDTO> answersFromDto = List.of(userAnswerDTO);
-//
-//        CensusDTO censusDTO = CensusDTO.builder()
-//                .userPin("8888888888")
-//                .censusAnswers(answersFromDto)
-//                .build();
-//
-//        User user = User.builder()
-//                .PIN("8888888888")
-//                .build();
-//
-//        Campaign campaign = Campaign.builder()
-//                .title("Test Campaign title")
-//                .isActive(true)
-//                .build();
-//
-//        UserAnswer userAnswer = UserAnswer.builder()
-//                .user(user)
-//                .campaign(campaign)
-//                .answer("George")
-//                .build();
-//
-//        when(userService.getUserByPin(any())).thenReturn(Optional.of(user));
-//        when(campaignService.getCampaignById(any())).thenReturn(Optional.of(campaign));
-//
-//        userAnswerService.saveUserCensusData(censusDTO);
-//
-//        verify(userAnswerRepository, times(1)).saveAll(List.of(userAnswer));
-//    }
+    private final String USER_PIN = "1234567890";
+    private final String ANSWER_TEXT = "Answer Test";
+    private final String QUESTION_TEXT = "Question Test";
+    private final Long ID = 1L;
+
+    @Test
+    void hasUserCensusedInCampaignTest() {
+        when(userAnswerRepository.censusExistsByUserPinAndCampaignId(USER_PIN, ID)).thenReturn(true);
+
+        boolean result = userAnswerService.hasUserCensusedInCampaign(USER_PIN, ID);
+
+        assertTrue(result);
+        verify(userAnswerRepository).censusExistsByUserPinAndCampaignId(USER_PIN, ID);
+    }
+
+    @Test
+    void saveUserCensusDataTest() {
+
+        UserAnswerDTO userAnswerDTO = UserAnswerDTO.builder()
+                .questionText(QUESTION_TEXT)
+                .answer(ANSWER_TEXT)
+                .questionCategory(QuestionCategory.PERSONAL)
+                .build();
+
+        CensusDTO censusDTO = CensusDTO.builder()
+                .userPin(USER_PIN)
+                .campaignId(ID)
+                .censusAnswers(Arrays.asList(userAnswerDTO))
+                .build();
+
+        User user = new User();
+        Campaign campaign = new Campaign();
+        Answer answer = new Answer();
+        answer.setAnswerText(ANSWER_TEXT);
+        CensusQuestion censusQuestion = new CensusQuestion();
+
+        when(userService.getUserByPin(USER_PIN)).thenReturn(Optional.of(user));
+        when(campaignService.getCampaignById(ID)).thenReturn(Optional.of(campaign));
+        when(answerService.getAnswerByText(ANSWER_TEXT)).thenReturn(Optional.of(answer));
+        when(censusQuestionService.getQuestionByText(QUESTION_TEXT)).thenReturn(Optional.of(censusQuestion));
+
+        userAnswerService.saveUserCensusData(censusDTO);
+
+        verify(userAnswerRepository).saveAll(any(List.class));
+        verify(userService, times(1)).getUserByPin(USER_PIN);
+        verify(campaignService, times(1)).getCampaignById(ID);
+        verify(answerService, times(1)).getAnswerByText(ANSWER_TEXT);
+        verify(censusQuestionService, times(1)).getQuestionByText(QUESTION_TEXT);
+    }
+
 }
