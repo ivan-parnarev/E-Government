@@ -3,8 +3,8 @@ version: "3.8"
 services:
   postgres:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../../e-gov-dev-env
+      dockerfile: ../Dockerfile
     container_name: e-gov-dev-env
     image: postgres:latest
     restart: always
@@ -15,18 +15,18 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./e-gov-dev-env/env/init.sql:/docker-entrypoint-initdb.d/
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-#  frontend:
-#    build:
-#      context: .
-#      dockerfile: ../../e-gov-frontend/Dockerfile
-#    ports:
-#      - "3000:3000"
-#    networks:
-#      - app-network
-#
-#networks:
-#  app-network:
-#    driver: bridge
-#
+  react:
+    build:
+      context: ../../e-gov-frontend
+      dockerfile: ../e-gov-frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
