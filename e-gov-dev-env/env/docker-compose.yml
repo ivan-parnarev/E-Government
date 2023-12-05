@@ -26,6 +26,19 @@ services:
     networks:
       - app-network
 
+  spring:
+    build:
+      context: ../../e-gov-backend
+      dockerfile: ../e-gov-backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
+      SPRING_DATASOURCE_USERNAME: your_database_username
+      SPRING_DATASOURCE_PASSWORD: your_database_password
+
 networks:
   app-network:
     driver: bridge
