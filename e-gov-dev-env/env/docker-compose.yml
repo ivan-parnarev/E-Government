@@ -36,8 +36,8 @@ services:
       - postgres
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
-      SPRING_DATASOURCE_USERNAME: your_database_username
-      SPRING_DATASOURCE_PASSWORD: your_database_password
+      SPRING_DATASOURCE_USERNAME: postgres-user
+      SPRING_DATASOURCE_PASSWORD: 1234qwer
 
 networks:
   app-network:
