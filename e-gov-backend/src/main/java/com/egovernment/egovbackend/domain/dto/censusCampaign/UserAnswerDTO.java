@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.censusCampaignDTO;
+package com.egovernment.egovbackend.domain.dto.censusCampaign;
 
 import com.egovernment.egovbackend.domain.enums.QuestionCategory;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserAnswerDTO {
 
-    Long questionId;
+    String questionText;
     String answer;
     QuestionCategory questionCategory;
 

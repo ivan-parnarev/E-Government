@@ -8,6 +8,7 @@ import { RootLayout } from "./RootLayout";
 import { HomePage } from "./pages/HomePage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ActiveCampaignsPage } from "./pages/ActiveCampaignsPage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 const routeChildren = [
   <Route key="home" index="true" element={<HomePage />} />,
@@ -17,6 +18,7 @@ const routeChildren = [
     path="/active-campaigns"
     element={<ActiveCampaignsPage />}
   />,
+  <Route key="profile" path="/profile" element={<ProfilePage />} />,
 ];
 
 const routeDefinitions = createRoutesFromElements(

@@ -6,5 +6,12 @@
 
 .activeCampaignsButton {
   font-size: 1.7rem;
-  margin-right: 10px;
+  color: var(--blue-dark);
+  background-color: transparent;
+  border-color: var(--blue-dark);
+}
+
+.activeCampaignsButton:hover {
+  background-color: var(--blue-dark);
+  color: var(--light);
 }

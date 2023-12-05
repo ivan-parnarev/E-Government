@@ -1,10 +1,10 @@
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
-import PinInputComponent from "../PinInputComponent.tsx";
-import CensusModalFooterComponent from "./CensusModalFooterComponent.tsx";
+import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
+import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
 import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
 import {
   CensusModalProps,
@@ -169,6 +169,7 @@ function CensusModalComponent({
 
   return (
     <Modal
+      className={styles.censusInfoContainerPosition}
       show={show}
       onHide={onHide}
       size="lg"
@@ -186,9 +187,9 @@ function CensusModalComponent({
         </button>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body className={styles.modalBodyContainer}>
         {!showQuestions ? (
-          <PinInputComponent
+          <UserAuthenticationComponent
             pinValue={pinValue}
             isValidPinValue={isValidPinValue}
             onChange={handlePinChange}
@@ -226,10 +227,13 @@ function CensusModalComponent({
       </Modal.Body>
 
       <Modal.Footer>
-        <CensusModalFooterComponent
-          pinValueLength={pinValue.length}
-          isValidPinValue={isValidPinValue}
+        <CampaignModalFooterComponent
           showQuestions={showQuestions}
+          submitButtonDisabled="false"
+          continueButtonDisabled={
+            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
+          }
+          buttonText="Изпрати"
           onContinue={handleFormContinue}
           onSubmit={handleFormSubmit}
           onBack={handleFormBack}

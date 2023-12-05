@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.entity.Candidate;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.factory.candidate.CandidateFactory;
@@ -47,5 +47,15 @@ public class CandidateService {
 
     public Optional<Candidate> getCandidateById(Long candidateId) {
         return this.candidateRepository.findById(candidateId);
+    }
+
+    public void createCandidates(List<CandidateTemplateDTO> candidatesList, Election election) {
+        List<Candidate> candidates = candidatesList
+                .stream()
+                .map(c -> this.modelMapper.map(c, Candidate.class))
+                .peek(c -> c.setElection(election))
+                .toList();
+        this.candidateRepository.saveAll(candidates);
+
     }
 }

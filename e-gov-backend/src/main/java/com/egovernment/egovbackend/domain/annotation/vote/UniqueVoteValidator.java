@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.domain.annotation.vote;
 
-import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.egovbackend.service.VoteService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

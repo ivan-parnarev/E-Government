@@ -127,4 +127,26 @@ public class UserServiceTest {
         assertFalse(foundUser.isPresent());
     }
 
+    @Test
+    void userIsAdminReturnsTrueIfUserIsAdmin() {
+        Role adminRole = Role.builder().roleName(RoleEnum.ADMINISTRATOR).build();
+        User admin = User.builder().PIN(USER_PIN).roles(List.of(adminRole)).build();
+
+        when(userRepository.findByPIN(USER_PIN)).thenReturn(Optional.of(admin));
+
+        boolean isAdmin = this.userServiceToTest.userIsAdmin(USER_PIN);
+        assertTrue(isAdmin);
+    }
+
+    @Test
+    void userIsAdminReturnsFalseIfUserIsNotAdmin() {
+        Role adminRole = Role.builder().roleName(RoleEnum.USER).build();
+        User admin = User.builder().PIN(USER_PIN).roles(List.of(adminRole)).build();
+
+        when(userRepository.findByPIN(USER_PIN)).thenReturn(Optional.of(admin));
+
+        boolean isAdmin = this.userServiceToTest.userIsAdmin(USER_PIN);
+        assertFalse(isAdmin);
+    }
+
 }

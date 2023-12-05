@@ -1,6 +1,5 @@
-package com.egovernment.egovbackend.domain.dto.campaignDto;
+package com.egovernment.egovbackend.domain.dto.voteCampaign;
 
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

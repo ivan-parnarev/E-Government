@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import styles from "./PinInputComponent.module.css";
-import { PinInputProps } from "../interfaces/PinInputInterface";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
+import styles from "./UserGuestComponent.module.css";
+import { UserGuestProps } from "../../interfaces/UserGuestInterface.ts";
 
-function PinInputComponent({
+function UserGuestComponent({
   pinValue,
   isValidPinValue,
   onChange,
-}: PinInputProps) {
+}: UserGuestProps) {
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
 
@@ -38,17 +38,17 @@ function PinInputComponent({
 
   return (
     <div>
-      <h4>Влезли сте като гост</h4>
+      <h4>Продължете като гост</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
-      <InputGroup size="sm" className="mb-3">
-        <InputGroup.Text id="inputGroup-sizing-sm">ЕГН:</InputGroup.Text>
+      <FloatingLabel controlId="floatingInput" label="ЕГН:" className="mb-3">
         <Form.Control
-          aria-label="Small"
-          aria-describedby="inputGroup-sizing-sm"
+          type="text"
+          placeholder=""
           value={pinValue}
           onChange={onChange}
         />
-      </InputGroup>
+      </FloatingLabel>
+
       {errorMessage && pinValue.length > 0 && (
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}
@@ -56,4 +56,4 @@ function PinInputComponent({
   );
 }
 
-export default PinInputComponent;
+export default UserGuestComponent;

@@ -1,10 +1,13 @@
 package com.egovernment.egovbackend.service;
 
 import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
-import com.egovernment.egovbackend.domain.dto.CandidateTemplateDTO;
-import com.egovernment.egovbackend.domain.dto.campaignDto.VoteCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaignDTO.CensusQuestionDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.common.CreateCampaignCommon;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.entity.Role;
@@ -12,14 +15,14 @@ import com.egovernment.egovbackend.domain.entity.User;
 import com.egovernment.egovbackend.domain.enums.CampaignType;
 import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import com.egovernment.egovbackend.domain.factory.CampaignFactory;
-import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
+import com.egovernment.egovbackend.exceptions.CustomValidationException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
-import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +39,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0){
@@ -126,27 +130,27 @@ public class CampaignService {
         return this.campaignRepository.findById(campaignId);
     }
 
-    public CensusCampaignDTO getActiveCensusCampaign() {
+    public List<CensusCampaignDTO> getActiveCensusCampaigns() {
+        List<CensusCampaignDTO> censusCampaignDTOS = new ArrayList<>();
         List<Campaign> censusCampaigns = this.campaignRepository
                 .getAllByCampaignType(CampaignType.CENSUS);
 
-        Optional<Campaign> campaign = censusCampaigns
+        List<Campaign> activeCensusCampaigns = censusCampaigns
                 .stream()
                 .filter(Campaign::isActive)
-                .findFirst();
+                .toList();
 
-        if (campaign.isPresent()) {
+        for (Campaign censusCampaign : activeCensusCampaigns) {
             List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
-                    .getCensusQuestionsForCampaign(campaign.get().getId());
-            return mapCampaignToCensusCampaignDTO(campaign.get(), censusQuestionsForCampaign);
-        } else {
-            throw new ActiveCensusCampaignNotFoundException();
+                    .getCensusQuestionsForCampaign(censusCampaign.getId());
+             censusCampaignDTOS.add(mapCampaignToCensusCampaignDTO(censusCampaign, censusQuestionsForCampaign));
         }
+       return censusCampaignDTOS;
     }
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
         return CensusCampaignDTO.builder()
-                .id(campaign.getId())
+                .campaignId(campaign.getId())
                 .campaignType(String.valueOf(campaign.getCampaignType()))
                 .campaignTitle(campaign.getTitle())
                 .campaignDescription(campaign.getDescription())
@@ -155,4 +159,39 @@ public class CampaignService {
                 .censusQuestions(questions)
                 .build();
     }
+
+    public void createVotingCampaign(CreateVotingCampaignDTO createVotingCampaignDTO) {
+        Campaign campaign = createCampaignCommonInformation(createVotingCampaignDTO);
+
+        this.campaignRepository.save(campaign);
+
+        Election election = this.electionService.createElection(createVotingCampaignDTO, campaign);
+        this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates(), election);
+
+    }
+
+    public void createCensusCampaign(CreateCensusCampaignDTO createCensusCampaignDTO) {
+        Campaign campaign = createCampaignCommonInformation(createCensusCampaignDTO);
+
+        this.campaignRepository.save(campaign);
+
+        this.censusQuestionService.createCensusQuestions(createCensusCampaignDTO.getQuestions(), campaign);
+    }
+
+
+    private Campaign createCampaignCommonInformation(CreateCampaignCommon commonCampaignInformation) {
+        CampaignType campaignType = CampaignType.valueOf(commonCampaignInformation.getCampaignType());
+
+        if(!this.userService.userIsAdmin(commonCampaignInformation.getCreatorUserPin())){
+            throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
+        }
+
+        User owner = userService.getUserByPin(commonCampaignInformation.getCreatorUserPin()).get();
+
+        Campaign campaign = launchCampaign(campaignType, commonCampaignInformation.getCampaignTitle(),
+                commonCampaignInformation.getCampaignDescription(), owner,
+                commonCampaignInformation.getCampaignStartDate(), commonCampaignInformation.getCampaignEndDate(), true);
+        return campaign;
+    }
+
 }

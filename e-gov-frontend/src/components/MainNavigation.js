@@ -19,15 +19,15 @@ export function MainNavigation() {
               Начало
             </Link>
 
-            <Link to="/register" className={styles.navbarNavLink}>
-              Регистрация
-            </Link>
-
             <Link
               to="/active-campaigns"
               className={`${styles.navbarNavLink} ${styles.activeCampaigns}`}
             >
               Активни кампании
+            </Link>
+
+            <Link to="/profile" className={styles.navbarNavLink}>
+              Профил
             </Link>
           </Nav>
         </Container>

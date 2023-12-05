@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.domain.annotation.census;
 
-import com.egovernment.egovbackend.domain.dto.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
 import com.egovernment.egovbackend.service.UserAnswerService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

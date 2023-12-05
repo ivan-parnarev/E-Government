@@ -1,6 +1,6 @@
 package com.egovernment.egovbackend.web.interfaces;
 
-import com.egovernment.egovbackend.domain.dto.campaignDto.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.egovbackend.web.path.ApiPaths;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
