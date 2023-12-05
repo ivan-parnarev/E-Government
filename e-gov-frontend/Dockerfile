@@ -1,6 +1,6 @@
 FROM node:15-alpine
 
-WORKDIR /e-gov-frontend
+WORKDIR ./e-gov-frontend
 
 COPY package*.json ./
 

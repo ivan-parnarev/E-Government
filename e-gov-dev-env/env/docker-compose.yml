@@ -1,7 +1,7 @@
 version: "3.8"
 
 services:
-  db:
+  postgres:
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,6 +15,18 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./e-gov-dev-env/env/init.sql:/docker-entrypoint-initdb.d/
 
-
+#  frontend:
+#    build:
+#      context: .
+#      dockerfile: ../../e-gov-frontend/Dockerfile
+#    ports:
+#      - "3000:3000"
+#    networks:
+#      - app-network
+#
+#networks:
+#  app-network:
+#    driver: bridge
+#
