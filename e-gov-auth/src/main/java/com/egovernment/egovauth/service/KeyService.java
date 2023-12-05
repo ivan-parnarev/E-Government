@@ -1,15 +1,15 @@
 package com.egovernment.egovauth.service;
 
+import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.Security;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
@@ -17,8 +17,7 @@ import java.util.Base64;
 @Service
 public class KeyService {
 
-    public PrivateKey getPrivateKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String keyPath = "src/main/resources/keys/private.pem";
+    PrivateKey getPrivateKey(String keyPath) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         String rsaPrivateKey = extractPrivateKey(keyPath);
         Security.addProvider(new BouncyCastleProvider());
 
@@ -28,13 +27,12 @@ public class KeyService {
         return privKey;
     }
 
-    public String getPublicKey() throws IOException {
-        String keyPath = "src/main/resources/keys/public.pem";
+    public String getPublicKey(String keyPath) throws IOException {
         String rsaPublicKey = extractPublicKey(keyPath);
 
         return rsaPublicKey;
     }
-    public String extractPrivateKey(String path) throws IOException {
+    private String extractPrivateKey(String path) throws IOException {
         byte[] privateKeyBytes = Files.readAllBytes(Paths.get(path));
         String privateKey = new String(privateKeyBytes);
         privateKey = privateKey
@@ -45,7 +43,7 @@ public class KeyService {
         return privateKey;
     }
 
-    public String extractPublicKey(String path) throws IOException {
+    private String extractPublicKey(String path) throws IOException {
         byte[] publicKeyBytes = Files.readAllBytes(Paths.get(path));
         String publicKey = new String(publicKeyBytes);
         publicKey = publicKey

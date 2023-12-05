@@ -3,6 +3,7 @@ package com.egovernment.egovauth.service;
 import com.egovernment.egovauth.domain.entity.User;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,11 +19,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JwtService {
 
+    @Value("${keyPaths.privateKeyPath}")
+    private String privateKeyPath;
     private final KeyService keyService;
 
-    public String createJwtSignedHMAC(User user) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+    String createJwtSignedHMAC(User user) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
-        PrivateKey privateKey = this.keyService.getPrivateKey();
+        PrivateKey privateKey = this.keyService.getPrivateKey(privateKeyPath);
 
         Instant now = Instant.now();
         String jwtToken = Jwts.builder()

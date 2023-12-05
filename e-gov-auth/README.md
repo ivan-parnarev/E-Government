@@ -33,8 +33,7 @@ during Voting and Census Campaigns.
 
 * Java Development Kit (JDK) installed, with Java v.17 (or higher)
 * PostgreSQL Database installed
-* Public/Private Key pair generated for JWT encryption/decryption with openSSL (Already generated and located in resources/keys directory),
-you can generate your own key pair.
+* You should generate you own Public/Private Key pair for JWT encryption/decryption with openSSL for example and place them in **resources/keys** directory.
 
 ### Configuration
 
@@ -49,7 +48,7 @@ you can generate your own key pair.
 1. Starting the Application:
    * Locate the main method in your Spring Boot application. This is typically found in a class annotated with @SpringBootApplication
    * Right-click on the file containing the main method and select Run EGovAuthApplication.
-   * Backend Application will start on port 8081, you can access it by making requests to http://localhost:8081/
+   * Backend Application will start on port 8081
 
 
 ## Usage
