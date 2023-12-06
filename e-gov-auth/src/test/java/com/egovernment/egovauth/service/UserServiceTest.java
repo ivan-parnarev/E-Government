@@ -1,0 +1,55 @@
+package com.egovernment.egovauth.service;
+
+import com.egovernment.egovauth.domain.entity.User;
+import com.egovernment.egovauth.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+
+    private static final String FIRST_NAME = "George";
+    private static final String USER_PIN = "testHashedUserPin";
+    @Mock
+    private UserRepository userRepository;
+    @InjectMocks
+    private UserService userService;
+    private User testUser;
+
+    @BeforeEach
+    void setup() {
+        testUser = User.builder()
+                .firstName(FIRST_NAME)
+                .userPin(USER_PIN)
+                .build();
+    }
+
+    @Test
+    void testFindUserByUserPinUserReturned() {
+        when(this.userRepository.findByUserPin(USER_PIN)).thenReturn(Optional.of(testUser));
+
+        Optional<User> result = this.userService.findUserByUserPin(USER_PIN);
+
+        Assertions.assertNotNull(result.get());
+        Assertions.assertEquals(result.get().getFirstName(), FIRST_NAME);
+        Assertions.assertEquals(result.get().getUserPin(), USER_PIN);
+    }
+
+    @Test
+    void testInitTestUsers() throws NoSuchAlgorithmException {
+        userService.initTestUsers();
+
+        verify(this.userRepository).saveAll(any());
+        verify(this.userRepository, times(1)).saveAll(any());
+    }
+}
