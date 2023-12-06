@@ -32,9 +32,7 @@ export function ActiveCampaignsComponent() {
       setIsLoading(true);
 
       const voteData = await fetchCampaignData(`${activeCampaignsUrl}/vote`);
-      const censusData = await fetchCampaignData(
-        `${activeCampaignsUrl}/census`
-      );
+      const censusData = await fetchCampaignData(`${activeCampaignsUrl}/census`); //prettier-ignore
 
       try {
         if (voteData) {

@@ -5,6 +5,10 @@
   padding: 20px 0px;
 }
 
+.censusContainer {
+  width: 100%;
+}
+
 .modalBodyContainer {
   display: flex;
   flex-direction: column;
@@ -12,13 +16,13 @@
 }
 
 .censusInfoContainer {
+  width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
   border: 2px solid var(--dark);
   border-radius: 10px;
   padding: 20px 0px;
-  width: 70%;
 }
 
 .censusModalButtonContainer {

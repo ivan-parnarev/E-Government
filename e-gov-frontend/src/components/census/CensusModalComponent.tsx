@@ -235,7 +235,7 @@ function CensusModalComponent({
             onChange={handlePinChange}
           />
         ) : (
-          <div>
+          <div className={styles.censusContainer}>
             <h5>{campaignDescription}</h5>
 
             <ProgressBar animated now={progressPercentage} />

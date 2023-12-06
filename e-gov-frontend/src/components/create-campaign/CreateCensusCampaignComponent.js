@@ -4,40 +4,22 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import styles from "./CreateVotingCampaignComponent.module.css";
-import { useState } from "react";
+import styles from "./CreateCensusCampaignComponent.module.css";
+import { useEffect, useState } from "react";
 import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
-import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
+import { CreateCensusEditAnswersComponent } from "./CreateCensusEditAnswersComponent.js";
 
-const mockupCensusData = {
-  campaignType: "CENSUS",
-  campaignTitle: "campaignTitle",
-  campaignDescription: "campaignDescr",
-  fromUserPin: "1234",
-  campaignStartDate: "...",
-  campaignEndDate: "...",
-  questions: [
-    {
-      questionText: "Some text",
-      questionCategory: "PERSONAL",
-      answers: [
-        {
-          answerText: "some text",
-        },
-      ],
-    },
-    {
-      questionText: "Another text",
-      questionCategory: "HOUSING",
-      answers: [
-        {
-          answerText: "some text",
-        },
-      ],
-    },
-  ],
-};
+async function fetchCampaignData(url) {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching campaigns:", error);
+    return null;
+  }
+}
 
 export function CreateCensusCampaignComponent({
   userData,
@@ -50,18 +32,36 @@ export function CreateCensusCampaignComponent({
   onBack,
   onHide,
 }) {
-  const [electionType, setElectionType] = useState("");
+  const activeCampaignsUrl = "http://localhost:8080/api/v1/campaigns/active";
+  const [censusQuestions, setCensusQuestions] = useState([]);
   const [campaignTitle, setCampaignTitle] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
-  const [candidates, setCandidates] = useState([
-    { candidateName: "", candidateParty: "", candidateNumber: "" },
-  ]);
   const [campaignStartDate, setCampaignStartDate] = useState("");
   const [campaignEndDate, setCampaignEndDate] = useState("");
 
-  const handleElectionTypeChange = (e) => {
-    setElectionType(e.target.value);
-  };
+  const censusCategories = [
+    ...new Set(censusQuestions.map((question) => question.questionCategory)),
+  ];
+
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      // setIsLoading(true);
+
+      const censusData = await fetchCampaignData(`${activeCampaignsUrl}/census`); // prettier-ignore
+
+      try {
+        if (censusData) {
+          setCensusQuestions(censusData[0].censusQuestions);
+        }
+      } catch (error) {
+        console.error("Error fetching campaigns:", error);
+      } finally {
+        // setIsLoading(false);
+      }
+    };
+
+    fetchCampaigns();
+  }, []);
 
   const handleCampaignTitleChange = (e) => {
     setCampaignTitle(e.target.value);
@@ -69,6 +69,22 @@ export function CreateCensusCampaignComponent({
 
   const handleCampaignDescriptionChange = (e) => {
     setCampaignDescription(e.target.value);
+  };
+
+  const handleStartDateChange = (e) => {
+    const startDate = e.target.value;
+    setCampaignStartDate(startDate);
+
+    if (!campaignEndDate) {
+      const endDate = new Date(
+        new Date(startDate).getTime() + 24 * 60 * 60 * 1000
+      );
+      setCampaignEndDate(formatDate(endDate));
+    }
+  };
+
+  const handleEndDateChange = (e) => {
+    setCampaignEndDate(e.target.value);
   };
 
   const formatDate = (dateString) => {
@@ -84,40 +100,45 @@ export function CreateCensusCampaignComponent({
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
 
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-
+  const handleUpdateCensusQuestions = () => {
     const currUserData = {
       ...userData,
-      campaignType: "VOTING",
+      campaignType: "CENSUS",
       campaignTitle,
       campaignDescription,
       campaignStartDate,
       campaignEndDate,
-      electionType,
-      candidates: candidates.slice(0, -1),
+      questions: censusQuestions,
     };
 
-    fetch("http://localhost:8080/api/v1/campaigns/create/vote", {
+    console.log(currUserData);
+
+    fetch("http://localhost:8080/api/v1/campaigns/create/census", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(currUserData),
     })
       .then((response) => {
         if (response.status === 201) {
           return response.json().then((data) => {
             if (data) {
-              const successMessage = `Създаване на кампанията за гласуване е успешно!`;
+              const successMessage = `${data.message} `;
               alert(successMessage);
             }
 
             window.location.href = response.headers.get("location") || "";
           });
         } else {
-          return response.json();
+          return response.json().then((errorData) => {
+            console.error("Error:", errorData);
+          });
         }
       })
-      .catch((error) => console.error("Error:", error.message));
+      .catch((error) =>
+        console.error("Error updating census questions:", error)
+      );
   };
 
   return (
@@ -140,19 +161,60 @@ export function CreateCensusCampaignComponent({
             onChange={handlePinChange}
           />
         ) : (
-          <>
-            {mockupCensusData.questions.map(
-              ({ questionText, questionCategory, answers }) => {
-                return (
-                  <>
-                    <p>{questionText}</p>
-                    <p>{questionCategory}</p>
-                    {/* <p>questionText</p> */}
-                  </>
-                );
-              }
-            )}
-          </>
+          <div className={styles.censusInfoContainer}>
+            <FloatingLabel label="Име на кампанията:" className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder=""
+                onChange={handleCampaignTitleChange}
+              />
+            </FloatingLabel>
+
+            <FloatingLabel label="Описание на кампанията:" className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder=""
+                onChange={handleCampaignDescriptionChange}
+              />
+            </FloatingLabel>
+
+            <CreateCensusEditAnswersComponent
+              censusCategories={censusCategories}
+              censusQuestions={censusQuestions}
+              setCensusQuestions={setCensusQuestions}
+            />
+
+            <InputGroup className={styles.createCensusInputDateGroup}>
+              <Row>
+                <p className={styles.createVotingCampaignInputGroupInputLabel}>
+                  Избери начало и край на кампанията:
+                </p>
+              </Row>
+              <Row>
+                <Col>
+                  <FloatingLabel label="Начална дата">
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={formatDate(campaignStartDate)}
+                      onChange={handleStartDateChange}
+                    />
+                  </FloatingLabel>
+                </Col>
+
+                <Col>
+                  <FloatingLabel label="Крайна дата">
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={formatDate(campaignEndDate)}
+                      onChange={handleEndDateChange}
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
+            </InputGroup>
+          </div>
         )}
       </Modal.Body>
 
@@ -167,7 +229,7 @@ export function CreateCensusCampaignComponent({
           submitButtonDisabled="false"
           buttonText="Създай"
           onContinue={onContinue}
-          onSubmit={handleFormSubmit}
+          onSubmit={handleUpdateCensusQuestions}
           onBack={onBack}
           onHide={onHide}
         />
