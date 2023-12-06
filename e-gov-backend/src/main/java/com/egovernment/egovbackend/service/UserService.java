@@ -39,6 +39,7 @@ public class UserService {
                 .findFirst();
     }
 
+    @Transactional
     public boolean userIsAdmin(String userPin){
         Optional<User> optionalUser = this.getUserByPin(userPin);
 
