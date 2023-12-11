@@ -1,12 +1,10 @@
+import API_URLS from "../utils/apiUtils.js";
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import styles from "./ActiveCampaignsComponent.module.css";
 import { VotingActiveCampaignComponent } from "./voting/VotingActiveCampaignComponent";
 import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComponent";
-import {
-  CensusCampaignProps,
-  VoteCampaignProps,
-} from "../interfaces/ActiveCampaignsContainerInterface.ts";
+import { CensusCampaignProps, VoteCampaignProps } from "../interfaces/ActiveCampaignsContainerInterface.ts"; //prettier-ignore
 
 async function fetchCampaignData(url: string): Promise<any> {
   try {
@@ -20,7 +18,6 @@ async function fetchCampaignData(url: string): Promise<any> {
 }
 
 export function ActiveCampaignsComponent() {
-  const activeCampaignsUrl = "http://localhost:8080/api/v1/campaigns/active";
   const [isLoading, setIsLoading] = useState(false);
   const [voteCampaigns, setVoteCampaigns] = useState<VoteCampaignProps[]>([]);
   const [censusCampaigns, setCensusCampaigns] = useState<CensusCampaignProps[]>(
@@ -31,8 +28,8 @@ export function ActiveCampaignsComponent() {
     const fetchCampaigns = async () => {
       setIsLoading(true);
 
-      const voteData = await fetchCampaignData(`${activeCampaignsUrl}/vote`);
-      const censusData = await fetchCampaignData(`${activeCampaignsUrl}/census`); //prettier-ignore
+      const voteData = await fetchCampaignData(API_URLS.ACTIVE_VOTE);
+      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
 
       try {
         if (voteData) {

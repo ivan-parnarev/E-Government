@@ -1,13 +1,12 @@
+import API_URLS from "../../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 import UserAuthenticationComponent from "../../user/UserAuthenticationComponent.js";
 import CampaignModalFooterComponent from "../../CampaignModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
-import {
-  UserData,
-  VotingModalProps,
-} from "../../../interfaces/voting/VotingModalInterface.ts";
+import usePinInput from "../../../hooks/usePinInput.js";
+import { UserData, VotingModalProps } from "../../../interfaces/voting/VotingModalInterface.ts"; //prettier-ignore
 
 export function VotingModalComponent({
   show,
@@ -17,22 +16,10 @@ export function VotingModalComponent({
   electionId,
   electionCandidates,
 }: VotingModalProps) {
-  const [pinValue, setPinValue] = useState<string>("");
-  const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
+  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [showQuestions, setShowQuestions] = useState<boolean>(false);
   const [checkedId, setCheckedId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
-
-  const validatePinValue = (input: string): boolean => {
-    const regex = /^[0-9]+$/;
-    return regex.test(input);
-  };
-
-  const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPinValue = event.target.value;
-    setPinValue(newPinValue);
-    setIsValidPinValue(validatePinValue(newPinValue));
-  };
 
   const handleContinue = () => {
     if (pinValue.length < 10) {
@@ -67,7 +54,7 @@ export function VotingModalComponent({
   const handleVoteSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    fetch("http://localhost:8080/api/v1/vote", {
+    fetch(API_URLS.VOTE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),

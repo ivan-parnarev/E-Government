@@ -1,3 +1,5 @@
+import API_URLS from "../../utils/apiUtils";
+import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -47,28 +49,13 @@ export function CreateVotingCampaignComponent({
     setCampaignStartDate(startDate);
 
     if (!campaignEndDate) {
-      const endDate = new Date(
-        new Date(startDate).getTime() + 24 * 60 * 60 * 1000
-      );
+      const endDate = calculateDefaultEndDate(startDate);
       setCampaignEndDate(formatDate(endDate));
     }
   };
 
   const handleEndDateChange = (e) => {
     setCampaignEndDate(e.target.value);
-  };
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
   };
 
   const handleFormSubmit = (event) => {
@@ -85,7 +72,7 @@ export function CreateVotingCampaignComponent({
       candidates: candidates.slice(0, -1),
     };
 
-    fetch("http://localhost:8080/api/v1/campaigns/create/vote", {
+    fetch(API_URLS.CREATE_VOTE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currUserData),

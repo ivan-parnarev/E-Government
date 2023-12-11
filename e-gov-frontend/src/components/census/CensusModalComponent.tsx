@@ -1,11 +1,13 @@
+import API_URLS from "../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
 import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
 import CensusCategoryInfoComponent from "./CensusCategoryInfoComponent.tsx";
+import usePinInput from "../../hooks/usePinInput.js";
 import {
   CensusModalProps,
   UserData,
@@ -23,26 +25,14 @@ function CensusModalComponent({
   censusId,
   censusQuestions,
 }: CensusModalProps) {
+  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [currentStep, setCurrentStep] = useState(0);
-  const [pinValue, setPinValue] = useState<string>("");
-  const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
   const [showQuestions, setShowQuestions] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
     userPin: "",
     campaignId: "",
     censusAnswers: [],
   });
-
-  const validatePinValue = (input: string): boolean => {
-    const regex = /^[0-9]+$/;
-    return regex.test(input);
-  };
-
-  const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPinValue = event.target.value;
-    setPinValue(newPinValue);
-    setIsValidPinValue(validatePinValue(newPinValue));
-  };
 
   const censusCategories = [
     ...new Set(censusQuestions.map((question) => question.questionCategory)),
@@ -81,7 +71,7 @@ function CensusModalComponent({
 
     console.log(userData);
 
-    fetch("http://localhost:8080/api/v1/census", {
+    fetch(API_URLS.CENSUS, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
