@@ -1,3 +1,7 @@
+.censusCategoryInfoContainer {
+  padding: 30px;
+}
+
 .inputGroupTitle {
   margin-bottom: 1.5rem;
 }
@@ -9,7 +13,7 @@
 }
 
 .inputGroupInputLabel {
-  margin-bottom: 0px !important;
+  margin-bottom: 10px !important;
 }
 
 .inputGroupInputField {

@@ -3,8 +3,10 @@ export interface CensusActiveCampaignProps {
   campaignDescription: string;
   censusId: string;
   censusQuestions: {
-    id: string;
     text: string;
+    answers: Array<{
+      answerText: string;
+    }>;
     questionCategory: string;
   }[];
 }

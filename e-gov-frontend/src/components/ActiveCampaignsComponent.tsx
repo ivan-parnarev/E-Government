@@ -32,9 +32,7 @@ export function ActiveCampaignsComponent() {
       setIsLoading(true);
 
       const voteData = await fetchCampaignData(`${activeCampaignsUrl}/vote`);
-      const censusData = await fetchCampaignData(
-        `${activeCampaignsUrl}/census`
-      );
+      const censusData = await fetchCampaignData(`${activeCampaignsUrl}/census`); //prettier-ignore
 
       try {
         if (voteData) {
@@ -42,7 +40,7 @@ export function ActiveCampaignsComponent() {
         }
 
         if (censusData) {
-          setCensusCampaigns([censusData]);
+          setCensusCampaigns(censusData);
         }
       } catch (error) {
         console.error("Error fetching campaigns:", error);
@@ -82,9 +80,10 @@ export function ActiveCampaignsComponent() {
               if ("censusQuestions" in campaign) {
                 return (
                   <CensusActiveCampaignComponent
+                    key={campaign.campaignId}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
-                    censusId={campaign.id}
+                    censusId={campaign.campaignId}
                     censusQuestions={campaign.censusQuestions}
                   />
                 );
