@@ -1,12 +1,9 @@
 import styles from "./ProfilePage.module.css";
-import usePinInput from "../hooks/usePinInput";
-import { useAuth } from "../hooks/AuthContext";
-import Button from "react-bootstrap/Button";
+import useAuth from "../hooks/AuthContext";
 import UserAuthenticationComponent from "../components/user/UserAuthenticationComponent";
 
 export function ProfilePage() {
-  const { userPin, login } = useAuth();
-  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
+  const { userPin } = useAuth();
 
   return (
     <div className={styles.containerBackground}>
@@ -15,12 +12,7 @@ export function ProfilePage() {
           <p>This is the profile page. ✨</p>
         ) : (
           <div>
-            <UserAuthenticationComponent
-              pinValue={pinValue}
-              isValidPinValue={isValidPinValue}
-              onChange={handlePinChange}
-            />
-            <Button onClick={() => login(pinValue)}>Влез</Button>
+            <UserAuthenticationComponent />
           </div>
         )}
       </div>

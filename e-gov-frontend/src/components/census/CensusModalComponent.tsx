@@ -5,13 +5,9 @@ import Button from "react-bootstrap/Button";
 import { MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
-import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
 import CensusCategoryInfoComponent from "./CensusCategoryInfoComponent.tsx";
-import usePinInput from "../../hooks/usePinInput.js";
-import {
-  CensusModalProps,
-  UserData,
-} from "../../interfaces/census/CensusModalInterface.ts";
+import useAuth from "../../hooks/AuthContext.js";
+import { CensusModalProps, UserData } from "../../interfaces/census/CensusModalInterface.ts"; //prettier-ignore
 
 const PERSONAL_INFO_DATA = {
   questionCategory: "PERSONAL",
@@ -25,12 +21,11 @@ function CensusModalComponent({
   censusId,
   censusQuestions,
 }: CensusModalProps) {
-  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
+  const { userPin } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
-  const [showQuestions, setShowQuestions] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
-    userPin: "",
-    campaignId: "",
+    userPin,
+    campaignId: censusId,
     censusAnswers: [],
   });
 
@@ -43,33 +38,11 @@ function CensusModalComponent({
   const handleContinue = () => {
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
-    } else {
-      console.log("Census data submitted:", userData);
-    }
-  };
-
-  const handleFormContinue = () => {
-    if (pinValue.length < 10) {
-      setShowQuestions(false);
-    } else if (pinValue.length > 10) {
-      setShowQuestions(false);
-    } else if (!isValidPinValue) {
-      setShowQuestions(false);
-    } else {
-      setUserData((prevData) => ({
-        ...prevData,
-        userPin: pinValue,
-        campaignId: censusId,
-        censusAnswers: prevData.censusAnswers,
-      }));
-      setShowQuestions(true);
     }
   };
 
   const handleFormSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
-    console.log(userData);
 
     fetch(API_URLS.CENSUS, {
       method: "POST",
@@ -97,10 +70,6 @@ function CensusModalComponent({
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
-
-  const handleFormBack = () => {
-    setShowQuestions(false);
   };
 
   const handleInputChange = (
@@ -150,7 +119,6 @@ function CensusModalComponent({
           <CensusCategoryInfoComponent
             censusTitle="Лична информация"
             censusQuestions={currentQuestions}
-            onContinue={handleContinue}
             onInputChange={(field, value, questionCategory) =>
               handleInputChange(field, value, questionCategory)
             }
@@ -162,7 +130,6 @@ function CensusModalComponent({
           <CensusCategoryInfoComponent
             censusTitle="Жилищна информация"
             censusQuestions={currentQuestions}
-            onContinue={handleContinue}
             onInputChange={(field, value, questionCategory) =>
               handleInputChange(field, value, questionCategory)
             }
@@ -173,7 +140,6 @@ function CensusModalComponent({
           <CensusCategoryInfoComponent
             censusTitle="Гражданска информация"
             censusQuestions={currentQuestions}
-            onContinue={handleContinue}
             onInputChange={(field, value, questionCategory) =>
               handleInputChange(field, value, questionCategory)
             }
@@ -184,7 +150,6 @@ function CensusModalComponent({
           <CensusCategoryInfoComponent
             censusTitle="Здравна информация"
             censusQuestions={currentQuestions}
-            onContinue={handleContinue}
             onInputChange={(field, value, questionCategory) =>
               handleInputChange(field, value, questionCategory)
             }
@@ -218,55 +183,41 @@ function CensusModalComponent({
       </Modal.Header>
 
       <Modal.Body className={styles.modalBodyContainer}>
-        {!showQuestions ? (
-          <UserAuthenticationComponent
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            onChange={handlePinChange}
-          />
-        ) : (
-          <div className={styles.censusContainer}>
-            <h5>{campaignDescription}</h5>
+        <div className={styles.censusContainer}>
+          <h5>{campaignDescription}</h5>
 
-            <ProgressBar animated now={progressPercentage} />
-            <div className={styles.censusInfoContainerPosition}>
-              <div className={styles.censusInfoContainer}>
-                {getCurrentComponent()}
+          <ProgressBar animated now={progressPercentage} />
+          <div className={styles.censusInfoContainerPosition}>
+            <div className={styles.censusInfoContainer}>
+              {getCurrentComponent()}
 
-                <div className={styles.censusModalButtonContainer}>
-                  <Button
-                    className={styles.censusModalButton}
-                    disabled={currentStep === 0}
-                    onClick={handleBack}
-                  >
-                    ←
-                  </Button>
+              <div className={styles.censusModalButtonContainer}>
+                <Button
+                  className={styles.censusModalButton}
+                  disabled={currentStep === 0}
+                  onClick={handleBack}
+                >
+                  ←
+                </Button>
 
-                  <Button
-                    className={styles.censusModalButton}
-                    disabled={currentStep === totalSteps - 1}
-                    onClick={handleContinue}
-                  >
-                    →
-                  </Button>
-                </div>
+                <Button
+                  className={styles.censusModalButton}
+                  disabled={currentStep === totalSteps - 1}
+                  onClick={handleContinue}
+                >
+                  →
+                </Button>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </Modal.Body>
 
       <Modal.Footer>
         <CampaignModalFooterComponent
-          showQuestions={showQuestions}
           submitButtonDisabled="false"
-          continueButtonDisabled={
-            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
-          }
           buttonText="Изпрати"
-          onContinue={handleFormContinue}
           onSubmit={handleFormSubmit}
-          onBack={handleFormBack}
           onHide={onHide}
         />
       </Modal.Footer>

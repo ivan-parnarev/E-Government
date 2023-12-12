@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import styles from "./MainNavigation.module.css";
 import eGovLogo from "../assets/images/e-gov-logo.png";
 import { Link } from "react-router-dom";
-import { useAuth } from "../hooks/AuthContext";
+import useAuth from "../hooks/AuthContext";
 
 export function MainNavigation() {
   const { userPin, logout } = useAuth();

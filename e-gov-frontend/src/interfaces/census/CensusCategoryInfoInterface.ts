@@ -7,7 +7,6 @@ interface CensusCategoryInfoProps {
     }>;
     questionCategory: string;
   }>;
-  onContinue: () => void;
   onInputChange: (
     text: string,
     value: string,
