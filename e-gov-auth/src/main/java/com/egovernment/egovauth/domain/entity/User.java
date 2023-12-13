@@ -1,9 +1,6 @@
 package com.egovernment.egovauth.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -23,6 +20,8 @@ public class User {
     private String middleName;
     @Column
     private String lastName;
+    @ManyToOne
+    private Address address;
     @Column
-    private String address;
+    private boolean isAdmin;
 }

@@ -1,8 +1,9 @@
 package com.egovernment.egovauth.service;
 
-import com.egovernment.egovauth.domain.entity.User;
+import com.egovernment.egovauth.domain.entity.*;
+import com.egovernment.egovauth.domain.enums.Country;
 import com.egovernment.egovauth.factory.userFactory.UserFactory;
-import com.egovernment.egovauth.repository.UserRepository;
+import com.egovernment.egovauth.repository.*;
 import com.egovernment.egovauth.utils.TestUserData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final RegionRepository regionRepository;
+
+    private final MunicipalityRepository municipalityRepository;
+
+    private final CityRepository cityRepository;
+
+    private final AddressRepository addressRepository;
+
     private final UserFactory userFactory = new UserFactory();
 
     public Optional<User> findUserByUserPin(String hashedUserPin) {
@@ -25,23 +34,45 @@ public class UserService {
     }
 
     public void initTestUsers() throws NoSuchAlgorithmException {
+        Region region = this.regionRepository.findByName(TestUserData.TEST_USER_REGION);
+
+        Municipality municipality = this.municipalityRepository.findByName(TestUserData.TEST_USER_MUNICIPALITY);
+
+        City city = this.cityRepository.findByName(TestUserData.TEST_USER_CITY);
+
+        Address address = Address.builder()
+                .country(Country.България)
+                .region(region)
+                .municipality(municipality)
+                .city(city)
+                .build();
+
+        this.addressRepository.save(address);
+
+        User adminTestUser = userFactory.createUser(generateHashedUserPin("00000000"),
+                TestUserData.TEST_USER_FIRST_NAME,
+                TestUserData.TEST_USER_MIDDLE_NAME,
+                TestUserData.TEST_USER_LAST_NAME,
+                address);
+        adminTestUser.setAdmin(true);
+
         User firstTestUser = userFactory.createUser(generateHashedUserPin("00000001"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                TestUserData.TEST_USER_ADDRESS);
+                address);
         User secondTestUser = userFactory.createUser(generateHashedUserPin("00000002"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                TestUserData.TEST_USER_ADDRESS);
+                address);
         User thirdTestUser = userFactory.createUser(generateHashedUserPin("00000003"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                TestUserData.TEST_USER_ADDRESS);
+                address);
 
-        this.userRepository.saveAll(List.of(firstTestUser, secondTestUser, thirdTestUser));
+        this.userRepository.saveAll(List.of(adminTestUser, firstTestUser, secondTestUser, thirdTestUser));
     }
 
     private String generateHashedUserPin(String userPin) throws NoSuchAlgorithmException {

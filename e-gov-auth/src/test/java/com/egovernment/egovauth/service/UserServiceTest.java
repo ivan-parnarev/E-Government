@@ -1,7 +1,10 @@
 package com.egovernment.egovauth.service;
 
+import com.egovernment.egovauth.domain.entity.City;
+import com.egovernment.egovauth.domain.entity.Municipality;
+import com.egovernment.egovauth.domain.entity.Region;
 import com.egovernment.egovauth.domain.entity.User;
-import com.egovernment.egovauth.repository.UserRepository;
+import com.egovernment.egovauth.repository.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,18 @@ public class UserServiceTest {
 
     private static final String FIRST_NAME = "George";
     private static final String USER_PIN = "testHashedUserPin";
+
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private RegionRepository regionRepository;
+    @Mock
+    private MunicipalityRepository municipalityRepository;
+    @Mock
+    private CityRepository cityRepository;
+    @Mock
+    private AddressRepository addressRepository;
+
     @InjectMocks
     private UserService userService;
     private User testUser;
