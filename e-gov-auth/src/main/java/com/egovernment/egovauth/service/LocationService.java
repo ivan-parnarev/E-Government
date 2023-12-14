@@ -76,7 +76,7 @@ public class LocationService {
         cityRepository.saveAllAndFlush(cityEntityList);
     }
 
-    private void readFromFile(List<String> locations, ClassPathResource resource) throws IOException {
+    void readFromFile(List<String> locations, ClassPathResource resource) throws IOException {
         InputStream inputStream = resource.getInputStream();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));

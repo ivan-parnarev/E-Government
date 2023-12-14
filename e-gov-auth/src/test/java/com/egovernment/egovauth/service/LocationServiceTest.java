@@ -1,47 +1,119 @@
 package com.egovernment.egovauth.service;
 
+import com.egovernment.egovauth.domain.dto.AddressDTO;
+import com.egovernment.egovauth.domain.entity.Address;
 import com.egovernment.egovauth.domain.entity.City;
 import com.egovernment.egovauth.domain.entity.Municipality;
 import com.egovernment.egovauth.domain.entity.Region;
+import com.egovernment.egovauth.domain.enums.Country;
 import com.egovernment.egovauth.repository.CityRepository;
 import com.egovernment.egovauth.repository.MunicipalityRepository;
 import com.egovernment.egovauth.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @RequiredArgsConstructor
 public class LocationServiceTest {
 
-    public static final String TEST_USER_REGION = "Софийска";
-    public static final String TEST_USER_MUNICIPALITY = "Столична община";
-    public static final String TEST_USER_CITY = "София";
+    private static final String TEST_USER_REGION = "Софийска";
+    private static final String TEST_USER_MUNICIPALITY = "Столична община";
+    private static final String TEST_USER_CITY = "София";
     @Mock
-    private final RegionRepository regionRepository;
+    private RegionRepository regionRepository;
     @Mock
-    private final MunicipalityRepository municipalityRepository;
+    private MunicipalityRepository municipalityRepository;
     @Mock
-    private final CityRepository cityRepository;
+    private CityRepository cityRepository;
 
     @InjectMocks
     private LocationService locationService;
 
     private Region region;
+    private Municipality municipality;
+    private City city;
 
     @BeforeEach
     void setUp() {
         this.region = Region.builder()
                 .name(TEST_USER_REGION)
                 .build();
-        Municipality municipality = Municipality.builder()
+        this.municipality = Municipality.builder()
                 .name(TEST_USER_MUNICIPALITY)
                 .build();
-        City city = City.builder()
+        this.city = City.builder()
                 .name(TEST_USER_CITY)
                 .build();
+    }
+
+    @Test
+    void testInitCities() throws IOException {
+        ClassPathResource mockedResource = mock(ClassPathResource.class);
+
+        locationService.initCities();
+
+        verify(cityRepository, times(1)).saveAllAndFlush(anyList());
+    }
+
+    @Test
+    void testInitRegions() throws IOException {
+        ClassPathResource mockedResource = mock(ClassPathResource.class);
+
+        locationService.initRegions();
+
+        verify(regionRepository, times(1)).saveAllAndFlush(anyList());
+    }
+
+    @Test
+    void testInitMunicipalities() throws IOException {
+        ClassPathResource mockedResource = mock(ClassPathResource.class);
+
+        locationService.initMunicipalities();
+
+        verify(municipalityRepository, times(1)).saveAllAndFlush(anyList());
+    }
+
+    @Test
+    void testReadFromFile() throws IOException {
+        List<String> locations = new ArrayList<>();
+        ClassPathResource mockedResource = mock(ClassPathResource.class);
+        when(mockedResource.getInputStream()).thenReturn(new ByteArrayInputStream("Location1, Location2".getBytes()));
+
+        locationService.readFromFile(locations, mockedResource);
+
+        assertEquals(2, locations.size());
+        assertTrue(locations.contains("Location1"));
+        assertTrue(locations.contains("Location2"));
+    }
+
+    @Test
+    void testMapAddressToDto() {
+        Address address = Address.builder()
+                .country(Country.България)
+                .city(this.city)
+                .municipality(this.municipality)
+                .region(this.region)
+                .build();
+
+        AddressDTO addressDTO = locationService.mapAddressToDto(address);
+
+        assertNotNull(addressDTO);
+        assertEquals(TEST_USER_REGION, addressDTO.getRegion());
+        assertEquals(TEST_USER_MUNICIPALITY, addressDTO.getMunicipality());
+        assertEquals(TEST_USER_CITY, addressDTO.getCity());
     }
 }
