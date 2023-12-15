@@ -50,9 +50,9 @@ public class UserService {
         this.addressRepository.save(address);
 
         User adminTestUser = userFactory.createUser(generateHashedUserPin("00000000"),
-                TestUserData.TEST_USER_FIRST_NAME,
-                TestUserData.TEST_USER_MIDDLE_NAME,
-                TestUserData.TEST_USER_LAST_NAME,
+                TestUserData.TEST_ADMIN_NAME,
+                TestUserData.TEST_ADMIN_NAME,
+                TestUserData.TEST_ADMIN_NAME,
                 address);
         adminTestUser.setAdmin(true);
 
