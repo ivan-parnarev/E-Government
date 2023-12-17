@@ -1,45 +1,39 @@
 version: "3.8"
 
 services:
-  postgres:
+  database:
     build:
       context: ../../e-gov-dev-env
       dockerfile: ../Dockerfile
-    container_name: e-gov-dev-env
     image: postgres:latest
     restart: always
-    environment:
-      POSTGRES_USER: postgres-user
-      POSTGRES_PASSWORD: 1234qwer
-      POSTGRES_DB: e-gov-db
     ports:
       - "5432:5432"
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: 1234qwer
+        POSTGRES_DB: e-gov-db
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  react:
+  frontend:
     build:
       context: ../../e-gov-frontend
       dockerfile: ../e-gov-frontend/Dockerfile
     ports:
       - "3000:3000"
-    networks:
-      - app-network
 
-  spring:
+  backend:
     build:
       context: ../../e-gov-backend
       dockerfile: ../e-gov-backend/Dockerfile
     ports:
       - "8080:8080"
-    depends_on:
-      - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres-user
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 1234qwer
 
-networks:
-  app-network:
-    driver: bridge
 
+volumes:
+  postgres_data:
