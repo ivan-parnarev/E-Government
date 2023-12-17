@@ -6,7 +6,7 @@ public class DatabaseInitializer {
     private static final String DB_URL =
             "jdbc:postgresql://localhost:5432/e-gov-db";
     private static final String USER = "postgres";
-    private static final String PASS = "Yana13042308";
+    private static final String PASS = "1234";
     private static final String SUBSCRIPTION_NAME = "e_government_subscription".toLowerCase();
     private static final String CHECK_SUBSCRIPTION_SQL =
             "SELECT 1 FROM pg_subscription WHERE subname = ?";
@@ -14,7 +14,7 @@ public class DatabaseInitializer {
             "SELECT 1 FROM pg_replication_slots WHERE slot_name = ?";
     private static final String CREATE_SUBSCRIPTION_SQL =
             "CREATE SUBSCRIPTION " + SUBSCRIPTION_NAME + " " +
-                    "CONNECTION 'host=localhost port=5432 dbname=e-gov-db user=postgres password=Yana13042308' " +
+                    "CONNECTION 'host=localhost port=5432 dbname=e-gov-db user=postgres password=1234' " +
                     "PUBLICATION e_government_campaigns_publication " +
                     "WITH (synchronous_commit = 'off', copy_data = true, enabled = true);";
 
@@ -34,7 +34,6 @@ public class DatabaseInitializer {
                 checkSlotStmt.setString(1, SUBSCRIPTION_NAME);
                 ResultSet slotRs = checkSlotStmt.executeQuery();
                 if (!slotRs.next()) {
-                    // Create subscription
                     try (Statement createSubStmt = conn.createStatement()) {
                         createSubStmt.execute(CREATE_SUBSCRIPTION_SQL);
                         System.out.println("Subscription created successfully.");
