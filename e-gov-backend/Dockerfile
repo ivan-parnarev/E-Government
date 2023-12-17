@@ -1,9 +1,9 @@
 FROM eclipse-temurin:17-jdk-alpine
 
-WORKDIR /e-gov-backend
+ARG JAR_FILE=target/*.jar
 
-COPY .mvn/wrapper/ .mvn/wrapper/
+ADD ${JAR_FILE} app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "your-spring-boot-app.jar"]
+CMD ["java", "-jar", "app.jar"]
