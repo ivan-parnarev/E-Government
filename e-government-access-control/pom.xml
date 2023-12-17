@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>e-government-access-control</artifactId>
+    <artifactId>e-gov-access-control</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>e-government-access-control</name>
     <description>e-government-access-control</description>
