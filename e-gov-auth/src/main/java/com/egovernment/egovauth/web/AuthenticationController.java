@@ -58,9 +58,9 @@ public class AuthenticationController {
 
             AuthenticationResponse response = AuthenticationResponse.builder()
                     .publicKey(this.keyService.getPublicKey(publicKeyPath))
-                    .token(token).build();
+                    .build();
 
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok().header("Authorization", "Bearer " + token).body(response);
         } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
