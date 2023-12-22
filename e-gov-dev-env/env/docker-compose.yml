@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   database:
+    container_name: e-gov-postgres
     build:
       context: ../../e-gov-dev-env
       dockerfile: ../Dockerfile
@@ -17,6 +18,7 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   frontend:
+    container_name: e-gov-react
     build:
       context: ../../e-gov-frontend
       dockerfile: ../e-gov-frontend/Dockerfile
@@ -24,6 +26,7 @@ services:
       - "3000:3000"
 
   backend:
+    container_name: e-gov-spring-boot
     build:
       context: ../../e-gov-backend
       dockerfile: ../e-gov-backend/Dockerfile
