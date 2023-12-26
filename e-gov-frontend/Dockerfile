@@ -1,14 +1,12 @@
-FROM node:15-alpine
+FROM node:18.16.0-alpine
 
-WORKDIR ./e-gov-frontend
+WORKDIR ./app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN npm install
+RUN npm install -g npm@9.5.1
 
 COPY . .
-
-RUN npm run build
 
 EXPOSE 3000
 
