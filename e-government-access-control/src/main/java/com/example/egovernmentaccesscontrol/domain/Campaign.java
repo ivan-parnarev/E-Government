@@ -31,6 +31,6 @@ public class Campaign extends BaseEntity {
     @Column
     private LocalDateTime endDate;
     @Column
-    private boolean isActive ;
+    private boolean isActive;
 
 }
