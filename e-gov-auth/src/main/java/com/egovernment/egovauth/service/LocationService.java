@@ -39,7 +39,10 @@ public class LocationService {
         readFromFile(regions, resource);
 
         for (String region : regions) {
-            Region newRegion = Region.builder().name(region).build();
+            String[] regionWithPostCode = region.split(" ");
+            String regionName = regionWithPostCode[0];
+            String postcode = regionWithPostCode[1];
+            Region newRegion = Region.builder().name(regionName).postcode(postcode).build();
             regionEntityList.add(newRegion);
         }
 
@@ -90,6 +93,8 @@ public class LocationService {
         reader.close();
     }
 
+
+
     public AddressDTO mapAddressToDto(Address address) {
 
         String cityName = address.getCity() != null ? address.getCity().getName() : null;
@@ -98,6 +103,7 @@ public class LocationService {
         return AddressDTO.builder()
                 .country(address.getCountry().name())
                 .region(address.getRegion().getName())
+                .postcode(address.getRegion().getPostcode())
                 .municipality(address.getMunicipality().getName())
                 .city(cityName)
                 .village(villageName)

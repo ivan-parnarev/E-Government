@@ -17,6 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private static final String HASH_ALGORITHM = "SHA-256";
     private final UserRepository userRepository;
 
     private final RegionRepository regionRepository;
@@ -43,6 +44,7 @@ public class UserService {
         Address address = Address.builder()
                 .country(Country.България)
                 .region(region)
+                .postcode(region.getPostcode())
                 .municipality(municipality)
                 .city(city)
                 .build();
@@ -76,7 +78,7 @@ public class UserService {
     }
 
     private String generateHashedUserPin(String userPin) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] hashedBytes = md.digest(userPin.getBytes());
 
         StringBuilder sb = new StringBuilder();

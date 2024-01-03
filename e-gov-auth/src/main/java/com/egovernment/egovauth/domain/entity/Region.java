@@ -18,4 +18,6 @@ public class Region extends BaseEntity {
 
     @Column
     private String name;
+    @Column
+    private String postcode;
 }

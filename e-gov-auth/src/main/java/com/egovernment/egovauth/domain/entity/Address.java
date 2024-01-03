@@ -19,6 +19,8 @@ public class Address extends BaseEntity {
     private Country country;
     @ManyToOne
     private Region region;
+    @Column
+    private String postcode;
     @ManyToOne
     private Municipality municipality;
     @ManyToOne
