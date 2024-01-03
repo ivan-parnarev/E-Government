@@ -19,8 +19,10 @@ public class ElectionService {
     private final ElectionFactory electionFactory = new ElectionFactory();
 
     public void initSampleElections(Campaign campaign) {
+        if(this.electionRepository.count() == 0){
             Election election = this.launchElection(ElectionType.PARLIAMENT, campaign);
             this.electionRepository.save(election);
+        }
     }
 
     public Election launchElection(ElectionType electionType, Campaign campaign){

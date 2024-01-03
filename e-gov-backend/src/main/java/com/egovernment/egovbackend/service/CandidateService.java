@@ -23,13 +23,15 @@ public class CandidateService {
     private final CandidateFactory candidateFactory = new CandidateFactory();
 
     public void initSampleCandidates() {
-        Optional<Election> election = this.electionService.getElectionById(1L);
-        if (election.isPresent()) {
-            Candidate candidate = this.createCandidate("ГЕРБ", "ГЕРБ", election.get(), 11);
-            Candidate candidate1 = this.createCandidate("ПП", "ПП", election.get(), 12);
-            Candidate candidate2 = this.createCandidate("БЗНС", "БЗНС", election.get(), 13);
+        if(this.candidateRepository.count() == 0){
+            Optional<Election> election = this.electionService.getElectionById(1L);
+            if (election.isPresent()) {
+                Candidate candidate = this.createCandidate("ГЕРБ", "ГЕРБ", election.get(), 11);
+                Candidate candidate1 = this.createCandidate("ПП", "ПП", election.get(), 12);
+                Candidate candidate2 = this.createCandidate("БЗНС", "БЗНС", election.get(), 13);
 
-            this.candidateRepository.saveAll(List.of(candidate, candidate1, candidate2));
+                this.candidateRepository.saveAll(List.of(candidate, candidate1, candidate2));
+            }
         }
     }
 

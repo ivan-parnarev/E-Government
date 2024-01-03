@@ -7,5 +7,6 @@ public class ApiPaths {
     public static final String CAMPAIGN_PATH = "/campaigns";
     public static final String VOTE_PATH = "/vote";
     public static final String CENSUS_PATH = "/census";
+    public static final String ACTIVE_PATH = "/active";
 
 }

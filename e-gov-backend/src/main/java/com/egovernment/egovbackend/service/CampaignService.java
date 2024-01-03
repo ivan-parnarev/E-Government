@@ -1,7 +1,8 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.client.AccessControlClient;
 import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.egovbackend.domain.dto.common.CreateCampaignCommon;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
 import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
@@ -39,6 +40,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+    private final AccessControlClient accessControlClient;
 
 
     public void initSampleCampaign() {
@@ -80,12 +82,8 @@ public class CampaignService {
         return campaignFactory.createCampaign(type, title, description, from, startDate, endDate, isActive);
     }
 
-    public List<CampaignViewDTO> getActiveCampaigns() {
-        return this.campaignRepository
-                .findAll()
-                .stream()
-                .map(c -> this.modelMapper.map(c, CampaignViewDTO.class))
-                .collect(Collectors.toList());
+    public List<CampaignFilteredDTO> getActiveCampaigns() {
+        return this.accessControlClient.getActiveCampaigns().getBody();
     }
 
     public List<VoteCampaignDTO> getActiveVotingCampaigns(){

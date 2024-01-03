@@ -9,10 +9,16 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
     show-sql: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          access-control-client:
+            url: http://localhost:8083/api/v1

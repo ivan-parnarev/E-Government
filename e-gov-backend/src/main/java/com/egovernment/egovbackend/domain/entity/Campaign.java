@@ -21,6 +21,8 @@ public class Campaign extends BaseEntity {
     @Column
     private CampaignType campaignType;
     @Column
+    private Long campaignReferenceId;
+    @Column
     private String title;
     @Column
     private String description;
