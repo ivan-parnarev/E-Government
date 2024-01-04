@@ -15,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -53,7 +50,6 @@ public class AuthenticationController {
     )
     @PostMapping(ApiPaths.AUTH_PATH)
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
-        try {
             String token = this.authenticationService.authenticateUser(authRequest.getUserPin());
 
             AuthenticationResponse response = AuthenticationResponse.builder()
@@ -61,9 +57,13 @@ public class AuthenticationController {
                     .build();
 
             return ResponseEntity.ok().header("Authorization", "Bearer " + token).body(response);
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex){
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                ex.getMessage());
     }
 
 }
