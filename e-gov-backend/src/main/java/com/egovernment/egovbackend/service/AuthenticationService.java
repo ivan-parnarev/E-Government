@@ -4,6 +4,7 @@ import com.egovernment.egovbackend.client.AuthenticationClient;
 import com.egovernment.egovbackend.domain.dto.auth.AuthRequest;
 import com.egovernment.egovbackend.domain.dto.auth.AuthResponse;
 import com.egovernment.egovbackend.domain.dto.auth.FeignAuthResponse;
+import com.egovernment.egovbackend.exceptions.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -59,8 +60,9 @@ public class AuthenticationService {
                 //TODO: return AuthResponse with the filtered Campaigns
                 return null;
             }
+        } else {
+            throw new UserNotFoundException();
         }
-        return null;
     }
 
     private PublicKey createPublicKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
