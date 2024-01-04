@@ -6,14 +6,12 @@ services:
     build:
       context: ../../e-gov-dev-env
       dockerfile: ../Dockerfile
-    image: postgres:latest
+    image: postgres:16
+    env_file:
+      - ../docker.env
     restart: always
     ports:
       - "5432:5432"
-    environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: 1234qwer
-        POSTGRES_DB: e-gov-db
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
@@ -30,12 +28,10 @@ services:
     build:
       context: ../../e-gov-backend
       dockerfile: ../e-gov-backend/Dockerfile
+    env_file:
+      - ../docker.env
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: 1234qwer
 
 
 volumes:
