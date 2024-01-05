@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Data
@@ -19,6 +20,18 @@ public class RegionsCatalog {
             instance = new RegionsCatalog();
         }
         return instance;
+    }
+
+    public Optional<Region> findRegionByEnglishName(String englishName) {
+        return regions.stream()
+                .filter(region -> region.getEnglishRegionName().equalsIgnoreCase(englishName))
+                .findFirst();
+    }
+
+    public Optional<Region> findRegionByBulgarianName(String bulgarianName) {
+        return regions.stream()
+                .filter(region -> region.getBulgarianRegionName().equalsIgnoreCase(bulgarianName))
+                .findFirst();
     }
 
 }

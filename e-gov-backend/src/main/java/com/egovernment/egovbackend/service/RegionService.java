@@ -6,6 +6,7 @@ import com.egovernment.egovbackend.domain.factory.region.RegionFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RegionService {
@@ -114,6 +115,14 @@ public class RegionService {
 
         }
 
+    }
+
+    public Optional<Region> getRegionByEnglishName(String englishName){
+        return RegionsCatalog.getInstance().findRegionByEnglishName(englishName);
+    }
+
+    public Optional<Region> getRegionByBulgrianName(String bulgarianName){
+        return RegionsCatalog.getInstance().findRegionByBulgarianName(bulgarianName);
     }
 
 }
