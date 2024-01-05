@@ -1,114 +1,119 @@
 package com.egovernment.egovbackend.service;
 
+import com.egovernment.egovbackend.domain.dto.region.RegionDTO;
 import com.egovernment.egovbackend.domain.entity.Region;
 import com.egovernment.egovbackend.domain.entity.RegionsCatalog;
 import com.egovernment.egovbackend.domain.factory.region.RegionFactory;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RegionService {
 
     private final RegionFactory regionFactory = new RegionFactory();
+    private final ModelMapper modelMapper;
 
-    public void initRegions(){
+    public void initRegions() {
 
-        if(RegionsCatalog.getInstance().getRegions().size() == 0){
-
+        if (RegionsCatalog.getInstance().getRegions().size() == 0) {
 
             Region global = this.regionFactory
-                    .createRegion((byte) 1, "global", "Глобална");
+                    .createRegion(1, "global", "Глобална");
 
             Region blagoevgrad = this.regionFactory
-                    .createRegion((byte) 2, "blagoevgrad", "Благоевград");
+                    .createRegion(2700, "blagoevgrad", "Благоевград");
 
             Region burgas = this.regionFactory
-                    .createRegion((byte) 3, "burgas", "Бургас");
+                    .createRegion(8000, "burgas", "Бургас");
 
             Region varna = this.regionFactory
-                    .createRegion((byte) 4, "varna", "Варна");
+                    .createRegion(9000, "varna", "Варна");
 
             Region velikoTarnovo = this.regionFactory
-                    .createRegion((byte) 5, "velikoTarnovo", "Велико Търново");
+                    .createRegion(5000, "velikoTarnovo", "Велико Търново");
 
             Region vidin = this.regionFactory
-                    .createRegion((byte) 6, "vidin", "Видин");
+                    .createRegion(3700, "vidin", "Видин");
 
             Region vratsa = this.regionFactory
-                    .createRegion((byte) 7, "vratsa", "Враца");
+                    .createRegion(3000, "vratsa", "Враца");
 
             Region gabrovo = this.regionFactory
-                    .createRegion((byte) 8, "gabrovo", "Габрово");
+                    .createRegion(5300, "gabrovo", "Габрово");
 
             Region dobrich = this.regionFactory
-                    .createRegion((byte) 9, "dobrich", "Добрич");
+                    .createRegion(9300, "dobrich", "Добрич");
 
             Region kardzhali = this.regionFactory
-                    .createRegion((byte) 10, "kardzhali", "Кърджали");
+                    .createRegion(6600, "kardzhali", "Кърджали");
 
             Region kyustendil = this.regionFactory
-                    .createRegion((byte) 11, "kyustendil", "Кюстендил");
+                    .createRegion(2500, "kyustendil", "Кюстендил");
 
             Region lovech = this.regionFactory
-                    .createRegion((byte) 12, "lovech", "Ловеч");
+                    .createRegion(5500, "lovech", "Ловеч");
 
             Region montana = this.regionFactory
-                    .createRegion((byte) 13, "montana", "Монтана");
+                    .createRegion(3400, "montana", "Монтана");
 
             Region pazardzhik = this.regionFactory
-                    .createRegion((byte) 14, "pazardzhik", "Пазарджик");
+                    .createRegion(4400, "pazardzhik", "Пазарджик");
 
             Region pernik = this.regionFactory
-                    .createRegion((byte) 15, "pernik", "Перник");
+                    .createRegion(2300, "pernik", "Перник");
 
             Region pleven = this.regionFactory
-                    .createRegion((byte) 16, "pleven", "Плевен");
+                    .createRegion(5800, "pleven", "Плевен");
 
             Region plovdiv = this.regionFactory
-                    .createRegion((byte) 17, "plovdiv", "Пловдив");
+                    .createRegion(4000, "plovdiv", "Пловдив");
 
             Region razgrad = this.regionFactory
-                    .createRegion((byte) 18, "razgrad", "Разград");
+                    .createRegion(7200, "razgrad", "Разград");
 
             Region ruse = this.regionFactory
-                    .createRegion((byte) 19, "ruse", "Русе");
+                    .createRegion(7000, "ruse", "Русе");
 
             Region silistra = this.regionFactory
-                    .createRegion((byte) 20, "silistra", "Силистра");
+                    .createRegion(7500, "silistra", "Силистра");
 
             Region sliven = this.regionFactory
-                    .createRegion((byte) 21, "sliven", "Сливен");
+                    .createRegion(8800, "sliven", "Сливен");
 
             Region smolyan = this.regionFactory
-                    .createRegion((byte) 22, "smolyan", "Смолян");
+                    .createRegion(4700, "smolyan", "Смолян");
 
             Region sofia = this.regionFactory
-                    .createRegion((byte) 23, "sofia", "София");
+                    .createRegion(1000, "sofia", "София");
 
-            Region sofiaProvince = this.regionFactory
-                    .createRegion((byte) 24, "sofiaProvince", "София Област");
+//            Region sofiaProvince = this.regionFactory
+//                    .createRegion(24, "sofiaProvince", "София Област");
 
             Region staraZagora = this.regionFactory
-                    .createRegion((byte) 25, "staraZagora", "Стара Загора");
+                    .createRegion(6000, "staraZagora", "Стара Загора");
 
             Region targovishte = this.regionFactory
-                    .createRegion((byte) 26, "targovishte", "Търговище");
+                    .createRegion(7700, "targovishte", "Търговище");
 
             Region haskovo = this.regionFactory
-                    .createRegion((byte) 27, "haskovo", "Хасково");
+                    .createRegion(6300, "haskovo", "Хасково");
 
             Region shumen = this.regionFactory
-                    .createRegion((byte) 28, "shumen", "Шумен");
+                    .createRegion(9700, "shumen", "Шумен");
 
             Region yambol = this.regionFactory
-                    .createRegion((byte) 29, "yambol", "Ямбол");
+                    .createRegion(8600, "yambol", "Ямбол");
 
             List<Region> regions = List.of(global, blagoevgrad, burgas, varna,
                     velikoTarnovo, vidin, vratsa, gabrovo, dobrich, kardzhali,
                     kyustendil, lovech, montana, pazardzhik, pernik, pleven,
-                    plovdiv, razgrad, ruse, silistra, sliven, smolyan, sofia, sofiaProvince,
+                    plovdiv, razgrad, ruse, silistra, sliven, smolyan, sofia,
                     staraZagora, targovishte, haskovo, shumen, yambol);
 
             RegionsCatalog.getInstance().setRegions(regions);
@@ -117,12 +122,23 @@ public class RegionService {
 
     }
 
-    public Optional<Region> getRegionByEnglishName(String englishName){
+    public Optional<Region> getRegionByEnglishName(String englishName) {
         return RegionsCatalog.getInstance().findRegionByEnglishName(englishName);
     }
 
-    public Optional<Region> getRegionByBulgrianName(String bulgarianName){
+    public Optional<Region> getRegionByBulgarianName(String bulgarianName) {
         return RegionsCatalog.getInstance().findRegionByBulgarianName(bulgarianName);
     }
 
+    public Optional<Region> getRegionById(int regionId) {
+        return RegionsCatalog.getInstance().findRegionById(regionId);
+    }
+
+    public List<RegionDTO> getAllRegions() {
+
+        return RegionsCatalog.getInstance().getRegions()
+                .stream()
+                .map(r -> this.modelMapper.map(r, RegionDTO.class))
+                .collect(Collectors.toList());
+    }
 }

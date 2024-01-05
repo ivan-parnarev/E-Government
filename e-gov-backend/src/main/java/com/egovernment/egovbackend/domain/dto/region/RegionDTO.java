@@ -1,16 +1,18 @@
-package com.egovernment.egovbackend.domain.entity;
+package com.egovernment.egovbackend.domain.dto.region;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Region {
+@Data
+@Builder
+public class RegionDTO {
+
     private int id;
     private String englishRegionName;
     private String bulgarianRegionName;
+
 }

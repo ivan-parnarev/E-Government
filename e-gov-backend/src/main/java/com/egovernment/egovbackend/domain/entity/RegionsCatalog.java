@@ -33,5 +33,9 @@ public class RegionsCatalog {
                 .filter(region -> region.getBulgarianRegionName().equalsIgnoreCase(bulgarianName))
                 .findFirst();
     }
-
+    public Optional<Region> findRegionById(int regionId) {
+        return regions.stream()
+                .filter(region -> region.getId() == regionId)
+                .findFirst();
+    }
 }
