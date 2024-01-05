@@ -29,4 +29,6 @@ public class CreateCampaignCommon {
     private LocalDateTime campaignStartDate;
     @Future
     private LocalDateTime campaignEndDate;
+    private String campaignRegion;
+    private Long campaignReferenceId;
 }

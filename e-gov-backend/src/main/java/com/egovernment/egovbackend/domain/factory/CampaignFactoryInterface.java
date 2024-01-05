@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 
 public interface CampaignFactoryInterface {
-    Campaign createCampaign(CampaignType type, String title, String description
-            , User from, LocalDateTime startDate, java.time.LocalDateTime endDate, boolean isActive);
+    Campaign createCampaign(CampaignType type, String title, String description,
+                            User from, LocalDateTime startDate,
+                            LocalDateTime endDate, boolean isActive,
+                            String campaignRegion, Long campaignReferenceId);
 }

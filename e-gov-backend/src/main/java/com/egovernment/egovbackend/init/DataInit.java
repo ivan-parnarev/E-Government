@@ -15,11 +15,13 @@ public class DataInit implements CommandLineRunner {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+    private final RegionService regionService;
 
     @Override
     public void run(String... args) throws Exception {
         this.roleService.initRoles();
         this.userService.initAdministrator();
+        this.regionService.initRegions();
         this.campaignService.initSampleCampaign();
         this.electionService
                 .initSampleElections(this.campaignService.getCampaignById(1L).get());

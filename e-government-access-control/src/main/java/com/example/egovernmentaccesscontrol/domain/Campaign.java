@@ -34,7 +34,7 @@ public class Campaign extends BaseEntity {
     @Column
     private LocalDateTime endDate;
     @Column
-    private RegionName region;
+    private String regionName;
     @Column
     private boolean isActive;
 

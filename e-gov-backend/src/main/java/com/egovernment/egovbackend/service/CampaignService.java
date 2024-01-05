@@ -57,7 +57,7 @@ public class CampaignService {
                 Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
                         voteCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true);
+                        true, "GLOBAL", null);
 
                 String censusCampaignDescription = "Кампанията за преброяване на населението." +
                         "Този процес помага на правителството" +
@@ -66,7 +66,7 @@ public class CampaignService {
                 Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване",
                         censusCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true);
+                        true, "GLOBAL", null);
 
                 this.campaignRepository.save(votingCampaign);
                 this.campaignRepository.save(censusCampaign);
@@ -76,8 +76,10 @@ public class CampaignService {
     }
 
     public Campaign launchCampaign(CampaignType type, String title, String description
-            , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive) {
-        return campaignFactory.createCampaign(type, title, description, from, startDate, endDate, isActive);
+            , User from, LocalDateTime startDate, LocalDateTime endDate,
+            boolean isActive, String campaignRegion, Long campaignReferenceId) {
+        return campaignFactory.createCampaign(type, title, description,
+                from, startDate, endDate, isActive, campaignRegion, campaignReferenceId);
     }
 
     public List<CampaignFilteredDTO> getActiveCampaigns() {
@@ -182,11 +184,19 @@ public class CampaignService {
             throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
         }
 
+        String campaignRegion;
+        if(commonCampaignInformation.getCampaignRegion() == null){
+            campaignRegion = "GLOBAL";
+        }else{
+            campaignRegion = commonCampaignInformation.getCampaignRegion();
+        }
+
         User owner = userService.getUserByPin(commonCampaignInformation.getCreatorUserPin()).get();
 
         Campaign campaign = launchCampaign(campaignType, commonCampaignInformation.getCampaignTitle(),
                 commonCampaignInformation.getCampaignDescription(), owner,
-                commonCampaignInformation.getCampaignStartDate(), commonCampaignInformation.getCampaignEndDate(), true);
+                commonCampaignInformation.getCampaignStartDate(), commonCampaignInformation.getCampaignEndDate(), true,
+                campaignRegion, commonCampaignInformation.getCampaignReferenceId());
         return campaign;
     }
 

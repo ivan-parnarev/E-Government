@@ -14,60 +14,62 @@ import java.util.List;
 @AllArgsConstructor
 public class CandidateRegionTemplateDTO {
     @Valid
-    private List<CandidateTemplateDTO> GLOBAL;
+    private List<CandidateTemplateDTO> global;
     @Valid
-    private List<CandidateTemplateDTO> BLAGOEVGRAD;
+    private List<CandidateTemplateDTO> blagoevgrad;
     @Valid
-    private List<CandidateTemplateDTO> BURGAS;
+    private List<CandidateTemplateDTO> burgas;
     @Valid
-    private List<CandidateTemplateDTO> VARNA;
+    private List<CandidateTemplateDTO> varna;
     @Valid
-    private List<CandidateTemplateDTO> VELIKO_TARNOVO;
+    private List<CandidateTemplateDTO> velikoTarnovo;
     @Valid
-    private List<CandidateTemplateDTO> VIDIN;
+    private List<CandidateTemplateDTO> vidin;
     @Valid
-    private List<CandidateTemplateDTO> VRATSA;
+    private List<CandidateTemplateDTO> vratsa;
     @Valid
-    private List<CandidateTemplateDTO> GABROVO;
+    private List<CandidateTemplateDTO> gabrovo;
     @Valid
-    private List<CandidateTemplateDTO> DOBRICH;
+    private List<CandidateTemplateDTO> dobrich;
     @Valid
-    private List<CandidateTemplateDTO> KARDJALI;
+    private List<CandidateTemplateDTO> kardzhali;
     @Valid
-    private List<CandidateTemplateDTO> KYUSTENDIL;
+    private List<CandidateTemplateDTO> kyustendil;
     @Valid
-    private List<CandidateTemplateDTO> LOVECH;
+    private List<CandidateTemplateDTO> lovech;
     @Valid
-    private List<CandidateTemplateDTO> MONTANA;
+    private List<CandidateTemplateDTO> montana;
     @Valid
-    private List<CandidateTemplateDTO> PAZARDJIK;
+    private List<CandidateTemplateDTO> pazardzhik;
     @Valid
-    private List<CandidateTemplateDTO> PERNIK;
+    private List<CandidateTemplateDTO> pernik;
     @Valid
-    private List<CandidateTemplateDTO> PLEVEN;
+    private List<CandidateTemplateDTO> pleven;
     @Valid
-    private List<CandidateTemplateDTO> PLOVDIV;
+    private List<CandidateTemplateDTO> plovdiv;
     @Valid
-    private List<CandidateTemplateDTO> RUSE;
+    private List<CandidateTemplateDTO> razgrad;
     @Valid
-    private List<CandidateTemplateDTO> SILISTRA;
+    private List<CandidateTemplateDTO> ruse;
     @Valid
-    private List<CandidateTemplateDTO> SLIVEN;
+    private List<CandidateTemplateDTO> silistra;
     @Valid
-    private List<CandidateTemplateDTO> SMOLYAN;
+    private List<CandidateTemplateDTO> sliven;
     @Valid
-    private List<CandidateTemplateDTO> SOFIA;
+    private List<CandidateTemplateDTO> smolyan;
     @Valid
-    private List<CandidateTemplateDTO> SOFIA_PROVINCE;
+    private List<CandidateTemplateDTO> sofia;
     @Valid
-    private List<CandidateTemplateDTO> STARA_ZAGORA;
+    private List<CandidateTemplateDTO> sofiaProvince;
     @Valid
-    private List<CandidateTemplateDTO> TARGOVISHTE;
+    private List<CandidateTemplateDTO> staraZagora;
     @Valid
-    private List<CandidateTemplateDTO> HASKOVO;
+    private List<CandidateTemplateDTO> targovishte;
     @Valid
-    private List<CandidateTemplateDTO> SHUMEN;
+    private List<CandidateTemplateDTO> haskovo;
     @Valid
-    private List<CandidateTemplateDTO> YAMBOL;
+    private List<CandidateTemplateDTO> shumen;
+    @Valid
+    private List<CandidateTemplateDTO> yambol;
 
 }
