@@ -19,7 +19,6 @@ import com.egovernment.egovbackend.domain.factory.CampaignFactory;
 import com.egovernment.egovbackend.exceptions.CustomValidationException;
 import com.egovernment.egovbackend.repository.CampaignRepository;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,7 +35,6 @@ public class CampaignService {
     private final CampaignFactory campaignFactory = new CampaignFactory();
     private final UserService userService;
     private final RoleService roleService;
-    private final ModelMapper modelMapper;
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
@@ -44,12 +42,12 @@ public class CampaignService {
 
 
     public void initSampleCampaign() {
-        if (this.campaignRepository.count() == 0){
+        if (this.campaignRepository.count() == 0) {
 
             Role administratorRole = this.roleService.getRole(RoleEnum.ADMINISTRATOR);
             Optional<User> optUser = this.userService.getUserByRole(administratorRole);
 
-            if(optUser.isPresent()){
+            if (optUser.isPresent()) {
                 User administrator = optUser.get();
 
                 String voteCampaignDescription = "Парламентарните избори са ключов момент в " +
@@ -86,7 +84,7 @@ public class CampaignService {
         return this.accessControlClient.getActiveCampaigns().getBody();
     }
 
-    public List<VoteCampaignDTO> getActiveVotingCampaigns(){
+    public List<VoteCampaignDTO> getActiveVotingCampaigns() {
         return this.campaignRepository
                 .findAll()
                 .stream()
@@ -96,29 +94,29 @@ public class CampaignService {
                 .collect(Collectors.toList());
     }
 
-    private VoteCampaignDTO mapCampaignToVotingCampaignDTO(Campaign campaign){
+    private VoteCampaignDTO mapCampaignToVotingCampaignDTO(Campaign campaign) {
 
         Optional<Election> election = this.electionService
                 .getElectionByCampaignId(campaign.getId());
 
-        if(election.isEmpty()){
+        if (election.isEmpty()) {
             return null;
         }
 
-        List< CandidateTemplateDTO> candidates = this.candidateService
+        List<CandidateTemplateDTO> candidates = this.candidateService
                 .getCandidatesForElection(election.get().getId());
 
 
-            VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
-                    .campaignType(campaign.getCampaignType().name())
-                    .campaignDescription(campaign.getDescription())
-                    .campaignTitle(campaign.getTitle())
-                    .campaignStartDate(campaign.getStartDate())
-                    .campaignEndDate(campaign.getEndDate())
-                    .electionType(election.get().getElectionType().name())
-                    .electionId(election.get().getId())
-                    .electionCandidates(candidates)
-                    .build();
+        VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
+                .campaignType(campaign.getCampaignType().name())
+                .campaignDescription(campaign.getDescription())
+                .campaignTitle(campaign.getTitle())
+                .campaignStartDate(campaign.getStartDate())
+                .campaignEndDate(campaign.getEndDate())
+                .electionType(election.get().getElectionType().name())
+                .electionId(election.get().getId())
+                .electionCandidates(candidates)
+                .build();
 
 
         return voteCampaignDTO;
@@ -141,9 +139,9 @@ public class CampaignService {
         for (Campaign censusCampaign : activeCensusCampaigns) {
             List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
                     .getCensusQuestionsForCampaign(censusCampaign.getId());
-             censusCampaignDTOS.add(mapCampaignToCensusCampaignDTO(censusCampaign, censusQuestionsForCampaign));
+            censusCampaignDTOS.add(mapCampaignToCensusCampaignDTO(censusCampaign, censusQuestionsForCampaign));
         }
-       return censusCampaignDTOS;
+        return censusCampaignDTOS;
     }
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
@@ -163,8 +161,8 @@ public class CampaignService {
 
         this.campaignRepository.save(campaign);
 
-        Election election = this.electionService.createElection(createVotingCampaignDTO, campaign);
-        this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates(), election);
+        Election election = this.electionService.createElection(createVotingCampaignDTO.getElectionType(), campaign);
+        //this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates(), election);
 
     }
 
@@ -180,7 +178,7 @@ public class CampaignService {
     private Campaign createCampaignCommonInformation(CreateCampaignCommon commonCampaignInformation) {
         CampaignType campaignType = CampaignType.valueOf(commonCampaignInformation.getCampaignType());
 
-        if(!this.userService.userIsAdmin(commonCampaignInformation.getCreatorUserPin())){
+        if (!this.userService.userIsAdmin(commonCampaignInformation.getCreatorUserPin())) {
             throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
         }
 

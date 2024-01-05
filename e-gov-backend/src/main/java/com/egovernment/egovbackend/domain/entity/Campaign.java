@@ -1,6 +1,7 @@
 package com.egovernment.egovbackend.domain.entity;
 
 import com.egovernment.egovbackend.domain.enums.CampaignType;
+import com.egovernment.egovbackend.domain.enums.RegionName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,10 @@ public class Campaign extends BaseEntity {
     @Column
     private LocalDateTime endDate;
     @Column
+    private RegionName region;
+    @Column
     private boolean isActive ;
 
 }
+
+

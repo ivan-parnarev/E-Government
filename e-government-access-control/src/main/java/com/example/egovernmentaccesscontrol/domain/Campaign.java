@@ -1,6 +1,7 @@
 package com.example.egovernmentaccesscontrol.domain;
 
 import com.example.egovernmentaccesscontrol.enums.CampaignType;
+import com.example.egovernmentaccesscontrol.enums.RegionName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,6 +33,8 @@ public class Campaign extends BaseEntity {
     private LocalDateTime startDate;
     @Column
     private LocalDateTime endDate;
+    @Column
+    private RegionName region;
     @Column
     private boolean isActive;
 

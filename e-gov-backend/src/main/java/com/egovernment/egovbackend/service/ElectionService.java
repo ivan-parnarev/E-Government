@@ -1,6 +1,5 @@
 package com.egovernment.egovbackend.service;
 
-import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.egovbackend.domain.entity.Campaign;
 import com.egovernment.egovbackend.domain.entity.Election;
 import com.egovernment.egovbackend.domain.enums.ElectionType;
@@ -37,8 +36,8 @@ public class ElectionService {
         return this.electionRepository.findByCampaignId(campaignId);
     }
 
-    public Election createElection(CreateVotingCampaignDTO createVotingCampaignDTO, Campaign campaign) {
-        ElectionType electionType = ElectionType.valueOf(createVotingCampaignDTO.getElectionType());
+    public Election createElection(String electionTypeString, Campaign campaign) {
+        ElectionType electionType = ElectionType.valueOf(electionTypeString);
         Election election = launchElection(electionType, campaign);
         this.electionRepository.save(election);
         return election;
