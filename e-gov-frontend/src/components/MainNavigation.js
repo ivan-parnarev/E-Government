@@ -35,6 +35,12 @@ export function MainNavigation() {
               </Link>
             )}
 
+            {userPin && (
+              <Link to="/results" className={styles.navbarNavLink}>
+                Резултати
+              </Link>
+            )}
+
             <Link to="/profile" className={styles.navbarNavLink}>
               Профил
             </Link>

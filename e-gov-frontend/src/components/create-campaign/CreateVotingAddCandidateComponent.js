@@ -2,118 +2,214 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./CreateVotingAddCandidateComponent.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+const regions = [
+  "Благоевград",
+  "Добрич",
+  "Плевен",
+  "София",
+  "Бургас",
+  "Кърджали",
+  "Пловдив",
+  "София (столица)",
+  "Варна",
+  "Кюстендил",
+  "Разград",
+  "Стара Загора",
+  "Велико Търново",
+  "Ловеч",
+  "Русе",
+  "Търговище",
+  "Видин",
+  "Монтана",
+  "Силистра",
+  "Хасково",
+  "Враца",
+  "Пазарджик",
+  "Сливен",
+  "Шумен",
+  "Габрово",
+  "Перник",
+  "Смолян",
+  "Ямбол",
+];
 
 export function CreateVotingAddCandidateComponent({
+  electionType,
   candidates,
   setCandidates,
 }) {
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
+  const [activeRegion, setActiveRegion] = useState("");
 
-  const handleCandidateChange = (index, field, value) => {
-    const newCandidates = [...candidates];
+  useEffect(() => {
+    const initialRegion = regions[0];
+    setActiveRegion(initialRegion);
+
+    if (!candidates[initialRegion]) {
+      setCandidates({
+        ...candidates,
+        [initialRegion]: [createEmptyCandidate()],
+      });
+    }
+  }, []);
+
+  const createEmptyCandidate = () => ({
+    candidateName: "",
+    candidateParty: "",
+    candidateNumber: "",
+  });
+
+  const handleRegionClick = (region) => {
+    setActiveRegion(region);
+    const newCandidates = candidates[region] || [];
+
+    setCandidates({
+      ...candidates,
+      [region]:
+        newCandidates.length > 0 ? newCandidates : [createEmptyCandidate()],
+    });
+
+    console.log(candidates);
+  };
+
+  const handleCandidateChange = (field, value, index) => {
+    const newCandidates = [...candidates[activeRegion]];
     newCandidates[index][field] = value;
-    setCandidates(newCandidates);
+
+    setCandidates({ ...candidates, [activeRegion]: [...newCandidates] });
 
     const isLastCandidateEmpty =
-      candidates.length > 0 &&
-      (candidates[candidates.length - 1].candidateParty === "" ||
-        candidates[candidates.length - 1].candidateNumber === "" ||
-        candidates[candidates.length - 1].candidateName === "");
+      newCandidates[index].candidateParty === "" ||
+      newCandidates[index].candidateNumber === "" ||
+      newCandidates[index].candidateName === "";
 
-    if (isLastCandidateEmpty) {
-      setAddButtonDisabled(true);
-    }
-
-    if (!isLastCandidateEmpty) {
-      setAddButtonDisabled(false);
-    }
+    setAddButtonDisabled(isLastCandidateEmpty);
   };
 
   const addCandidate = () => {
     setAddButtonDisabled(true);
 
-    const isLastCandidateEmpty =
-      candidates.length > 0 &&
-      (candidates[candidates.length - 1].candidateParty === "" ||
-        candidates[candidates.length - 1].candidateNumber === "" ||
-        candidates[candidates.length - 1].candidateName === "");
+    const newCandidate = createEmptyCandidate();
 
-    if (isLastCandidateEmpty) {
-      return;
-    }
+    const existingRegionCandidates = candidates[activeRegion] || [];
 
-    setCandidates([
+    setCandidates({
       ...candidates,
-      { candidateName: "", candidateParty: "", candidateNumber: "" },
-    ]);
+      [activeRegion]: [...existingRegionCandidates, newCandidate],
+    });
   };
 
   const removeCandidate = (index) => {
-    const newCandidates = [...candidates];
+    const newCandidates = [...candidates[activeRegion]];
     newCandidates.splice(index, 1);
-    setCandidates(newCandidates);
+    setCandidates({
+      ...candidates,
+      [activeRegion]: newCandidates,
+    });
   };
 
+  const chunkArray = (arr, chunkSize) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      result.push(arr.slice(i, i + chunkSize));
+    }
+    return result;
+  };
+
+  const groupedRegions = chunkArray(regions, 7);
+
   return (
-    <InputGroup className={styles.createVotingCampaignInputGroup}>
-      <p className={styles.createVotingCampaignInputGroupInputLabel}>
-        Кандидати:
-      </p>
-      {candidates.map((candidate, index) => (
-        <Row key={index} className={styles.createVotingCampaignCandidate}>
-          <Col>
-            <Form.Control
-              placeholder="Име на партия"
-              value={candidate.candidateParty}
-              onChange={(e) =>
-                handleCandidateChange(index, "candidateParty", e.target.value)
-              }
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              placeholder="Номер на кандидат"
-              value={candidate.candidateNumber}
-              onChange={(e) =>
-                handleCandidateChange(index, "candidateNumber", e.target.value)
-              }
-            />
-          </Col>
-          <Col>
-            <Form.Control
-              placeholder="Име на кандидат"
-              value={candidate.candidateName}
-              onChange={(e) =>
-                handleCandidateChange(index, "candidateName", e.target.value)
-              }
-            />
-          </Col>
-          {candidates.length > 1 && index !== candidates.length - 1 && (
-            <Col className={styles.createVotingCampaignCandidateColumn}>
-              <Button
-                className={styles.createVotingCampaignCandidateDeleteButton}
-                onClick={() => removeCandidate(index)}
-              >
-                изтрий
-              </Button>
+    <div>
+      {electionType === "MAYOR" &&
+        groupedRegions.map((row, rowIndex) => (
+          <Row key={rowIndex} className="mb-2">
+            <ButtonGroup aria-label="Basic example">
+              {row.map((region) => (
+                <Button
+                  key={region}
+                  variant={
+                    candidates[region] && candidates[region].length > 1
+                      ? "success"
+                      : activeRegion === region
+                      ? "primary"
+                      : "secondary"
+                  }
+                  onClick={() => handleRegionClick(region)}
+                >
+                  {region}
+                </Button>
+              ))}
+            </ButtonGroup>
+          </Row>
+        ))}
+
+      <InputGroup className={styles.createVotingCampaignInputGroup}>
+        <p className={styles.createVotingCampaignInputGroupInputLabel}>
+          Кандидати за {activeRegion}:
+        </p>
+        {(candidates[activeRegion] || []).map((candidate, index) => (
+          <Row key={index} className={styles.createVotingCampaignCandidate}>
+            <Col>
+              <Form.Control
+                placeholder="Име на партия"
+                value={candidate.candidateParty}
+                onChange={(e) =>
+                  handleCandidateChange("candidateParty", e.target.value, index)
+                }
+              />
             </Col>
-          )}
-          {index === candidates.length - 1 && (
-            <Col className={styles.createVotingCampaignCandidateColumn}>
-              <Button
-                disabled={addButtonDisabled}
-                className={styles.createVotingCampaignCandidateAddButton}
-                onClick={addCandidate}
-              >
-                добави
-              </Button>
+            <Col>
+              <Form.Control
+                placeholder="Номер на кандидат"
+                value={candidate.candidateNumber}
+                onChange={(e) =>
+                  handleCandidateChange(
+                    "candidateNumber",
+                    e.target.value,
+                    index
+                  )
+                }
+              />
             </Col>
-          )}
-        </Row>
-      ))}
-    </InputGroup>
+            <Col>
+              <Form.Control
+                placeholder="Име на кандидат"
+                value={candidate.candidateName}
+                onChange={(e) =>
+                  handleCandidateChange("candidateName", e.target.value, index)
+                }
+              />
+            </Col>
+            {candidates[activeRegion].length > 1 &&
+              index !== candidates[activeRegion].length - 1 && (
+                <Col className={styles.createVotingCampaignCandidateColumn}>
+                  <Button
+                    className={styles.createVotingCampaignCandidateDeleteButton}
+                    onClick={() => removeCandidate(index)}
+                  >
+                    изтрий
+                  </Button>
+                </Col>
+              )}
+            {index === candidates[activeRegion].length - 1 && (
+              <Col className={styles.createVotingCampaignCandidateColumn}>
+                <Button
+                  disabled={addButtonDisabled}
+                  className={styles.createVotingCampaignCandidateAddButton}
+                  onClick={addCandidate}
+                >
+                  добави
+                </Button>
+              </Col>
+            )}
+          </Row>
+        ))}
+      </InputGroup>
+    </div>
   );
 }

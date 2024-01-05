@@ -30,3 +30,14 @@
   flex-direction: column;
   padding: 20px 0px;
 }
+
+.censusModalButtonContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.censusModalButton {
+  background-color: var(--blue-dark);
+}

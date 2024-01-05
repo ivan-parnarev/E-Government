@@ -1,7 +1,9 @@
+import axios from "axios";
 import API_URLS from "../../utils/apiUtils";
 import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Col from "react-bootstrap/Col";
@@ -14,77 +16,123 @@ import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateCom
 
 export function CreateVotingCampaignComponent({ show, onHide }) {
   const { userPin } = useAuth();
-  const [electionType, setElectionType] = useState("");
-  const [campaignTitle, setCampaignTitle] = useState("");
-  const [campaignDescription, setCampaignDescription] = useState("");
-  const [candidates, setCandidates] = useState([
-    { candidateName: "", candidateParty: "", candidateNumber: "" },
-  ]);
-  const [campaignStartDate, setCampaignStartDate] = useState("");
-  const [campaignEndDate, setCampaignEndDate] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
+  const [campaignData, setCampaignData] = useState({
+    electionType: "",
+    campaignTitle: "",
+    campaignDescription: "",
+    candidates: {},
+    campaignStartDate: "",
+    campaignEndDate: "",
+  });
+
+  const {
+    electionType,
+    campaignTitle,
+    campaignDescription,
+    candidates,
+    campaignStartDate,
+    campaignEndDate,
+  } = campaignData;
 
   const handleElectionTypeChange = (e) => {
-    setElectionType(e.target.value);
+    setCampaignData({
+      ...campaignData,
+      electionType: e.target.value,
+    });
   };
 
   const handleCampaignTitleChange = (e) => {
-    setCampaignTitle(e.target.value);
+    setCampaignData({
+      ...campaignData,
+      campaignTitle: e.target.value,
+    });
   };
 
   const handleCampaignDescriptionChange = (e) => {
-    setCampaignDescription(e.target.value);
+    setCampaignData({
+      ...campaignData,
+      campaignDescription: e.target.value,
+    });
   };
 
   const handleStartDateChange = (e) => {
     const startDate = e.target.value;
-    setCampaignStartDate(startDate);
+    setCampaignData({
+      ...campaignData,
+      campaignStartDate: startDate,
+    });
 
     if (!campaignEndDate) {
       const endDate = calculateDefaultEndDate(startDate);
-      setCampaignEndDate(formatDate(endDate));
+      setCampaignData({
+        ...campaignData,
+        campaignEndDate: formatDate(endDate),
+      });
     }
   };
 
   const handleEndDateChange = (e) => {
-    setCampaignEndDate(e.target.value);
+    setCampaignData({
+      ...campaignData,
+      campaignEndDate: e.target.value,
+    });
   };
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
+    let location = "";
+
     const currUserData = {
       creatorUserPin: userPin,
       campaignType: "VOTING",
-      campaignTitle,
-      campaignDescription,
-      campaignStartDate,
-      campaignEndDate,
-      electionType,
-      candidates: candidates.slice(0, -1),
+      ...campaignData,
     };
 
-    fetch(API_URLS.CREATE_VOTE, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currUserData),
-    })
+    axios
+      .post(API_URLS.CREATE_VOTE, currUserData, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((response) => {
         if (response.status === 201) {
-          return response.json().then((data) => {
-            if (data) {
-              const successMessage = `${data.message} `;
-              alert(successMessage);
-            }
+          location = response.headers.get("location");
 
-            window.location.href = response.headers.get("location") || "";
-          });
-        } else {
-          return response.json().then((errorData) => {
-            console.error("Error:", errorData);
-          });
+          return response.data;
         }
       })
+      .then((data) => {
+        console.log(data);
+        if (data) {
+          const successMessage = `${data.message} `;
+          alert(successMessage);
+        }
+
+        window.location.href = location;
+      })
       .catch((error) => console.error("Error:", error.message));
+  };
+
+  const handleContinue = () => {
+    if (currentStep === 1) {
+      if (validateStep1()) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        // Show an error message or handle validation issues
+      }
+    }
+  };
+
+  const validateStep1 = () => {
+    return true;
+  };
+
+  const handleBack = () => {
+    console.log(candidates);
+
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
   };
 
   return (
@@ -100,78 +148,108 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
       </Modal.Header>
 
       <Modal.Body className={styles.createVotingCampaignContainer}>
-        <>
-          <FloatingLabel
-            label="Тип на изборната кампания:"
-            className={styles.createVotingCampaignInputGroup}
-          >
-            <Form.Select
-              aria-label="Floating label select example"
-              onChange={handleElectionTypeChange}
+        {currentStep === 1 && (
+          <>
+            <FloatingLabel
+              label="Тип на изборната кампания:"
+              className={styles.createVotingCampaignInputGroup}
             >
-              <option></option>
-              <option value="MAYOR">Местни избори</option>
-              <option value="PRESIDENT">Президентски избори</option>
-              <option value="PARLIAMENT">Парламентарни избори</option>
-              <option value="COUNCIL">Изброи за Европейски парламент</option>
-            </Form.Select>
-          </FloatingLabel>
+              <Form.Select
+                aria-label="Floating label select example"
+                onChange={handleElectionTypeChange}
+                value={electionType}
+              >
+                <option></option>
+                <option value="MAYOR">Местни избори</option>
+                <option value="PRESIDENT">Президентски избори</option>
+                <option value="PARLIAMENT">Парламентарни избори</option>
+                <option value="COUNCIL">Изброи за Европейски парламент</option>
+              </Form.Select>
+            </FloatingLabel>
 
-          <FloatingLabel label="Име на кампанията:" className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder=""
-              onChange={handleCampaignTitleChange}
-            />
-          </FloatingLabel>
+            <FloatingLabel label="Име на кампанията:" className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder=""
+                onChange={handleCampaignTitleChange}
+                value={campaignTitle}
+              />
+            </FloatingLabel>
 
-          <FloatingLabel label="Описание на кампанията:" className="mb-3">
-            <Form.Control
-              type="text"
-              placeholder=""
-              onChange={handleCampaignDescriptionChange}
-            />
-          </FloatingLabel>
+            <FloatingLabel label="Описание на кампанията:" className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder=""
+                onChange={handleCampaignDescriptionChange}
+                value={campaignDescription}
+              />
+            </FloatingLabel>
 
+            <InputGroup
+              className={styles.createVotingCampaignCandidateInputDateGroup}
+            >
+              <Row>
+                <p className={styles.createVotingCampaignInputGroupInputLabel}>
+                  Избери начало и край на кампанията:
+                </p>
+              </Row>
+              <Row>
+                <Col>
+                  <FloatingLabel label="Начална дата">
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={formatDate(campaignStartDate)}
+                      onChange={handleStartDateChange}
+                    />
+                  </FloatingLabel>
+                </Col>
+
+                <Col>
+                  <FloatingLabel label="Крайна дата">
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={formatDate(campaignEndDate)}
+                      onChange={handleEndDateChange}
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
+            </InputGroup>
+          </>
+        )}
+
+        {currentStep === 2 && (
           <CreateVotingAddCandidateComponent
+            electionType={electionType}
             candidates={candidates}
-            setCandidates={setCandidates}
+            setCandidates={(updatedCandidates) =>
+              setCampaignData({
+                ...campaignData,
+                candidates: updatedCandidates,
+              })
+            }
           />
+        )}
 
-          <InputGroup
-            className={styles.createVotingCampaignCandidateInputDateGroup}
+        <div className={styles.censusModalButtonContainer}>
+          <Button
+            className={styles.censusModalButton}
+            disabled={currentStep === 1}
+            onClick={handleBack}
           >
-            <Row>
-              <p className={styles.createVotingCampaignInputGroupInputLabel}>
-                Избери начало и край на кампанията:
-              </p>
-            </Row>
-            <Row>
-              <Col>
-                <FloatingLabel label="Начална дата">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    value={formatDate(campaignStartDate)}
-                    onChange={handleStartDateChange}
-                  />
-                </FloatingLabel>
-              </Col>
+            ←
+          </Button>
 
-              <Col>
-                <FloatingLabel label="Крайна дата">
-                  <input
-                    type="datetime-local"
-                    className="form-control"
-                    value={formatDate(campaignEndDate)}
-                    onChange={handleEndDateChange}
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-          </InputGroup>
-        </>
-        {/* )} */}
+          <Button
+            className={styles.censusModalButton}
+            disabled={currentStep === 2}
+            onClick={handleContinue}
+          >
+            →
+          </Button>
+        </div>
       </Modal.Body>
 
       <Modal.Footer>

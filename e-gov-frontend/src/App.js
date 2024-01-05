@@ -11,20 +11,14 @@ import { ActiveCampaignsPage } from "./pages/ActiveCampaignsPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { AuthProvider } from "./hooks/AuthContext";
 import { CreateCampaignPage } from "./pages/CreateCampaignPage";
+import { ResultsPage } from "./pages/ResultsPage";
 
 const routeChildren = [
   <Route key="home" index="true" element={<HomePage />} />,
   <Route key="register" path="/register" element={<RegisterPage />} />,
-  <Route
-    key="active-campaigns"
-    path="/active-campaigns"
-    element={<ActiveCampaignsPage />}
-  />,
-  <Route
-    key="create-campaign"
-    path="/create-campaign"
-    element={<CreateCampaignPage />}
-  />,
+  <Route key="active-campaigns" path="/active-campaigns" element={<ActiveCampaignsPage />} />, //prettier-ignore
+  <Route key="create-campaign" path="/create-campaign" element={<CreateCampaignPage />} />, //prettier-ignore
+  <Route key="results" path="/results" element={<ResultsPage />} />,
   <Route key="profile" path="/profile" element={<ProfilePage />} />,
 ];
 
