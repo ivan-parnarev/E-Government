@@ -13,6 +13,9 @@ import { useState } from "react";
 import useAuth from "../../hooks/AuthContext.js";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
 import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
+import { CreateVotingReviewCandidatesComponent } from "./CreateVotingReviewCandidatesComponent.js";
+
+const TOTAL_STEPS = 3;
 
 export function CreateVotingCampaignComponent({ show, onHide }) {
   const { userPin } = useAuth();
@@ -114,22 +117,18 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
   };
 
   const handleContinue = () => {
-    if (currentStep === 1) {
-      if (validateStep1()) {
+    if (currentStep < TOTAL_STEPS) {
+      if (validateStep(currentStep)) {
         setCurrentStep(currentStep + 1);
-      } else {
-        // Show an error message or handle validation issues
       }
     }
   };
 
-  const validateStep1 = () => {
+  const validateStep = (step) => {
     return true;
   };
 
   const handleBack = () => {
-    console.log(candidates);
-
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
@@ -233,6 +232,10 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
           />
         )}
 
+        {currentStep === 3 && (
+          <CreateVotingReviewCandidatesComponent campaignData={campaignData} />
+        )}
+
         <div className={styles.censusModalButtonContainer}>
           <Button
             className={styles.censusModalButton}
@@ -244,7 +247,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
 
           <Button
             className={styles.censusModalButton}
-            disabled={currentStep === 2}
+            disabled={currentStep === 3}
             onClick={handleContinue}
           >
             →

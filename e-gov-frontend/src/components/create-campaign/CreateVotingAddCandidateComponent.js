@@ -124,7 +124,7 @@ export function CreateVotingAddCandidateComponent({
   const groupedRegions = chunkArray(regions, 7);
 
   return (
-    <div>
+    <div className={styles.createVotingCampaignContainer}>
       {electionType === "MAYOR" &&
         groupedRegions.map((row, rowIndex) => (
           <Row key={rowIndex} className="mb-2">
@@ -133,10 +133,10 @@ export function CreateVotingAddCandidateComponent({
                 <Button
                   key={region}
                   variant={
-                    candidates[region] && candidates[region].length > 1
-                      ? "success"
-                      : activeRegion === region
+                    activeRegion === region
                       ? "primary"
+                      : candidates[region] && candidates[region].length > 1
+                      ? "success"
                       : "secondary"
                   }
                   onClick={() => handleRegionClick(region)}
