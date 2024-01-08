@@ -27,8 +27,8 @@ public class CampaignController implements CampaignControllerInterface {
                     schema = @Schema(implementation = CampaignFilteredDTO.class)))
     @Override
     @GetMapping(ApiPaths.ACTIVE_PATH)
-    public ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(){
-        List<CampaignFilteredDTO> activeVotingCampaigns = this.campaignService.getActiveVotingCampaigns();
+    public ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns() {
+        List<CampaignFilteredDTO> activeVotingCampaigns = this.campaignService.getActiveLocalCampaigns();
         return ResponseEntity.ok().body(activeVotingCampaigns);
     }
 

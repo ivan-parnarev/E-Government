@@ -38,12 +38,12 @@ public class KeyService {
         String addressJson = mapper.writeValueAsString(addressMap);
 
         Address address = mapper.readValue(addressJson, Address.class);
-
-        System.out.println("Country: " + address.getCountry());
+//
+//        System.out.println("Country: " + address.getCountry());
         System.out.println("Region: " + address.getRegion());
-        System.out.println("Municipality: " + address.getMunicipality());
-        System.out.println("City: " + address.getCity());
-        System.out.println("Village: " + address.getVillage());
+//        System.out.println("Municipality: " + address.getMunicipality());
+//        System.out.println("City: " + address.getCity());
+//        System.out.println("Village: " + address.getVillage());
 
         return address;
     }
