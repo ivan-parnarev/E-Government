@@ -1,3 +1,5 @@
+import API_URLS from "../../utils/apiUtils";
+import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -6,7 +8,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./CreateCensusCampaignComponent.module.css";
 import { useEffect, useState } from "react";
-import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
+import useAuth from "../../hooks/AuthContext.js";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
 import { CreateCensusEditAnswersComponent } from "./CreateCensusEditAnswersComponent.js";
 
@@ -21,18 +23,8 @@ async function fetchCampaignData(url) {
   }
 }
 
-export function CreateCensusCampaignComponent({
-  userData,
-  pinValue,
-  isValidPinValue,
-  handlePinChange,
-  show,
-  showQuestions,
-  onContinue,
-  onBack,
-  onHide,
-}) {
-  const activeCampaignsUrl = "http://localhost:8080/api/v1/campaigns/active";
+export function CreateCensusCampaignComponent({ show, onHide }) {
+  const { userPin } = useAuth();
   const [censusQuestions, setCensusQuestions] = useState([]);
   const [campaignTitle, setCampaignTitle] = useState("");
   const [campaignDescription, setCampaignDescription] = useState("");
@@ -47,7 +39,7 @@ export function CreateCensusCampaignComponent({
     const fetchCampaigns = async () => {
       // setIsLoading(true);
 
-      const censusData = await fetchCampaignData(`${activeCampaignsUrl}/census`); // prettier-ignore
+      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
 
       try {
         if (censusData) {
@@ -76,9 +68,7 @@ export function CreateCensusCampaignComponent({
     setCampaignStartDate(startDate);
 
     if (!campaignEndDate) {
-      const endDate = new Date(
-        new Date(startDate).getTime() + 24 * 60 * 60 * 1000
-      );
+      const endDate = calculateDefaultEndDate(startDate);
       setCampaignEndDate(formatDate(endDate));
     }
   };
@@ -87,22 +77,9 @@ export function CreateCensusCampaignComponent({
     setCampaignEndDate(e.target.value);
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-
-    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-  };
-
   const handleUpdateCensusQuestions = () => {
     const currUserData = {
-      ...userData,
+      creatorUserPin: userPin,
       campaignType: "CENSUS",
       campaignTitle,
       campaignDescription,
@@ -111,9 +88,7 @@ export function CreateCensusCampaignComponent({
       questions: censusQuestions,
     };
 
-    console.log(currUserData);
-
-    fetch("http://localhost:8080/api/v1/campaigns/create/census", {
+    fetch(API_URLS.CREATE_CENSUS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -154,83 +129,67 @@ export function CreateCensusCampaignComponent({
       </Modal.Header>
 
       <Modal.Body className={styles.createVotingCampaignContainer}>
-        {!showQuestions ? (
-          <UserAuthenticationComponent
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            onChange={handlePinChange}
-          />
-        ) : (
-          <div className={styles.censusInfoContainer}>
-            <FloatingLabel label="Име на кампанията:" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder=""
-                onChange={handleCampaignTitleChange}
-              />
-            </FloatingLabel>
-
-            <FloatingLabel label="Описание на кампанията:" className="mb-3">
-              <Form.Control
-                type="text"
-                placeholder=""
-                onChange={handleCampaignDescriptionChange}
-              />
-            </FloatingLabel>
-
-            <CreateCensusEditAnswersComponent
-              censusCategories={censusCategories}
-              censusQuestions={censusQuestions}
-              setCensusQuestions={setCensusQuestions}
+        <div className={styles.censusInfoContainer}>
+          <FloatingLabel label="Име на кампанията:" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder=""
+              onChange={handleCampaignTitleChange}
             />
+          </FloatingLabel>
 
-            <InputGroup className={styles.createCensusInputDateGroup}>
-              <Row>
-                <p className={styles.createVotingCampaignInputGroupInputLabel}>
-                  Избери начало и край на кампанията:
-                </p>
-              </Row>
-              <Row>
-                <Col>
-                  <FloatingLabel label="Начална дата">
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      value={formatDate(campaignStartDate)}
-                      onChange={handleStartDateChange}
-                    />
-                  </FloatingLabel>
-                </Col>
+          <FloatingLabel label="Описание на кампанията:" className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder=""
+              onChange={handleCampaignDescriptionChange}
+            />
+          </FloatingLabel>
 
-                <Col>
-                  <FloatingLabel label="Крайна дата">
-                    <input
-                      type="datetime-local"
-                      className="form-control"
-                      value={formatDate(campaignEndDate)}
-                      onChange={handleEndDateChange}
-                    />
-                  </FloatingLabel>
-                </Col>
-              </Row>
-            </InputGroup>
-          </div>
-        )}
+          <CreateCensusEditAnswersComponent
+            censusCategories={censusCategories}
+            censusQuestions={censusQuestions}
+            setCensusQuestions={setCensusQuestions}
+          />
+
+          <InputGroup className={styles.createCensusInputDateGroup}>
+            <Row>
+              <p className={styles.createVotingCampaignInputGroupInputLabel}>
+                Избери начало и край на кампанията:
+              </p>
+            </Row>
+            <Row>
+              <Col>
+                <FloatingLabel label="Начална дата">
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    value={formatDate(campaignStartDate)}
+                    onChange={handleStartDateChange}
+                  />
+                </FloatingLabel>
+              </Col>
+
+              <Col>
+                <FloatingLabel label="Крайна дата">
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    value={formatDate(campaignEndDate)}
+                    onChange={handleEndDateChange}
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
+          </InputGroup>
+        </div>
       </Modal.Body>
 
       <Modal.Footer>
         <CampaignModalFooterComponent
-          pinValueLength={pinValue.length}
-          isValidPinValue={isValidPinValue}
-          showQuestions={showQuestions}
-          continueButtonDisabled={
-            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
-          }
           submitButtonDisabled="false"
           buttonText="Създай"
-          onContinue={onContinue}
           onSubmit={handleUpdateCensusQuestions}
-          onBack={onBack}
           onHide={onHide}
         />
       </Modal.Footer>

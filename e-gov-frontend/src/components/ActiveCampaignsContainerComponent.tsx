@@ -4,8 +4,7 @@ import styles from "./ActiveCampaignsContainerComponent.module.css";
 import ActiveCampaignsModalComponent from "./ActiveCampaignsModalComponent.js";
 
 export function ActiveCampaignsContainerComponent() {
-  const [activeCampaignsModalShow, setActiveCampaignsModalShow] =
-    useState(false);
+  const [activeCampaignsModalShow, setActiveCampaignsModalShow] = useState(false); //prettier-ignore
 
   return (
     <div className={styles.activeCampaignsSection}>
