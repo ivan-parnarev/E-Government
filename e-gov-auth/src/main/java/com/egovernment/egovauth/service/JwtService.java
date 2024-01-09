@@ -23,6 +23,8 @@ public class JwtService {
     private String privateKeyPath;
     private final KeyService keyService;
 
+    private final LocationService locationService;
+
     String createJwtSignedHMAC(User user) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
 
         PrivateKey privateKey = this.keyService.getPrivateKey(privateKeyPath);
@@ -32,6 +34,8 @@ public class JwtService {
                 .claim("firstName", user.getFirstName())
                 .claim("middleName", user.getMiddleName())
                 .claim("lastName", user.getLastName())
+                .claim("isAdmin", user.isAdmin())
+                .claim("address", this.locationService.mapAddressToDto(user.getAddress()))
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plus(5L, ChronoUnit.MINUTES)))
