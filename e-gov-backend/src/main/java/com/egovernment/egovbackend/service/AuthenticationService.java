@@ -37,21 +37,11 @@ public class AuthenticationService {
         HttpStatusCode statusCode = responseFromClient.getStatusCode();
 
         if (statusCode.is2xxSuccessful()) {
-            FeignAuthResponse body = responseFromClient.getBody();
-            String token = Objects.requireNonNull(responseFromClient.getHeaders().get("Authorization")).get(0);
-            token = token.replace("Bearer ", "");
-            PublicKey publicKey = createPublicKey(Objects.requireNonNull(body).getPublicKey());
-
-            Jws<Claims> jwtClaims = Jwts.parserBuilder()
-                    .setSigningKey(publicKey)
-                    .build()
-                    .parseClaimsJws(token);
-
-            boolean isAdmin = (boolean) jwtClaims.getBody().get("isAdmin");
+            Boolean isAdmin = checkIsUserAdmin(Objects.requireNonNull(responseFromClient));
 
             if (isAdmin) {
                 AuthResponse response = AuthResponse.builder()
-                        .isAdmin((Boolean) jwtClaims.getBody().get("isAdmin"))
+                        .isAdmin(true)
                         .build();
                 return response;
             } else {
@@ -70,5 +60,24 @@ public class AuthenticationService {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey publicKey = kf.generatePublic(keySpec);
         return publicKey;
+    }
+
+    private Boolean checkIsUserAdmin(ResponseEntity<FeignAuthResponse> responseFromClient) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        FeignAuthResponse body = responseFromClient.getBody();
+        String token = Objects.requireNonNull(responseFromClient.getHeaders().get("Authorization")).get(0);
+        token = token.replace("Bearer ", "");
+        Jws<Claims> jwtClaims = extractClaimsFromToken(body, token);
+
+        return (boolean) jwtClaims.getBody().get("isAdmin");
+    }
+
+    private Jws<Claims> extractClaimsFromToken(FeignAuthResponse body, String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        PublicKey publicKey = createPublicKey(Objects.requireNonNull(body).getPublicKey());
+
+        Jws<Claims> jwtClaims = Jwts.parserBuilder()
+                .setSigningKey(publicKey)
+                .build()
+                .parseClaimsJws(token);
+        return jwtClaims;
     }
 }
