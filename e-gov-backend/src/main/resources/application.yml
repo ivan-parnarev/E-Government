@@ -16,3 +16,9 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
     show-sql: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          authentication-client:
+            url: http://localhost:8081/api/v1
