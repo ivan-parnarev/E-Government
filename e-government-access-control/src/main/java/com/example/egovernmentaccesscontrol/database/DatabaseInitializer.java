@@ -1,6 +1,8 @@
 package com.example.egovernmentaccesscontrol.database;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -13,6 +15,8 @@ import java.sql.Statement;
 @Component
 @RequiredArgsConstructor
 public class DatabaseInitializer {
+
+    private final Logger LOGGER = LoggerFactory.getLogger(DatabaseInitializer.class);
     private final DataSourceProperties dataSourceProperties;
     private final String SUBSCRIPTION_NAME = "e_government_subscription".toLowerCase();
     private final String CHECK_SUBSCRIPTION_SQL =
@@ -50,16 +54,18 @@ public class DatabaseInitializer {
                 if (!slotRs.next()) {
                     try (Statement createSubStmt = conn.createStatement()) {
                         createSubStmt.execute(createSubscriptionSQL());
+                        LOGGER.info("Subscription created successfully.");
                         System.out.println("Subscription created successfully.");
                     }
                 } else {
-                    System.out.println("Replication slot '" + SUBSCRIPTION_NAME + "' already exists.");
+                    LOGGER.info("Replication slot '{}' already exists.", SUBSCRIPTION_NAME);
                 }
             } else {
+                LOGGER.info("Subscription '{}' already exists.", SUBSCRIPTION_NAME);
                 System.out.println("Subscription '" + SUBSCRIPTION_NAME + "' already exists.");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("SQL Exception occurred", e);
         }
     }
 }

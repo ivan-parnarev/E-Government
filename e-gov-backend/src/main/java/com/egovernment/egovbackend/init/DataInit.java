@@ -1,5 +1,6 @@
 package com.egovernment.egovbackend.init;
 
+import com.egovernment.egovbackend.database.DatabaseInitializer;
 import com.egovernment.egovbackend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +17,7 @@ public class DataInit implements CommandLineRunner {
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
     private final RegionService regionService;
+    private final DatabaseInitializer databaseInitializer;
 
     @Override
     public void run(String... args) throws Exception {
@@ -27,5 +29,6 @@ public class DataInit implements CommandLineRunner {
                 .initSampleElections(this.campaignService.getCampaignById(1L).get());
         this.candidateService.initSampleCandidates();
         this.censusQuestionService.initTestQuestions();
+        this.databaseInitializer.checkAndCreatePublication();
     }
 }
