@@ -21,8 +21,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class KeyService {
 
-    private String jwtToken = "eyJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiLQk9C10L7RgNCz0LgiLCJtaWRkbGVOYW1lIjoi0JPQtdC-0YDQs9C40LXQsiIsImxhc3ROYW1lIjoi0JPQtdC-0YDQs9C40LXQsiIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjp7ImNvdW50cnkiOiLQkdGK0LvQs9Cw0YDQuNGPIiwicmVnaW9uIjoi0KHQvtGE0LjQudGB0LrQsCIsIm11bmljaXBhbGl0eSI6ItCh0YLQvtC70LjRh9C90LAg0L7QsdGJ0LjQvdCwIiwiY2l0eSI6ItCh0L7RhNC40Y8iLCJ2aWxsYWdlIjpudWxsfSwianRpIjoiNGZmNzE5ZWYtMWFmYy00YjcxLTlkMmYtNTE0YzJlODQ2NDNhIiwiaWF0IjoxNzAyOTk4NDI0LCJleHAiOjE3MDQ3MjY0MjR9.RryoCs7KZsCYvtqmvZIwB8gKHIp68_poKAE3Jp_zC6MPn6tu0_QDha061qwI7sdqBEbC2vhXtJqVyD-VhSBnLQHyhq9YitqPKeUbJROEwfVctotuV9-5FpwgbN240ygrXvVDeoxADTdWQVDiDR4IvUPKc964fQ6obSsRNMDHho7RCcf9e-ayGQFMCOD-KXR1AX4rzUYbFSCFVw_oXFv4vOq-MSeu7fmekeE-NVrq1I9y8_jSnnMFUm3pnrfMu0Qmcc49RwaOs0vjGxjov4YcUxWchmAYyYholeq-hTHuxGHRTOap63UCFjAzpcOO_y-Y6d-hv-5fpsYABYsDq560Rw";
-    private String publicKeyPEM = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnbcHmCTp43khzbtoreiimCHCSxP6irGjBNBoxifXGglQGZjsiL5W7vgHFsfuRDJhDwJrSajBICkN8gmf9dYZY1n7v8zpdtf4YJ2+yUq/CcW6Oqj9T/MczWv9ehuFh2VnIj9L7Vq/1J8QlKg3cgsFPLHcIb1Wi8olCQfTQnjxUeeGhzBHinlvKtgX745R/vb8giMRbF+Ntfxlxgs60eEJtxs2WOTs7BYnxqVcGwxq85ESO+/IC4p8YzIJTpXSrmEAPgRVLKQgeai2GJiG5yha5nHgFRDZZ8V9pquEByx4IyuIa8V43yakq2A+5qin7moOQbtE4wBkc36rzW1JFTaUVQIDAQAB";
+    private String jwtToken = "eyJhbGciOiJSUzI1NiJ9.eyJmaXJzdE5hbWUiOiLQk9C10L7RgNCz0LgiLCJtaWRkbGVOYW1lIjoi0JPQtdC-0YDQs9C40LXQsiIsImxhc3ROYW1lIjoi0JPQtdC-0YDQs9C40LXQsiIsImlzQWRtaW4iOmZhbHNlLCJhZGRyZXNzIjp7ImNvdW50cnkiOiLQkdGK0LvQs9Cw0YDQuNGPIiwicmVnaW9uIjoi0KHQvtGE0LjQudGB0LrQsCIsInBvc3Rjb2RlIjoiMTAwMCIsIm11bmljaXBhbGl0eSI6ItCh0YLQvtC70LjRh9C90LAg0L7QsdGJ0LjQvdCwIiwiY2l0eSI6ItCh0L7RhNC40Y8iLCJ2aWxsYWdlIjpudWxsfSwianRpIjoiNmQ5YTFkNmQtYjA2MS00NDhiLWEwNjgtODhiNmMxN2FmZDAzIiwiaWF0IjoxNzA0OTA0MDE4LCJleHAiOjE3MDQ5MDQzMTh9.VUNPn8DmR2shR0nMsecsYmLCsVMlB7s515-zXinrclwAVX2YST67nL6GJ46wWwFQ6H775MMd57j2FNZM8JkKksCORCo6wF2rKbGeZJlzCvXjSCU4z488_Rf-zn7LQv2Ol59Q3d3N-VPfszFMJyCAvx6zszktt5lG2tqvkVcWGoxHd1UkBQp8n5wHquuh9OLWbdvt5BPMfI4A4eZZRg4hxMBXLeutcWuj3OdlgTWjxNgs7kprHWkArVW0XskSwKQoEL5ezceXQVF9GEJdUmQ0jwz21hsilT7WGRhtYYw4Ds7jKhRyquYxTatcAsde244UbCgrRWfWFPI3smNrz5XatQ";
+    private String publicKeyPEM = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu5vN/vMzDhLVGap1j8snk9xyJUvmBBD96cJQCG3AvU5WJmnYuabNfMkrGV97TUNfl1BpK/WbotkVsaAgX5t28eb54O+QmiDG+h6eacNrwnMxyAeJZSCTW9IeRrLpihXCm5TzG9JPibcCVgcdf3vPj5j4PCw5klwkpD6GsKvPFlN9oVX+d7R6Vvo7r94DzrbQptKF94yp8BuSOmJOdFZZQh7lgwtuSfUiKaETvJfv8O1MAjmvXz1Um2lsGirTaLvqK9dfZUssrqbW2UAuLx6J5c4x4fU+V5SVnh4OIMgF07NWyjmgc51jF8FynkoAbfLq9wtNX8DdOf1F9qZTgFTywQIDAQAB";
 
     public Address extractAddress() throws NoSuchAlgorithmException, InvalidKeySpecException, JsonProcessingException {
         PublicKey publicKey = this.getPublicKey(publicKeyPEM);
@@ -38,12 +38,8 @@ public class KeyService {
         String addressJson = mapper.writeValueAsString(addressMap);
 
         Address address = mapper.readValue(addressJson, Address.class);
-//
-//        System.out.println("Country: " + address.getCountry());
+
         System.out.println("Region: " + address.getRegion());
-//        System.out.println("Municipality: " + address.getMunicipality());
-//        System.out.println("City: " + address.getCity());
-//        System.out.println("Village: " + address.getVillage());
 
         return address;
     }
