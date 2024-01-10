@@ -22,7 +22,10 @@
   font-size: 1.1rem;
   padding: 10px;
   text-decoration: none;
+  border: none;
+  background: none;
 }
+
 .navbarNavLink:hover {
   color: var(--blue-dark) !important;
   text-decoration: none;

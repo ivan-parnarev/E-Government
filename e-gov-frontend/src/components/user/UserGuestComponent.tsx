@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import styles from "./UserGuestComponent.module.css";
-import { UserGuestProps } from "../../interfaces/UserGuestInterface.ts";
+import usePinInput from "../../hooks/usePinInput.js";
+import useAuth from "../../hooks/AuthContext.js";
 
-function UserGuestComponent({
-  pinValue,
-  isValidPinValue,
-  onChange,
-}: UserGuestProps) {
+function UserGuestComponent() {
+  const { login } = useAuth();
+  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
 
@@ -45,13 +45,15 @@ function UserGuestComponent({
           type="text"
           placeholder=""
           value={pinValue}
-          onChange={onChange}
+          onChange={handlePinChange}
         />
       </FloatingLabel>
 
       {errorMessage && pinValue.length > 0 && (
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}
+
+      <Button onClick={() => login(pinValue)}>Влез</Button>
     </div>
   );
 }
