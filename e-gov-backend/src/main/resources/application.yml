@@ -1,15 +1,15 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/e-gov-db
+    url: jdbc:postgresql://host.docker.internal:5432/postgres
     username: postgres
-    password: 1234
+    password: 1234qwer
   sql:
     init:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
     properties:
       hibernate:
@@ -22,3 +22,4 @@ spring:
         config:
           authentication-client:
             url: http://localhost:8081/api/v1
+
