@@ -1,0 +1,33 @@
+.censusCategoryInfoContainer {
+  padding: 30px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroupInputLabel {
+  margin-bottom: 10px !important;
+}
+
+.buttonGroupCategories {
+  width: 100%;
+}
+
+.editingInputGroup {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1.5rem;
+}
+
+.inputGroupButton {
+  border: none;
+  background-color: transparent;
+}
+
+.inputGroupButton:hover {
+  background-color: transparent;
+  scale: 1.5;
+}
