@@ -1,15 +1,13 @@
+import API_URLS from "../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
-import UserAuthenticationComponent from "../user/UserAuthenticationComponent.js";
-import CensusPersonalInfoComponent from "./CensusPersonalInfoComponent.tsx";
-import {
-  CensusModalProps,
-  UserData,
-} from "../../interfaces/census/CensusModalInterface.ts";
+import CensusCategoryInfoComponent from "./CensusCategoryInfoComponent.tsx";
+import useAuth from "../../hooks/AuthContext.js";
+import { CensusModalProps, UserData } from "../../interfaces/census/CensusModalInterface.ts"; //prettier-ignore
 
 const PERSONAL_INFO_DATA = {
   questionCategory: "PERSONAL",
@@ -23,26 +21,13 @@ function CensusModalComponent({
   censusId,
   censusQuestions,
 }: CensusModalProps) {
+  const { userPin } = useAuth();
   const [currentStep, setCurrentStep] = useState(0);
-  const [pinValue, setPinValue] = useState<string>("");
-  const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
-  const [showQuestions, setShowQuestions] = useState<boolean>(false);
   const [userData, setUserData] = useState<UserData>({
-    userPin: "",
-    campaignId: "",
+    userPin,
+    campaignId: censusId,
     censusAnswers: [],
   });
-
-  const validatePinValue = (input: string): boolean => {
-    const regex = /^[0-9]+$/;
-    return regex.test(input);
-  };
-
-  const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPinValue = event.target.value;
-    setPinValue(newPinValue);
-    setIsValidPinValue(validatePinValue(newPinValue));
-  };
 
   const censusCategories = [
     ...new Set(censusQuestions.map((question) => question.questionCategory)),
@@ -53,33 +38,13 @@ function CensusModalComponent({
   const handleContinue = () => {
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1);
-    } else {
-      console.log("Census data submitted:", userData);
-    }
-  };
-
-  const handleFormContinue = () => {
-    if (pinValue.length < 10) {
-      setShowQuestions(false);
-    } else if (pinValue.length > 10) {
-      setShowQuestions(false);
-    } else if (!isValidPinValue) {
-      setShowQuestions(false);
-    } else {
-      setUserData((prevData) => ({
-        ...prevData,
-        userPin: pinValue,
-        campaignId: censusId,
-        censusAnswers: prevData.censusAnswers,
-      }));
-      setShowQuestions(true);
     }
   };
 
   const handleFormSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    fetch("http://localhost:8080/api/v1/census", {
+    fetch(API_URLS.CENSUS, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -107,25 +72,24 @@ function CensusModalComponent({
     }
   };
 
-  const handleFormBack = () => {
-    setShowQuestions(false);
-  };
-
-  const handleInputChange = (id: string, fieldName: string, value: string) => {
+  const handleInputChange = (
+    fieldName: string,
+    value: string,
+    questionCategory: string
+  ) => {
     setUserData((prevData) => {
       const index = prevData.censusAnswers.findIndex(
         (question) =>
-          question.text === fieldName &&
-          question.questionCategory === PERSONAL_INFO_DATA.questionCategory
+          question.questionText === fieldName &&
+          question.questionCategory === questionCategory
       );
 
       if (index !== -1) {
         const updatedAnswers = [...prevData.censusAnswers];
         updatedAnswers[index] = {
-          questionId: id,
-          text: fieldName,
+          questionText: fieldName,
           answer: value,
-          ...PERSONAL_INFO_DATA,
+          questionCategory,
         };
         return { ...prevData, censusAnswers: updatedAnswers };
       } else {
@@ -134,10 +98,9 @@ function CensusModalComponent({
           censusAnswers: [
             ...prevData.censusAnswers,
             {
-              questionId: id,
-              text: fieldName,
+              questionText: fieldName,
               answer: value,
-              ...PERSONAL_INFO_DATA,
+              questionCategory,
             },
           ],
         };
@@ -147,16 +110,48 @@ function CensusModalComponent({
 
   const getCurrentComponent = () => {
     const currentCategory = censusCategories[currentStep];
-    const currentQuestions = censusQuestions;
-
+    const currentQuestions = censusQuestions.filter(
+      (q) => q.questionCategory === currentCategory
+    );
     switch (currentCategory) {
       case PERSONAL_INFO_DATA.questionCategory:
         return (
-          <CensusPersonalInfoComponent
+          <CensusCategoryInfoComponent
+            censusTitle="Лична информация"
             censusQuestions={currentQuestions}
-            onContinue={handleContinue}
-            onInputChange={(id, field, value) =>
-              handleInputChange(id, field, value)
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+
+      case "HOUSING":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Жилищна информация"
+            censusQuestions={currentQuestions}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+      case "POPULATION":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Гражданска информация"
+            censusQuestions={currentQuestions}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
+            }
+          />
+        );
+      case "HEALTH":
+        return (
+          <CensusCategoryInfoComponent
+            censusTitle="Здравна информация"
+            censusQuestions={currentQuestions}
+            onInputChange={(field, value, questionCategory) =>
+              handleInputChange(field, value, questionCategory)
             }
           />
         );
@@ -165,7 +160,7 @@ function CensusModalComponent({
     }
   };
 
-  const progressPercentage = (currentStep / totalSteps) * 100;
+  const progressPercentage = ((currentStep + 1) / totalSteps) * 100;
 
   return (
     <Modal
@@ -188,55 +183,41 @@ function CensusModalComponent({
       </Modal.Header>
 
       <Modal.Body className={styles.modalBodyContainer}>
-        {!showQuestions ? (
-          <UserAuthenticationComponent
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            onChange={handlePinChange}
-          />
-        ) : (
-          <div>
-            <h5>{campaignDescription}</h5>
+        <div className={styles.censusContainer}>
+          <h5>{campaignDescription}</h5>
 
-            <ProgressBar animated now={progressPercentage} />
-            <div className={styles.censusInfoContainerPosition}>
-              <div className={styles.censusInfoContainer}>
-                {getCurrentComponent()}
+          <ProgressBar animated now={progressPercentage} />
+          <div className={styles.censusInfoContainerPosition}>
+            <div className={styles.censusInfoContainer}>
+              {getCurrentComponent()}
 
-                <div className={styles.censusModalButtonContainer}>
-                  <Button
-                    className={styles.censusModalButton}
-                    disabled={currentStep === 0}
-                    onClick={handleBack}
-                  >
-                    ←
-                  </Button>
+              <div className={styles.censusModalButtonContainer}>
+                <Button
+                  className={styles.censusModalButton}
+                  disabled={currentStep === 0}
+                  onClick={handleBack}
+                >
+                  ←
+                </Button>
 
-                  <Button
-                    className={styles.censusModalButton}
-                    disabled={currentStep === totalSteps - 1}
-                    onClick={handleContinue}
-                  >
-                    →
-                  </Button>
-                </div>
+                <Button
+                  className={styles.censusModalButton}
+                  disabled={currentStep === totalSteps - 1}
+                  onClick={handleContinue}
+                >
+                  →
+                </Button>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </Modal.Body>
 
       <Modal.Footer>
         <CampaignModalFooterComponent
-          showQuestions={showQuestions}
           submitButtonDisabled="false"
-          continueButtonDisabled={
-            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
-          }
           buttonText="Изпрати"
-          onContinue={handleFormContinue}
           onSubmit={handleFormSubmit}
-          onBack={handleFormBack}
           onHide={onHide}
         />
       </Modal.Footer>

@@ -34,8 +34,12 @@ public class UserAnswerServiceTest {
 
     @Mock
     private CampaignService campaignService;
+
     @Mock
     private AnswerService answerService;
+
+    @Mock
+    private CensusQuestionService censusQuestionService;
 
     @InjectMocks
     private UserAnswerService userAnswerService;

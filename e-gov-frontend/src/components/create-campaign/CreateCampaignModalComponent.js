@@ -6,38 +6,10 @@ import { CreateVotingCampaignComponent } from "./CreateVotingCampaignComponent";
 import { CreateCensusCampaignComponent } from "./CreateCensusCampaignComponent";
 
 function CreateCampaignModalComponent({ show, onHide }) {
-  const [userData, setUserData] = useState(null);
-  const [pinValue, setPinValue] = useState("");
-  const [isValidPinValue, setIsValidPinValue] = useState(false);
-  const [showQuestions, setShowQuestions] = useState(false);
   const [createVotingCampaignModalShow, setCreateVotingCampaignModalShow] =
     useState(false);
   const [createCensusCampaignModalShow, setCreateCensusCampaignModalShow] =
     useState(false);
-
-  const validatePinValue = (input) => {
-    const regex = /^[0-9]+$/;
-    return regex.test(input);
-  };
-
-  const handlePinChange = (event) => {
-    const newPinValue = event.target.value;
-    setPinValue(newPinValue);
-    setIsValidPinValue(validatePinValue(newPinValue));
-  };
-
-  const handleContinue = () => {
-    if (pinValue.length < 10) {
-      setShowQuestions(false);
-    } else if (pinValue.length > 10) {
-      setShowQuestions(false);
-    } else if (!isValidPinValue) {
-      setShowQuestions(false);
-    } else {
-      setUserData({ creatorUserPin: pinValue });
-      setShowQuestions(true);
-    }
-  };
 
   const handleVotingModalBack = () => {
     setCreateVotingCampaignModalShow(false);
@@ -94,14 +66,7 @@ function CreateCampaignModalComponent({ show, onHide }) {
 
         {createVotingCampaignModalShow && (
           <CreateVotingCampaignComponent
-            userData={userData}
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            handlePinChange={handlePinChange}
             show={show}
-            showQuestions={showQuestions}
-            onContinue={handleContinue}
-            onBack={handleVotingModalBack}
             onHide={() => setCreateVotingCampaignModalShow(false)}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
@@ -111,14 +76,7 @@ function CreateCampaignModalComponent({ show, onHide }) {
 
         {createCensusCampaignModalShow && (
           <CreateCensusCampaignComponent
-            userData={userData}
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            handlePinChange={handlePinChange}
             show={show}
-            showQuestions={showQuestions}
-            onContinue={handleContinue}
-            onBack={handleCensusModalBack}
             onHide={() => setCreateCensusCampaignModalShow(false)}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"

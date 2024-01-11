@@ -15,10 +15,12 @@ export interface VoteCampaignProps extends CommonCampaignProps {
 }
 
 export interface CensusCampaignProps extends CommonCampaignProps {
-  id: string;
+  campaignId: string;
   censusQuestions: {
-    id: string;
     text: string;
+    answers: Array<{
+      answerText: string;
+    }>;
     questionCategory: string;
   }[];
 }

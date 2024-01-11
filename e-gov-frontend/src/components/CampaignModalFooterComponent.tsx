@@ -4,41 +4,26 @@ import styles from "./CampaignModalFooterComponent.module.css";
 import { CampaignModalFooterProps } from "../interfaces/CampaignModalFooterInterface";
 
 function CampaignModalFooterComponent({
-  showQuestions,
   submitButtonDisabled,
-  continueButtonDisabled,
   buttonText,
-  onContinue,
-  onBack,
   onSubmit,
   onHide,
 }: CampaignModalFooterProps) {
   return (
     <>
-      {showQuestions ? (
-        <>
-          <div className={styles.modalFooterButtonGroup}>
-            <Button className={styles.modalFooterButton} onClick={onBack}>
-              Назад
-            </Button>
-          </div>
-          <Button
-            disabled={!submitButtonDisabled}
-            className={styles.modalFooterButton}
-            onClick={onSubmit}
-          >
-            {buttonText}
-          </Button>
-        </>
-      ) : (
+      <>
+        <div className={styles.modalFooterButtonGroup}>
+          <Button className={styles.modalFooterButton}>Назад</Button>
+        </div>
         <Button
-          disabled={continueButtonDisabled}
+          disabled={!submitButtonDisabled}
           className={styles.modalFooterButton}
-          onClick={onContinue}
+          onClick={onSubmit}
         >
-          Продължи
+          {buttonText}
         </Button>
-      )}
+      </>
+
       <Button className={styles.modalFooterButton} onClick={onHide}>
         Затвори
       </Button>

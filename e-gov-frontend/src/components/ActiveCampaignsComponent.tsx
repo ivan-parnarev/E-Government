@@ -1,12 +1,12 @@
+import API_URLS from "../utils/apiUtils.js";
+import useAuth from "../hooks/AuthContext.js";
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import styles from "./ActiveCampaignsComponent.module.css";
+import UserAuthenticationComponent from "./user/UserAuthenticationComponent.js";
 import { VotingActiveCampaignComponent } from "./voting/VotingActiveCampaignComponent";
 import { CensusActiveCampaignComponent } from "./census/CensusActiveCampaignComponent";
-import {
-  CensusCampaignProps,
-  VoteCampaignProps,
-} from "../interfaces/ActiveCampaignsContainerInterface.ts";
+import { CensusCampaignProps, VoteCampaignProps } from "../interfaces/ActiveCampaignsContainerInterface.ts"; //prettier-ignore
 
 async function fetchCampaignData(url: string): Promise<any> {
   try {
@@ -20,7 +20,7 @@ async function fetchCampaignData(url: string): Promise<any> {
 }
 
 export function ActiveCampaignsComponent() {
-  const activeCampaignsUrl = "http://localhost:8080/api/v1/campaigns/active";
+  const { userPin } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [voteCampaigns, setVoteCampaigns] = useState<VoteCampaignProps[]>([]);
   const [censusCampaigns, setCensusCampaigns] = useState<CensusCampaignProps[]>(
@@ -31,10 +31,8 @@ export function ActiveCampaignsComponent() {
     const fetchCampaigns = async () => {
       setIsLoading(true);
 
-      const voteData = await fetchCampaignData(`${activeCampaignsUrl}/vote`);
-      const censusData = await fetchCampaignData(
-        `${activeCampaignsUrl}/census`
-      );
+      const voteData = await fetchCampaignData(API_URLS.ACTIVE_VOTE);
+      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
 
       try {
         if (voteData) {
@@ -42,7 +40,7 @@ export function ActiveCampaignsComponent() {
         }
 
         if (censusData) {
-          setCensusCampaigns([censusData]);
+          setCensusCampaigns(censusData);
         }
       } catch (error) {
         console.error("Error fetching campaigns:", error);
@@ -56,7 +54,9 @@ export function ActiveCampaignsComponent() {
 
   const activeCampaigns = [...voteCampaigns, ...censusCampaigns];
 
-  return (
+  return !userPin ? (
+    <UserAuthenticationComponent />
+  ) : (
     <div className={styles.activeCampaignsButtonsGroup}>
       <h2 className={styles.activeCampaignsModalTitle}>
         <b>Активни кампании:</b>
@@ -70,7 +70,7 @@ export function ActiveCampaignsComponent() {
               if ("electionCandidates" in campaign) {
                 return (
                   <VotingActiveCampaignComponent
-                    key={campaign.electionId}
+                    key={campaign.campaignTitle}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
                     electionId={campaign.electionId}
@@ -82,9 +82,10 @@ export function ActiveCampaignsComponent() {
               if ("censusQuestions" in campaign) {
                 return (
                   <CensusActiveCampaignComponent
+                    key={campaign.campaignTitle}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
-                    censusId={campaign.id}
+                    censusId={campaign.campaignId}
                     censusQuestions={campaign.censusQuestions}
                   />
                 );

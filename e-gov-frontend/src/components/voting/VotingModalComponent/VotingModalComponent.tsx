@@ -1,13 +1,12 @@
+import API_URLS from "../../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
-import { ChangeEvent, MouseEvent, useState } from "react";
-import UserAuthenticationComponent from "../../user/UserAuthenticationComponent.js";
+import { MouseEvent, useState } from "react";
 import CampaignModalFooterComponent from "../../CampaignModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
-import {
-  UserData,
-  VotingModalProps,
-} from "../../../interfaces/voting/VotingModalInterface.ts";
+import usePinInput from "../../../hooks/usePinInput.js";
+import useAuth from "../../../hooks/AuthContext.js";
+import { UserData, VotingModalProps } from "../../../interfaces/voting/VotingModalInterface.ts"; //prettier-ignore
 
 export function VotingModalComponent({
   show,
@@ -17,39 +16,10 @@ export function VotingModalComponent({
   electionId,
   electionCandidates,
 }: VotingModalProps) {
-  const [pinValue, setPinValue] = useState<string>("");
-  const [isValidPinValue, setIsValidPinValue] = useState<boolean>(false);
-  const [showQuestions, setShowQuestions] = useState<boolean>(false);
+  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
+  const { userPin } = useAuth();
   const [checkedId, setCheckedId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
-
-  const validatePinValue = (input: string): boolean => {
-    const regex = /^[0-9]+$/;
-    return regex.test(input);
-  };
-
-  const handlePinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newPinValue = event.target.value;
-    setPinValue(newPinValue);
-    setIsValidPinValue(validatePinValue(newPinValue));
-  };
-
-  const handleContinue = () => {
-    if (pinValue.length < 10) {
-      setShowQuestions(false);
-    } else if (pinValue.length > 10) {
-      setShowQuestions(false);
-    } else if (!isValidPinValue) {
-      setShowQuestions(false);
-    } else {
-      setUserData({ userPin: pinValue });
-      setShowQuestions(true);
-    }
-  };
-
-  const handleBack = () => {
-    setShowQuestions(false);
-  };
 
   const handleCheckboxChange = (candidateId: string) => {
     const dataFromChild = {
@@ -57,8 +27,8 @@ export function VotingModalComponent({
       candidateId: candidateId,
     };
 
-    setUserData((prevData) => {
-      return { ...(prevData as UserData), ...dataFromChild };
+    setUserData(() => {
+      return { userPin, ...dataFromChild };
     });
 
     setCheckedId(candidateId);
@@ -67,7 +37,7 @@ export function VotingModalComponent({
   const handleVoteSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    fetch("http://localhost:8080/api/v1/vote", {
+    fetch(API_URLS.VOTE, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
@@ -109,32 +79,18 @@ export function VotingModalComponent({
       </Modal.Header>
 
       <Modal.Body className={styles.modalBodyContainer}>
-        {!showQuestions ? (
-          <UserAuthenticationComponent
-            pinValue={pinValue}
-            isValidPinValue={isValidPinValue}
-            onChange={handlePinChange}
-          />
-        ) : (
-          <VotingActiveCampaignFormContainer
-            campaignDescription={campaignDescription}
-            electionCandidates={electionCandidates}
-            checkedId={checkedId}
-            handleCheckboxChange={handleCheckboxChange}
-          />
-        )}
+        <VotingActiveCampaignFormContainer
+          campaignDescription={campaignDescription}
+          electionCandidates={electionCandidates}
+          checkedId={checkedId}
+          handleCheckboxChange={handleCheckboxChange}
+        />
       </Modal.Body>
 
       <Modal.Footer>
         <CampaignModalFooterComponent
-          showQuestions={showQuestions}
           submitButtonDisabled={checkedId}
-          continueButtonDisabled={
-            pinValue.length < 10 || pinValue.length > 10 || !isValidPinValue
-          }
           buttonText="Гласувай"
-          onContinue={handleContinue}
-          onBack={handleBack}
           onSubmit={handleVoteSubmit}
           onHide={onHide}
         />

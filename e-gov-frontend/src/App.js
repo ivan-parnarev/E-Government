@@ -9,6 +9,8 @@ import { HomePage } from "./pages/HomePage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ActiveCampaignsPage } from "./pages/ActiveCampaignsPage";
 import { ProfilePage } from "./pages/ProfilePage";
+import { AuthProvider } from "./hooks/AuthContext";
+import { CreateCampaignPage } from "./pages/CreateCampaignPage";
 
 const routeChildren = [
   <Route key="home" index="true" element={<HomePage />} />,
@@ -17,6 +19,11 @@ const routeChildren = [
     key="active-campaigns"
     path="/active-campaigns"
     element={<ActiveCampaignsPage />}
+  />,
+  <Route
+    key="create-campaign"
+    path="/create-campaign"
+    element={<CreateCampaignPage />}
   />,
   <Route key="profile" path="/profile" element={<ProfilePage />} />,
 ];
@@ -30,5 +37,9 @@ const routeDefinitions = createRoutesFromElements(
 const router = createBrowserRouter(routeDefinitions);
 
 export function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
