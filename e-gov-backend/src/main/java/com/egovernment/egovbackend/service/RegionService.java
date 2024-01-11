@@ -18,10 +18,11 @@ public class RegionService {
 
     private final RegionFactory regionFactory = new RegionFactory();
     private final ModelMapper modelMapper;
+    private final RegionsCatalog regionsCatalog;
 
     public void initRegions() {
 
-        if (RegionsCatalog.getInstance().getRegions().size() == 0) {
+        if (regionsCatalog.getRegions().size() == 0) {
 
             Region global = this.regionFactory
                     .createRegion(1, "global", "Глобална");
@@ -116,27 +117,27 @@ public class RegionService {
                     plovdiv, razgrad, ruse, silistra, sliven, smolyan, sofia,
                     staraZagora, targovishte, haskovo, shumen, yambol);
 
-            RegionsCatalog.getInstance().setRegions(regions);
+            regionsCatalog.setRegions(regions);
 
         }
 
     }
 
     public Optional<Region> getRegionByEnglishName(String englishName) {
-        return RegionsCatalog.getInstance().findRegionByEnglishName(englishName);
+        return regionsCatalog.findRegionByEnglishName(englishName);
     }
 
     public Optional<Region> getRegionByBulgarianName(String bulgarianName) {
-        return RegionsCatalog.getInstance().findRegionByBulgarianName(bulgarianName);
+        return regionsCatalog.findRegionByBulgarianName(bulgarianName);
     }
 
     public Optional<Region> getRegionById(int regionId) {
-        return RegionsCatalog.getInstance().findRegionById(regionId);
+        return regionsCatalog.findRegionById(regionId);
     }
 
     public List<RegionDTO> getAllRegions() {
 
-        return RegionsCatalog.getInstance().getRegions()
+        return regionsCatalog.getRegions()
                 .stream()
                 .map(r -> this.modelMapper.map(r, RegionDTO.class))
                 .collect(Collectors.toList());
