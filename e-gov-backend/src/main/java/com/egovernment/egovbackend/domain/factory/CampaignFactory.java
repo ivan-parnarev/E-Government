@@ -10,8 +10,9 @@ public class CampaignFactory implements CampaignFactoryInterface{
 
     @Override
     public Campaign createCampaign(CampaignType type, String title, String description
-            , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive) {
-        //check user is administrator
+            , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive,
+                                   String campaignRegion, Long campaignReferenceId) {
+
         return Campaign.builder()
                 .campaignType(type)
                 .title(title)

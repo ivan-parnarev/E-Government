@@ -1,5 +1,6 @@
 package com.egovernment.egovbackend.config;
 
+import com.egovernment.egovbackend.domain.entity.RegionsCatalog;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +21,10 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     @Bean
     public ModelMapper modelMapper(){
         return new ModelMapper();
+    }
+
+    @Bean
+    public RegionsCatalog regionsCatalog(){
+        return new RegionsCatalog();
     }
 }
