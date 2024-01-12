@@ -45,6 +45,7 @@ export function CreateVotingAddCandidateComponent({
 }) {
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
   const [activeRegion, setActiveRegion] = useState("");
+  const [modifyingIndex, setModifyingIndex] = useState(null);
 
   useEffect(() => {
     const initialRegion = regions[0];
@@ -74,7 +75,8 @@ export function CreateVotingAddCandidateComponent({
         newCandidates.length > 0 ? newCandidates : [createEmptyCandidate()],
     });
 
-    console.log(candidates);
+    setModifyingIndex(null);
+    setAddButtonDisabled(true);
   };
 
   const handleCandidateChange = (field, value, index) => {
@@ -89,6 +91,15 @@ export function CreateVotingAddCandidateComponent({
       newCandidates[index].candidateName === "";
 
     setAddButtonDisabled(isLastCandidateEmpty);
+  };
+
+  const startModifyCandidate = (index) => {
+    setModifyingIndex(index);
+  };
+
+  const saveModifiedCandidate = () => {
+    setModifyingIndex(null);
+    setAddButtonDisabled(true);
   };
 
   const addCandidate = () => {
@@ -106,11 +117,15 @@ export function CreateVotingAddCandidateComponent({
 
   const removeCandidate = (index) => {
     const newCandidates = [...candidates[activeRegion]];
-    newCandidates.splice(index, 1);
-    setCandidates({
-      ...candidates,
-      [activeRegion]: newCandidates,
-    });
+    if (modifyingIndex === index) {
+      saveModifiedCandidate();
+    } else {
+      newCandidates.splice(index, 1);
+      setCandidates({
+        ...candidates,
+        [activeRegion]: newCandidates,
+      });
+    }
   };
 
   const chunkArray = (arr, chunkSize) => {
@@ -188,6 +203,12 @@ export function CreateVotingAddCandidateComponent({
             {candidates[activeRegion].length > 1 &&
               index !== candidates[activeRegion].length - 1 && (
                 <Col className={styles.createVotingCampaignCandidateColumn}>
+                  <Button
+                    className={styles.createVotingCampaignCandidateModifyButton}
+                    onClick={() => startModifyCandidate(index)}
+                  >
+                    промени
+                  </Button>
                   <Button
                     className={styles.createVotingCampaignCandidateDeleteButton}
                     onClick={() => removeCandidate(index)}

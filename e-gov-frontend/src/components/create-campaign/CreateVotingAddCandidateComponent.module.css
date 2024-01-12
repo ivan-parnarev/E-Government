@@ -2,7 +2,6 @@
   padding: 20px 0px;
 }
 
-
 .createVotingCampaignCandidate {
   margin: 5px 0px;
 }
@@ -25,6 +24,22 @@
 .createVotingCampaignCandidateAddButton:disabled {
   color: var(--gray);
   background: transparent;
+}
+
+.createVotingCampaignCandidateModifyButton {
+  color: dodgerblue;
+  background: transparent;
+  border: none;
+}
+
+.createVotingCampaignCandidateModifyButton:hover {
+  color: dodgerblue;
+  background: none;
+}
+
+.createVotingCampaignCandidateModifyButton:focus {
+  color: dodgerblue;
+  background: none;
 }
 
 .createVotingCampaignCandidateDeleteButton {
