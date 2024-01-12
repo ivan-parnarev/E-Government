@@ -93,8 +93,8 @@ public class RegionService {
             Region sofia = this.regionFactory
                     .createRegion(1000, "sofia", "София");
 
-//            Region sofiaProvince = this.regionFactory
-//                    .createRegion(24, "sofiaProvince", "София Област");
+            Region sofiaProvince = this.regionFactory
+                    .createRegion(24, "sofiaProvince", "Софийска");
 
             Region staraZagora = this.regionFactory
                     .createRegion(6000, "staraZagora", "Стара Загора");
@@ -114,21 +114,13 @@ public class RegionService {
             List<Region> regions = List.of(global, blagoevgrad, burgas, varna,
                     velikoTarnovo, vidin, vratsa, gabrovo, dobrich, kardzhali,
                     kyustendil, lovech, montana, pazardzhik, pernik, pleven,
-                    plovdiv, razgrad, ruse, silistra, sliven, smolyan, sofia,
+                    plovdiv, razgrad, ruse, silistra, sliven, smolyan, sofia, sofiaProvince,
                     staraZagora, targovishte, haskovo, shumen, yambol);
 
             regionsCatalog.setRegions(regions);
 
         }
 
-    }
-
-    public Optional<Region> getRegionByEnglishName(String englishName) {
-        return regionsCatalog.findRegionByEnglishName(englishName);
-    }
-
-    public Optional<Region> getRegionByBulgarianName(String bulgarianName) {
-        return regionsCatalog.findRegionByBulgarianName(bulgarianName);
     }
 
     public Optional<Region> getRegionById(int regionId) {
