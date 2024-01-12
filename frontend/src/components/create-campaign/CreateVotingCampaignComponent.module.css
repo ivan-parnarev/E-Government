@@ -1,0 +1,32 @@
+.createVotingCampaignContainer {
+  display: flex;
+  flex-direction: column;
+  /* padding: 20px 120px; */
+}
+
+.createVotingCampaignInputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.createVotingCampaignInputGroupSelect {
+  padding: 10px 5px;
+  margin-bottom: 0px !important;
+}
+
+.createVotingCampaignInputGroupInputLabel {
+  margin-bottom: 0px !important;
+  padding: 10px;
+}
+
+.createVotingCampaignInputGroupInputField {
+  width: 100% !important;
+}
+
+.createVotingCampaignCandidateInputDateGroup {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 0px;
+}
