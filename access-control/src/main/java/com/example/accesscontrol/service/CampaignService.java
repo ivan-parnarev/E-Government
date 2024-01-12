@@ -1,6 +1,6 @@
 package com.example.accesscontrol.service;
 
-import com.example.accesscontrol.domain.Address;
+import com.example.accesscontrol.domain.entity.Address;
 import com.example.accesscontrol.domain.dto.CampaignFilteredDTO;
 import com.example.accesscontrol.filter.CampaignRegionFilter;
 import com.example.accesscontrol.repository.CampaignRepository;

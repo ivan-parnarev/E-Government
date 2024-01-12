@@ -1,6 +1,6 @@
 package com.example.accesscontrol.service;
 
-import com.example.accesscontrol.domain.Address;
+import com.example.accesscontrol.domain.entity.Address;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

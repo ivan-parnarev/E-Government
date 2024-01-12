@@ -1,4 +1,4 @@
-package com.example.accesscontrol.domain;
+package com.example.accesscontrol.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
 package com.example.accesscontrol.service;
 
-import com.example.accesscontrol.domain.Address;
+import com.example.accesscontrol.domain.entity.Address;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;

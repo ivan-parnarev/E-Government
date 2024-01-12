@@ -1,4 +1,4 @@
-package com.example.accesscontrol.domain;
+package com.example.accesscontrol.domain.entity;
 
 import com.example.accesscontrol.enums.RoleEnum;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role extends BaseEntity  {
+public class Role extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column

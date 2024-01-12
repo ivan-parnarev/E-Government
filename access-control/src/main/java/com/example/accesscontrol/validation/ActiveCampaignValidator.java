@@ -1,6 +1,6 @@
 package com.example.accesscontrol.validation;
 
-import com.example.accesscontrol.domain.Campaign;
+import com.example.accesscontrol.domain.entity.Campaign;
 
 import java.time.LocalDateTime;
 

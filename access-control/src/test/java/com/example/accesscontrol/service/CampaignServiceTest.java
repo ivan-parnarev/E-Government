@@ -1,7 +1,7 @@
 package com.example.accesscontrol.service;
 
-import com.example.accesscontrol.domain.Address;
-import com.example.accesscontrol.domain.Campaign;
+import com.example.accesscontrol.domain.entity.Address;
+import com.example.accesscontrol.domain.entity.Campaign;
 import com.example.accesscontrol.domain.dto.CampaignFilteredDTO;
 import com.example.accesscontrol.repository.CampaignRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;

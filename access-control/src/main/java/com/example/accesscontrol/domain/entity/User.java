@@ -1,4 +1,5 @@
-package com.example.accesscontrol.domain;
+package com.example.accesscontrol.domain.entity;
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

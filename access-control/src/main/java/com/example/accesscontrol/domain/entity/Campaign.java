@@ -1,4 +1,4 @@
-package com.example.accesscontrol.domain;
+package com.example.accesscontrol.domain.entity;
 
 import com.example.accesscontrol.enums.CampaignType;
 import jakarta.persistence.*;

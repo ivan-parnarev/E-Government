@@ -1,6 +1,6 @@
 package com.example.accesscontrol.repository;
 
-import com.example.accesscontrol.domain.Campaign;
+import com.example.accesscontrol.domain.entity.Campaign;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
