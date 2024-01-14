@@ -43,7 +43,7 @@ services:
       dockerfile: ../access-control/Dockerfile
     image: access-control
     ports:
-      - "8081:8081"
+      - "8083:8083"
 
   auth:
     container_name: e-gov-auth
