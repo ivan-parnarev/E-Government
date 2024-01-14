@@ -25,7 +25,7 @@ class DevEnvironmentManager:
         click.echo("Stopping running containers...")
 
 
-if __name__ == "__main__":
+def main():
     dev_manager = DevEnvironmentManager()
     cli = click.Group()
 
@@ -36,3 +36,7 @@ if __name__ == "__main__":
             cli.add_command(attr)
 
     cli()
+
+
+if __name__ == "__main__":
+    main()
