@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://host.docker.internal:5432/postgres
+    username: postgres
+    password: 1234qwer
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format-sql: true
+    show-sql: true
+  cloud:
+    openfeign:
+      client:
+        config:
+          authentication-client:
+            url: http://localhost:8081/api/v1
+          access-control-client:
+            url: http://localhost:8083/api/v1 
+
