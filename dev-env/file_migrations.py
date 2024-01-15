@@ -2,20 +2,30 @@ import shutil
 import os
 
 
-def copy_and_send_file(src_path, dest_directory):
-    if not os.path.exists(src_path):
-        raise Exception(f"Error: Source file '{src_path}' does not exist.")
+class FileSender:
+    def __init__(self, src_path, dest_dir_path):
+        self.src_path = src_path
+        self.dest_dir_path = dest_dir_path
 
-    dest_path = os.path.join(dest_directory, os.path.basename(src_path))
+    def copy_and_send_file(self):
+        if not os.path.exists(self.src_path):
+            raise Exception(f"Error: Source file '{self.src_path}' does not exist.")
 
-    try:
-        shutil.copy2(src_path, dest_path)
-        print(f"File '{src_path}' copied to '{dest_path}' successfully.")
-    except Exception as e:
-        print(f"Error copying file: {e}")
+        dest_path = os.path.join(
+            self.dest_dir_path,
+            os.path.basename(self.src_path)
+        )
+
+        try:
+            shutil.copy2(self.src_path, dest_path)
+            print(f"File '{self.src_path}' copied to '{dest_path}' successfully.")
+        except Exception as e:
+            print(f"Error copying file: {e}")
 
 
-source_file_path = 'resources/application.yml'
-destination_directory_path = '../main/src/main/resource'
+sender = FileSender(
+    'resources/application.yml',
+    '../main/src/main/resources'
+)
 
-copy_and_send_file(source_file_path, destination_directory_path)
+sender.copy_and_send_file()
