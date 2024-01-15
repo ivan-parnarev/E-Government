@@ -24,8 +24,8 @@ class FileSender:
 
 
 sender = FileSender(
-    'resources/application.yml',
-    '../main/src/main/resources'
+    src_path='resources/application.yml',
+    dest_dir_path='../main/src/main/resources'
 )
 
 sender.copy_and_send_file()
