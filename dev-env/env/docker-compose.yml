@@ -6,7 +6,7 @@ services:
     container_name: e-gov-postgres
     build:
       context: ../../dev-env
-      dockerfile: ../dev-env/Dockerfile
+      dockerfile: dockerfiles/postgres.Dockerfile
     image: postgres
     env_file:
       - ../docker.env
@@ -16,11 +16,11 @@ services:
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  react:
+  frontend:
     container_name: e-gov-react
     build:
       context: ../../frontend
-      dockerfile: ../frontend/Dockerfile
+      dockerfile: dockerfiles/frontend.Dockerfile
     image: react
     ports:
       - "3000:3000"
@@ -29,7 +29,7 @@ services:
     container_name: e-gov-spring-boot
     build:
       context: ../../main
-      dockerfile: ../main/Dockerfile
+      dockerfile: dockerfiles/main.Dockerfile
     image: main
     env_file:
       - ../docker.env
@@ -40,7 +40,7 @@ services:
     container_name: e-gov-access-control
     build:
       context: ../../access-control
-      dockerfile: ../access-control/Dockerfile
+      dockerfile: dockerfiles/access-control.Dockerfile
     image: access-control
     ports:
       - "8083:8083"
@@ -49,7 +49,7 @@ services:
     container_name: e-gov-auth
     build:
       context: ../../authentication
-      dockerfile: ../authentication/Dockerfile
+      dockerfile: dockerfiles/authentication.Dockerfile
     image: auth
     ports:
       - "8082:8082"
