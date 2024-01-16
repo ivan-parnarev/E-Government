@@ -3,8 +3,8 @@ FROM maven:3.8.4-openjdk-17-slim AS builder
 
 WORKDIR /app
 
-COPY ../../main/pom.xml .
-COPY ../../main/src src/
+COPY pom.xml .
+COPY src src/
 
 RUN mvn clean install -DskipTests
 
