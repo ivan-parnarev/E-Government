@@ -9,7 +9,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./CreateVotingCampaignComponent.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuth from "../../hooks/AuthContext.js";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
 import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
@@ -20,6 +20,7 @@ const TOTAL_STEPS = 3;
 export function CreateVotingCampaignComponent({ show, onHide }) {
   const { userPin } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
+  const [regions, setRegions] = useState([]);
   const [campaignData, setCampaignData] = useState({
     electionType: "",
     campaignTitle: "",
@@ -37,6 +38,20 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
     campaignStartDate,
     campaignEndDate,
   } = campaignData;
+
+  const fetchRegions = async () => {
+    try {
+      const response = await axios.get(API_URLS.GET_REGIONS);
+      const filteredRegions = response.data.filter((region) => region.id !== 1);
+      setRegions(filteredRegions);
+    } catch (error) {
+      console.log("Error fetching regions: ", error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchRegions();
+  }, []);
 
   const handleElectionTypeChange = (e) => {
     setCampaignData({
@@ -223,6 +238,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
           <CreateVotingAddCandidateComponent
             electionType={electionType}
             candidates={candidates}
+            regions={regions}
             setCandidates={(updatedCandidates) =>
               setCampaignData({
                 ...campaignData,
@@ -233,7 +249,10 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
         )}
 
         {currentStep === 3 && (
-          <CreateVotingReviewCandidatesComponent campaignData={campaignData} />
+          <CreateVotingReviewCandidatesComponent
+            campaignData={campaignData}
+            regions={regions}
+          />
         )}
 
         <div className={styles.censusModalButtonContainer}>

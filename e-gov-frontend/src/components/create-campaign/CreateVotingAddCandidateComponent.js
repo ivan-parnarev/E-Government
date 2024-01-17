@@ -1,3 +1,5 @@
+import axios from "axios";
+import API_URLS from "../../utils/apiUtils";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -7,57 +9,28 @@ import InputGroup from "react-bootstrap/InputGroup";
 import styles from "./CreateVotingAddCandidateComponent.module.css";
 import { useEffect, useState } from "react";
 
-const regions = [
-  "Благоевград",
-  "Добрич",
-  "Плевен",
-  "София",
-  "Бургас",
-  "Кърджали",
-  "Пловдив",
-  "София (столица)",
-  "Варна",
-  "Кюстендил",
-  "Разград",
-  "Стара Загора",
-  "Велико Търново",
-  "Ловеч",
-  "Русе",
-  "Търговище",
-  "Видин",
-  "Монтана",
-  "Силистра",
-  "Хасково",
-  "Враца",
-  "Пазарджик",
-  "Сливен",
-  "Шумен",
-  "Габрово",
-  "Перник",
-  "Смолян",
-  "Ямбол",
-];
-
 export function CreateVotingAddCandidateComponent({
   electionType,
   candidates,
   setCandidates,
+  regions,
 }) {
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
   const [activeRegion, setActiveRegion] = useState("");
   const [modifyingIndex, setModifyingIndex] = useState(null);
 
-  useEffect(() => {
-    const initialRegion = regions[0];
-    setActiveRegion(initialRegion);
-
-    if (!candidates[initialRegion]) {
+  const initializeCandidates = () => {
+    if (!candidates[activeRegion]) {
       setCandidates({
         ...candidates,
-        [initialRegion]: [createEmptyCandidate()],
+        [activeRegion]: [createEmptyCandidate()],
       });
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    initializeCandidates();
+  }, [activeRegion, candidates]);
 
   const createEmptyCandidate = () => ({
     candidateName: "",
@@ -67,13 +40,13 @@ export function CreateVotingAddCandidateComponent({
 
   const handleRegionClick = (region) => {
     setActiveRegion(region);
-    const newCandidates = candidates[region] || [];
 
-    setCandidates({
-      ...candidates,
-      [region]:
-        newCandidates.length > 0 ? newCandidates : [createEmptyCandidate()],
-    });
+    if (!candidates[region]) {
+      setCandidates({
+        ...candidates,
+        [region]: [createEmptyCandidate()],
+      });
+    }
 
     setModifyingIndex(null);
     setAddButtonDisabled(true);
@@ -144,28 +117,38 @@ export function CreateVotingAddCandidateComponent({
         groupedRegions.map((row, rowIndex) => (
           <Row key={rowIndex} className="mb-2">
             <ButtonGroup aria-label="Basic example">
-              {row.map((region) => (
-                <Button
-                  key={region}
-                  variant={
-                    activeRegion === region
-                      ? "primary"
-                      : candidates[region] && candidates[region].length > 1
-                      ? "success"
-                      : "secondary"
-                  }
-                  onClick={() => handleRegionClick(region)}
-                >
-                  {region}
-                </Button>
-              ))}
+              {row
+                .filter((region) => region.id !== 1)
+                .map((region) => (
+                  <Button
+                    key={region.id}
+                    variant={
+                      activeRegion === region.englishRegionName
+                        ? "primary"
+                        : candidates[region.englishRegionName] &&
+                          candidates[region.englishRegionName].length > 1
+                        ? "success"
+                        : "secondary"
+                    }
+                    onClick={() => handleRegionClick(region.englishRegionName)}
+                  >
+                    {region.bulgarianRegionName}
+                  </Button>
+                ))}
             </ButtonGroup>
           </Row>
         ))}
 
       <InputGroup className={styles.createVotingCampaignInputGroup}>
         <p className={styles.createVotingCampaignInputGroupInputLabel}>
-          Кандидати за {activeRegion}:
+          Кандидати
+          {electionType === "MAYOR" &&
+            ` за ${
+              regions.find(
+                (region) => region.englishRegionName === activeRegion
+              )?.bulgarianRegionName
+            }`}
+          :
         </p>
         {(candidates[activeRegion] || []).map((candidate, index) => (
           <Row key={index} className={styles.createVotingCampaignCandidate}>
