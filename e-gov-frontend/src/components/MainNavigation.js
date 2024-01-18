@@ -22,10 +22,7 @@ export function MainNavigation() {
               Начало
             </Link>
 
-            <Link
-              to="/active-campaigns"
-              className={`${styles.navbarNavLink} ${styles.activeCampaigns}`}
-            >
+            <Link to="/active-campaigns" className={styles.navbarNavLink}>
               Активни кампании
             </Link>
 
