@@ -20,7 +20,7 @@ services:
     container_name: e-gov-react
     build:
       context: ../../frontend
-      dockerfile: dockerfiles/frontend.Dockerfile
+      dockerfile: ../frontend/frontend.Dockerfile
     image: react
     ports:
       - "3000:3000"
@@ -29,7 +29,7 @@ services:
     container_name: e-gov-spring-boot
     build:
       context: ../../main
-      dockerfile: dockerfiles/main.Dockerfile
+      dockerfile: ../main/main.Dockerfile
     image: main
     env_file:
       - ../docker.env
@@ -40,7 +40,7 @@ services:
     container_name: e-gov-access-control
     build:
       context: ../../access-control
-      dockerfile: dockerfiles/access-control.Dockerfile
+      dockerfile: ../access-control/access-control.Dockerfile
     image: access-control
     ports:
       - "8083:8083"
@@ -49,7 +49,7 @@ services:
     container_name: e-gov-auth
     build:
       context: ../../authentication
-      dockerfile: dockerfiles/authentication.Dockerfile
+      dockerfile: ../authentication/authentication.Dockerfile
     image: auth
     ports:
       - "8082:8082"

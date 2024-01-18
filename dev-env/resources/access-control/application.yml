@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=e_gov_auth
+    url: jdbc:postgresql://host.docker.internal:5432/e-government-access-control
     username: postgres
     password: 1234
   sql:
@@ -9,16 +9,13 @@ spring:
       mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format-sql: true
-    show-sql: false
+        default_schema: e_gov_db
+    show-sql: true
 server:
-  port: 8081
-
-keyPaths:
-  privateKeyPath: src/main/resources/keys/private.pem
-  publicKeyPath: src/main/resources/keys/public.pem
+  port: 8083
