@@ -22,12 +22,13 @@ class FileSender:
         except Exception as e:
             print(f"Error copying file: {e}")
 
+    def write_text_on_file(self, key_content):
+        with open(self.src_path, 'w') as file:
+            file.write(key_content)
+
 
 def get_dest_path(dest_dir_path, src_path):
     return os.path.join(
         dest_dir_path,
         os.path.basename(src_path)
     )
-
-
-
