@@ -5,12 +5,10 @@ import com.egovernment.main.domain.entity.Region;
 public class RegionFactory implements RegionFactoryInterface {
 
     @Override
-    public Region createRegion(int id, String englishRegionName
-            , String bulgarianRegionName){
+    public Region createRegion(int postalCode, String regionName){
         return Region.builder()
-                .id(id)
-                .englishRegionName(englishRegionName)
-                .bulgarianRegionName(bulgarianRegionName)
+                .id(postalCode)
+                .regionName(regionName)
                 .build();
     }
 
