@@ -1,6 +1,5 @@
 package com.egovernment.main.service;
 
-import com.egovernment.main.client.AccessControlClient;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
@@ -19,7 +18,6 @@ import com.egovernment.main.domain.factory.CampaignFactory;
 import com.egovernment.main.exceptions.CustomValidationException;
 import com.egovernment.main.repository.CampaignRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,7 +37,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
-    private final AccessControlClient accessControlClient;
+    private final CacheService cacheService;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0) {
@@ -82,9 +80,9 @@ public class CampaignService {
                 from, startDate, endDate, isActive, campaignRegion, campaignReferenceId);
     }
 
-    @Cacheable(value = "filteredCampaignsCache", key = "#regionName")
+//    @Cacheable(value = "filteredCampaignsCache", key = "#regionName")
     public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
-        return this.accessControlClient.getActiveCampaigns(regionName).getBody();
+        return this.cacheService.getCachedCampaigns(regionName);
     }
 
     public List<VoteCampaignDTO> getActiveVotingCampaigns() {
