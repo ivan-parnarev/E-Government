@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +25,12 @@ public class CampaignController implements CampaignControllerInterface {
             content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = CampaignFilteredDTO.class)))
     @Override
-    @GetMapping(ApiPaths.ACTIVE_PATH)
-    public ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns() {
-        List<CampaignFilteredDTO> activeVotingCampaigns = this.campaignService.getActiveLocalCampaigns();
+    @PostMapping(ApiPaths.ACTIVE_PATH)
+    public ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(@RequestBody String regionName) {
+
+        List<CampaignFilteredDTO> activeVotingCampaigns = this.campaignService
+                .getActiveLocalCampaigns(regionName);
+
         return ResponseEntity.ok().body(activeVotingCampaigns);
     }
 

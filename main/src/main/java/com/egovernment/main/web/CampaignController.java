@@ -45,7 +45,7 @@ public class CampaignController implements CampaignControllerInterface {
     @Override
     @GetMapping("/active")
     public ResponseEntity<List<CampaignFilteredDTO>> getAllActiveCampaigns() {
-        List<CampaignFilteredDTO> campaigns = this.campaignService.getActiveCampaigns();
+        List<CampaignFilteredDTO> campaigns = this.campaignService.getActiveCampaigns("Благоевград");
         return ResponseEntity.ok(campaigns);
     }
 

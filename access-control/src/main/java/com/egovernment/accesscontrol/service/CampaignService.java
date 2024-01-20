@@ -1,11 +1,8 @@
 package com.egovernment.accesscontrol.service;
 
-import com.egovernment.accesscontrol.repository.CampaignRepository;
-import com.egovernment.accesscontrol.validation.ActiveCampaignValidator;
-import com.egovernment.accesscontrol.domain.entity.Address;
 import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.filter.CampaignRegionFilter;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.egovernment.accesscontrol.repository.CampaignRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,29 +20,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CampaignService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CampaignService.class);
     private final CampaignRepository campaignRepository;
     private final ModelMapper modelMapper;
-    private final KeyService keyService;
 
     @Transactional
-    public List<CampaignFilteredDTO> getActiveLocalCampaigns() {
+    public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
 
-        try {
-            Address address = keyService.extractAddress();
-
-            return this.campaignRepository
+        return this.campaignRepository
                     .findAll()
                     .stream()
-                    .filter(ActiveCampaignValidator::isCampaignActive)
-                    .filter(c -> CampaignRegionFilter.filterByRegion(c, address))
+                    .filter(c -> CampaignRegionFilter.filterByRegionAndIsActive(c, regionName))
                     .map(c -> this.modelMapper.map(c, CampaignFilteredDTO.class))
                     .collect(Collectors.toList());
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | JsonProcessingException e) {
-            LOGGER.error("Error processing campaign data: ", e);
-            return Collections.emptyList();
-        }
     }
 
 }
