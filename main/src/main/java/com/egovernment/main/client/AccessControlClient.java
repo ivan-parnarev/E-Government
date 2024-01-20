@@ -12,6 +12,6 @@ import java.util.List;
 public interface AccessControlClient {
 
     @GetMapping(ApiPaths.CAMPAIGN_PATH + ApiPaths.ACTIVE_PATH)
-    ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns();
+    ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(String regionName);
 
 }

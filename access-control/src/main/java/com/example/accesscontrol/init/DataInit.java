@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DataInit implements CommandLineRunner {
     private final DatabaseInitializer databaseInitializer;
-
     @Override
     public void run(String... args) throws Exception {
         databaseInitializer.checkAndCreateSubscription();

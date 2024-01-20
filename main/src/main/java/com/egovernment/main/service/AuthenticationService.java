@@ -4,11 +4,15 @@ import com.egovernment.main.client.AuthenticationClient;
 import com.egovernment.main.domain.dto.auth.AuthRequest;
 import com.egovernment.main.domain.dto.auth.AuthResponse;
 import com.egovernment.main.domain.dto.auth.FeignAuthResponse;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.main.domain.dto.region.AddressDTO;
 import com.egovernment.main.exceptions.UserNotFoundException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -26,8 +31,10 @@ import java.util.Objects;
 public class AuthenticationService {
 
     private final AuthenticationClient authenticationClient;
+    private final CampaignService campaignService;
+    private final ModelMapper modelMapper;
 
-    public AuthResponse authenticateUser(String hashedUserPin) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<AuthResponse>  authenticateUser(String hashedUserPin) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         AuthRequest authRequest = AuthRequest.builder()
                 .userPin(hashedUserPin)
@@ -40,15 +47,31 @@ public class AuthenticationService {
             Boolean isAdmin = checkIsUserAdmin(Objects.requireNonNull(responseFromClient));
 
             if (isAdmin) {
+                String token = extractToken(responseFromClient);
+
                 AuthResponse response = AuthResponse.builder()
                         .isAdmin(true)
                         .build();
-                return response;
+
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Authorization", "Bearer " + token).body(response);
             } else {
-                //TODO: extract the address from the claims
-                //TODO: call Access Control Service Via FeignClient
-                //TODO: return AuthResponse with the filtered Campaigns
-                return null;
+
+                String token = extractToken(responseFromClient);
+                Object address = extractClaimsFromToken(responseFromClient.getBody(), token)
+                        .getBody().get("address");
+
+                AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
+                String region = addressDTO.getRegion();
+
+                List<CampaignFilteredDTO> filteredCampaigns = this.campaignService.getActiveCampaigns(region);
+                AuthResponse response = AuthResponse.builder()
+                        .filteredCampaigns(filteredCampaigns)
+                        .build();
+
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Authorization", "Bearer " + token)
+                        .body(response);
             }
         } else {
             throw new UserNotFoundException();
@@ -64,11 +87,17 @@ public class AuthenticationService {
 
     private Boolean checkIsUserAdmin(ResponseEntity<FeignAuthResponse> responseFromClient) throws NoSuchAlgorithmException, InvalidKeySpecException {
         FeignAuthResponse body = responseFromClient.getBody();
-        String token = Objects.requireNonNull(responseFromClient.getHeaders().get("Authorization")).get(0);
-        token = token.replace("Bearer ", "");
+        String token = extractToken(responseFromClient);
+
         Jws<Claims> jwtClaims = extractClaimsFromToken(body, token);
 
         return (boolean) jwtClaims.getBody().get("isAdmin");
+    }
+
+    private static String extractToken(ResponseEntity<FeignAuthResponse> responseFromClient) {
+        String token = Objects.requireNonNull(responseFromClient.getHeaders().get("Authorization")).get(0);
+        token = token.replace("Bearer ", "");
+        return token;
     }
 
     private Jws<Claims> extractClaimsFromToken(FeignAuthResponse body, String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
