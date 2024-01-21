@@ -55,19 +55,39 @@ main_sql = FileSender(
     dest_dir_path='../../../main/src/main/resources'
 )
 
-# application.yml
-access_control_yml.copy_and_send_file()
-authentication_yml.copy_and_send_file()
-main_yml.copy_and_send_file()
+public_pem = FileSender(
+    src_path='../api/public.pem',
+    dest_dir_path='../../../authentication/src/main/resources/keys'
+)
 
-# dockerfiles
-access_control_dockerfile.copy_and_send_file()
-authentication_dockerfile.copy_and_send_file()
-postgres_dockerfile.copy_and_send_file()
-frontend_dockerfile.copy_and_send_file()
-main_dockerfile.copy_and_send_file()
+private_pem = FileSender(
+    src_path='../api/private.pem',
+    dest_dir_path='../../../authentication/src/main/resources/keys'
+)
 
-# data.sql
-access_control_sql.copy_and_send_file()
-authentication_sql.copy_and_send_file()
-main_sql.copy_and_send_file()
+
+def main():
+    # application.yml
+    access_control_yml.copy_and_send_file()
+    authentication_yml.copy_and_send_file()
+    main_yml.copy_and_send_file()
+
+    # dockerfiles
+    access_control_dockerfile.copy_and_send_file()
+    authentication_dockerfile.copy_and_send_file()
+    postgres_dockerfile.copy_and_send_file()
+    frontend_dockerfile.copy_and_send_file()
+    main_dockerfile.copy_and_send_file()
+
+    # data.sql
+    access_control_sql.copy_and_send_file()
+    authentication_sql.copy_and_send_file()
+    main_sql.copy_and_send_file()
+
+    # api key files
+    public_pem.copy_and_send_file()
+    private_pem.copy_and_send_file()
+
+
+if __name__ == '__main__':
+    main()
