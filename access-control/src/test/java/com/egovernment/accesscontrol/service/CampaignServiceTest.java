@@ -2,7 +2,9 @@ package com.egovernment.accesscontrol.service;
 
 import com.egovernment.accesscontrol.domain.entity.Campaign;
 import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
+import com.egovernment.accesscontrol.enums.CampaignType;
 import com.egovernment.accesscontrol.repository.CampaignRepository;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,11 +12,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -29,100 +30,52 @@ public class CampaignServiceTest {
     private CampaignService campaignServiceToTest;
 
     private final String TEST_REGION_NAME = "TestRegion";
+    private final String VOTING_CAMPAIGN_TYPE = "VOTING";
+    private final String CENSUS_CAMPAIGN_TYPE = "CENSUS";
     private final String TEST_GLOBAL_REGION_NAME = "GLOBAL";
-    private final String NON_EXISTING_TEST_REGION_NAME_ = "TestRegion does not exist";
-    private final Campaign mockCampaign = Campaign.builder()
+    private final Campaign firstMockCampaign = Campaign.builder()
+            .campaignType(CampaignType.VOTING)
+            .title(VOTING_CAMPAIGN_TYPE)
             .regionName(TEST_REGION_NAME)
             .build();
-    private final CampaignFilteredDTO mockDto = CampaignFilteredDTO.builder()
+
+    private final Campaign secondMockCampaign = Campaign.builder()
+            .campaignType(CampaignType.CENSUS)
+            .title(CENSUS_CAMPAIGN_TYPE)
+            .regionName(TEST_GLOBAL_REGION_NAME)
+            .build();
+    private final CampaignFilteredDTO firstMockCampaignDto = CampaignFilteredDTO.builder()
+            .campaignType(VOTING_CAMPAIGN_TYPE)
+            .campaignTitle(VOTING_CAMPAIGN_TYPE)
             .regionName(TEST_REGION_NAME)
             .build();
 
-//    @Test
-//    void getActiveLocalCampaignsSuccessfullyFound() throws Exception {
-//        Address mockAddress = Address.builder()
-//                .region(TEST_REGION_NAME)
-//                .build();
-//
-//        List<Campaign> campaigns = new ArrayList<>();
-//        campaigns.add(mockCampaign);
-//
-//        when(keyService.extractAddress()).thenReturn(mockAddress);
-//        when(campaignRepository.findAll()).thenReturn(campaigns);
-//        when(modelMapper.map(mockCampaign, CampaignFilteredDTO.class)).thenReturn(mockDto);
+    private final CampaignFilteredDTO secondMockCampaignDto = CampaignFilteredDTO.builder()
+            .campaignType(CENSUS_CAMPAIGN_TYPE)
+            .campaignTitle(CENSUS_CAMPAIGN_TYPE)
+            .regionName(TEST_GLOBAL_REGION_NAME)
+            .build();
+    @Test
+    public void testGetActiveLocalCampaigns() {
 
-//        List<CampaignFilteredDTO> result = campaignServiceToTest.getActiveLocalCampaigns();
+        when(campaignRepository.findAll()).thenReturn(Arrays.asList(firstMockCampaign, secondMockCampaign));
 
-//        assertFalse(result.isEmpty());
-//        assertEquals(mockCampaign.getRegionName(), mockDto.getRegionName());
-//
-//        verify(keyService).extractAddress();
-//        verify(campaignRepository).findAll();
-//        verify(modelMapper).map(any(Campaign.class), eq(CampaignFilteredDTO.class));
-//    }
-//
-//    @Test
-//    void getActiveLocalCampaignsSuccessfullyFoundForCampaignGLOBAL() throws Exception {
-//        Address mockAddress = Address.builder()
-//                .region(TEST_REGION_NAME)
-//                .build();
-//
-//        Campaign mockCampaignGlobal = Campaign.builder()
-//                .regionName(TEST_GLOBAL_REGION_NAME)
-//                .build();
-//
-//        CampaignFilteredDTO mockDtoGlobal = CampaignFilteredDTO.builder()
-//                .regionName(TEST_GLOBAL_REGION_NAME)
-//                .build();
-//
-//        List<Campaign> campaigns = new ArrayList<>();
-//        campaigns.add(mockCampaignGlobal);
-//
-//        when(keyService.extractAddress()).thenReturn(mockAddress);
-//        when(campaignRepository.findAll()).thenReturn(campaigns);
-//        when(modelMapper.map(mockCampaignGlobal, CampaignFilteredDTO.class)).thenReturn(mockDtoGlobal);
+        lenient().when(modelMapper.map(eq(firstMockCampaign), eq(CampaignFilteredDTO.class))).thenReturn(firstMockCampaignDto);
+        lenient().when(modelMapper.map(eq(secondMockCampaign), eq(CampaignFilteredDTO.class))).thenReturn(secondMockCampaignDto);
 
-//        List<CampaignFilteredDTO> result = campaignServiceToTest.getActiveLocalCampaigns();
+        List<CampaignFilteredDTO> result = campaignServiceToTest.getActiveLocalCampaigns(TEST_REGION_NAME);
 
-//        assertFalse(result.isEmpty());
-//        assertEquals(mockCampaignGlobal.getRegionName(), mockDtoGlobal.getRegionName());
-//
-//        verify(keyService).extractAddress();
-//        verify(campaignRepository).findAll();
-//        verify(modelMapper).map(any(Campaign.class), eq(CampaignFilteredDTO.class));
-//    }
+        assertEquals(2, result.size());
 
-//    @Test
-//    void getActiveLocalCampaignsWithNoSuchRegionReturnsEmptyList() throws Exception {
-//        Address mockAddress = Address.builder()
-//                .region(NON_EXISTING_TEST_REGION_NAME_)
-//                .build();
-//
-//        List<Campaign> campaigns = new ArrayList<>();
-//        campaigns.add(mockCampaign);
-//
-//        when(keyService.extractAddress()).thenReturn(mockAddress);
-//        when(campaignRepository.findAll()).thenReturn(campaigns);
+        CampaignFilteredDTO firstDto = result.get(0);
+        assertEquals(firstMockCampaignDto.getCampaignTitle(), firstDto.getCampaignTitle());
+        assertEquals(firstMockCampaignDto.getRegionName(), firstDto.getRegionName());
+        assertEquals(firstMockCampaignDto.getCampaignType(), firstDto.getCampaignType());
 
-//        List<CampaignFilteredDTO> result = campaignServiceToTest.getActiveLocalCampaigns();
+        CampaignFilteredDTO secondDto = result.get(1);
+        assertEquals(secondMockCampaignDto.getCampaignTitle(), secondDto.getCampaignTitle());
+        assertEquals(secondMockCampaignDto.getRegionName(), secondDto.getRegionName());
+        assertEquals(secondMockCampaignDto.getCampaignType(), secondDto.getCampaignType());
 
-//        assertTrue(result.isEmpty());
-
-//        verify(keyService).extractAddress();
-//        verify(campaignRepository).findAll();
-//    }
-//
-//    @Test
-//    void getActiveLocalCampaignsExceptionThrownAndEmptyResultSetReturned() throws Exception {
-//        when(keyService.extractAddress()).thenThrow(new JsonProcessingException("Test Exception") {
-//        });
-
-//        List<CampaignFilteredDTO> result = campaignServiceToTest.getActiveLocalCampaigns();
-
-//        assertTrue(result.isEmpty());
-//        verify(keyService).extractAddress();
-//        verify(campaignRepository, never()).findAll();
-//        verify(modelMapper, never()).map(any(), any());
-//    }
-
+    }
 }
