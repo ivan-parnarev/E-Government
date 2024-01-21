@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,64 +31,6 @@ import java.util.List;
 public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
-
-    @Operation(summary = "Method Name: getAllActiveCampaigns; Retrieves a list of all active campaigns.")
-    @ApiResponses(
-            value = @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved list of active campaigns",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(
-                                    type = "array",
-                                    implementation = CampaignViewDTO.class))})
-    )
-    @Override
-    @GetMapping("/active")
-    public ResponseEntity<List<CampaignFilteredDTO>> getAllActiveCampaigns() {
-        List<CampaignFilteredDTO> campaigns = this.campaignService.getActiveCampaigns("Софийска");
-        return ResponseEntity.ok(campaigns);
-    }
-
-    @Operation(summary = "Method Name: getAllActiveVoteCampaigns; Retrieves a list of all active campaigns for VOTING.")
-    @ApiResponses(
-            value = @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved list of active VOTING campaigns",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(
-                                    type = "array",
-                                    implementation = VoteCampaignDTO.class))})
-    )
-    @Override
-    @GetMapping("/active/vote")
-    public ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns() {
-        List<VoteCampaignDTO> activeVotingCampaigns = this.campaignService
-                .getActiveVotingCampaigns();
-        return ResponseEntity.ok(activeVotingCampaigns);
-    }
-
-    @Operation(summary = "Method Name: getActiveCensusCampaign; Retrieves active campaign for CENSUS.")
-    @ApiResponses(
-            value = {@ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved active CENSUS campaign",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(
-                                    type = "object",
-                                    implementation = CensusCampaignDTO.class))})
-                    ,@ApiResponse(responseCode = "400",
-                    description = "Bad Request - Active census campaign not found.",
-                    content = {@Content(mediaType = "application/json")}
-            )
-            }
-    )
-    @Override
-    @GetMapping("/active/census")
-    public ResponseEntity<List<CensusCampaignDTO>> getActiveCensusCampaigns() {
-        try {
-            List<CensusCampaignDTO> activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaigns();
-            return ResponseEntity.ok(activeCensusCampaignDTO);
-        } catch (ActiveCensusCampaignNotFoundException ex) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     @Operation(summary = "Create a new voting campaign",
             description = "Creates a new census campaign with the given details. " +
