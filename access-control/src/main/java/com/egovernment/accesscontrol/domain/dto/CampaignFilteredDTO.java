@@ -11,8 +11,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class CampaignFilteredDTO {
 
-    private String id;
+    private Long campaignId;
     private String campaignTitle;
     private String regionName;
+    private String campaignType;
 
 }
