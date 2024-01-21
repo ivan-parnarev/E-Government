@@ -7,27 +7,17 @@ function CampaignModalFooterComponent({
   submitButtonDisabled,
   buttonText,
   onSubmit,
-  onHide,
 }: CampaignModalFooterProps) {
   return (
-    <>
-      <>
-        <div className={styles.modalFooterButtonGroup}>
-          <Button className={styles.modalFooterButton}>Назад</Button>
-        </div>
-        <Button
-          disabled={!submitButtonDisabled}
-          className={styles.modalFooterButton}
-          onClick={onSubmit}
-        >
-          {buttonText}
-        </Button>
-      </>
-
-      <Button className={styles.modalFooterButton} onClick={onHide}>
-        Затвори
+    <div className={styles.modalFooterButtonGroup}>
+      <Button
+        disabled={!submitButtonDisabled}
+        className={styles.modalFooterButton}
+        onClick={onSubmit}
+      >
+        {buttonText}
       </Button>
-    </>
+    </div>
   );
 }
 
