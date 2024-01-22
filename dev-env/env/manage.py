@@ -1,5 +1,8 @@
 import click
 import subprocess
+from api.api_keys import APIKeys
+from file_instances import transfer_files
+from cryptography.hazmat.primitives.asymmetric import ec
 
 
 class DevEnvironmentManager:
@@ -9,6 +12,8 @@ class DevEnvironmentManager:
     @staticmethod
     @click.command()
     def start():
+        get_api_keys()
+        transfer_files()
         subprocess.run(["docker-compose", "up", "-d"])
         click.echo("Starting to develop containers...")
 
@@ -23,6 +28,16 @@ class DevEnvironmentManager:
     def stop():
         subprocess.run(["docker-compose", "stop"])
         click.echo("Stopping running containers...")
+
+
+def get_api_keys():
+    keys = APIKeys()
+
+    keys.private_key = ec.generate_private_key(ec.SECP256R1())
+    keys.public_key = keys.private_key.public_key()
+
+    public_pem, private_pem = keys.generate_key_pair()
+    keys.create_pem_files_with_keys(public_pem, private_pem)
 
 
 def main():

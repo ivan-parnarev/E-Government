@@ -11,6 +11,9 @@ class FileSender:
         if not os.path.exists(self.src_path):
             raise Exception(f"Error: Source file '{self.src_path}' does not exist.")
 
+        if not os.path.exists(self.dest_dir_path):
+            os.makedirs(self.dest_dir_path)
+
         dest_path = get_dest_path(
             self.dest_dir_path,
             self.src_path
