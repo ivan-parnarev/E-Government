@@ -1,6 +1,6 @@
 import click
 import subprocess
-from api.api_keys import APIKeys
+from scripts.api.api_keys import APIKeys
 from file_instances import transfer_files
 from cryptography.hazmat.primitives.asymmetric import ec
 
@@ -51,7 +51,6 @@ def main():
             cli.add_command(attr)
 
     cli()
-
 
 if __name__ == "__main__":
     main()
