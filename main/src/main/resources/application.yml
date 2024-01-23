@@ -23,5 +23,10 @@ spring:
           authentication-client:
             url: http://localhost:8081/api/v1
           access-control-client:
-            url: http://localhost:8083/api/v1 
-
+            url: http://localhost:8083/api/v1
+  cache:
+    type: redis
+  data:
+    redis:
+      host: localhost
+      port: 6379

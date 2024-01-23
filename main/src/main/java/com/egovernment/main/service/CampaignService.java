@@ -79,7 +79,6 @@ public class CampaignService {
                 from, startDate, endDate, isActive, campaignRegion, campaignReferenceId);
     }
 
-//    @Cacheable(value = "filteredCampaignsCache", key = "#regionName")
     public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
         return this.cacheService.getCachedCampaigns(regionName);
     }
