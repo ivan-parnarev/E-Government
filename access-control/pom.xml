@@ -8,13 +8,14 @@
         <version>3.1.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
-    <artifactId>e-gov-access-control</artifactId>
+    <groupId>com.egovernment.accesscontrol</groupId>
+    <artifactId>access-control</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>e-government-access-control</name>
-    <description>e-government-access-control</description>
+    <name>access-control</name>
+    <description>access-control</description>
     <properties>
         <java.version>17</java.version>
+        <start-class>com.egovernment.accesscontrol.EGovernmentAccessControlApplication</start-class>
     </properties>
     <dependencies>
         <dependency>

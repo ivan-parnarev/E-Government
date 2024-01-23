@@ -3,7 +3,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/e-government-access-control
     username: postgres
-    password: 1234
+    password: Yana13042308
   sql:
     init:
       mode: always
