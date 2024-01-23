@@ -21,6 +21,8 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CampaignServiceTest {
+
+    //added tests
     @Mock
     private CampaignRepository campaignRepository;
     @Mock

@@ -80,10 +80,10 @@ public class CampaignService {
     }
 
     public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
-        return this.cacheService.getCachedCampaigns(regionName);
+        return this.cacheService.getCachedCampaigns(regionName); //getting cached campaigns
     }
 
-    public VoteCampaignDTO getVotingCampaignById(Long campaignId) {
+    public VoteCampaignDTO getVotingCampaignById(Long campaignId) { //getting campaign by id
         Optional<Campaign> optCampaign = this.getCampaignById(campaignId);
 
         if (optCampaign.isEmpty()) {

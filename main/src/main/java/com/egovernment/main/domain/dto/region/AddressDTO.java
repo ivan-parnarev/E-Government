@@ -16,4 +16,5 @@ public class AddressDTO {
     private String postcode;
     private String city;
     private String village;
+//added AddresDTO that is extracted from JWT claims
 }

@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class CampaignFilteredDTO implements Serializable {
 
     private Long campaignId;
-    private String campaignTitle;
+    private String campaignTitle; //added campaign title and type
     private String regionName;
     private String campaignType;
 

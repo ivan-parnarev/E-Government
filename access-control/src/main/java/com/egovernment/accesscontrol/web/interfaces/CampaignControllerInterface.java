@@ -10,6 +10,7 @@ import java.util.List;
 
 @RequestMapping(ApiPaths.BASE_API_PATH + ApiPaths.CAMPAIGN_PATH)
 public interface CampaignControllerInterface {
+    //
 
     ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(@RequestBody String regionName);
 

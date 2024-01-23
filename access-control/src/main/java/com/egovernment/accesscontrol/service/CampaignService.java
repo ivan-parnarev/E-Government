@@ -20,6 +20,8 @@ public class CampaignService {
     @Transactional
     public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
 
+        //
+
         return this.campaignRepository
                 .findAll()
                 .stream()
@@ -30,12 +32,14 @@ public class CampaignService {
     }
 
     private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(Campaign campaign) {
+
         return CampaignFilteredDTO.builder()
                 .campaignTitle(campaign.getTitle())
                 .regionName(campaign.getRegionName())
                 .campaignId(campaign.getId())
                 .campaignType(campaign.getCampaignType().name())
                 .build();
+
     }
 
 }

@@ -19,6 +19,7 @@ import java.util.List;
 public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
+    //retrieve all active campaigns by region name
 
     @Operation(summary = "Get Active Campaigns", description = "Retrieves a list of all active voting campaigns available.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of active campaigns",
