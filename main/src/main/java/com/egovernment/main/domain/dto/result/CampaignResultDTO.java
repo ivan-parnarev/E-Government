@@ -16,6 +16,8 @@ public class CampaignResultDTO {
 
     private String campaignTitle;
     private LocalDateTime date;
+    private String campaignType;
+    private String electionType;
     private List<TotalRegionVotesDTO> votes;
     private List<RegionVoteSummaryDTO> results;
 

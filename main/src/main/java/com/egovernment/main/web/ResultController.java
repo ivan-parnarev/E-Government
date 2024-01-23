@@ -56,12 +56,16 @@ public class ResultController implements ResultControllerInterface {
                 .campaignTitle("Global Campaign")
                 .votes(List.of(globalVote))
                 .date(LocalDateTime.now())
+                .electionType("PRESIDENT")
+                .campaignType("VOTING")
                 .results(List.of(globalCandidatesDTO))
                 .build();
 
         CampaignResultDTO localResults = CampaignResultDTO.builder()
                 .campaignTitle("Local Campaign")
                 .votes(List.of(plovidvVote, blagoevgradVote))
+                .electionType("MAYOR")
+                .campaignType("VOTING")
                 .date(LocalDateTime.now())
                 .results(List.of(plovdivCandidatesDTO, blagoevgradCandidatesDTO))
                 .build();
