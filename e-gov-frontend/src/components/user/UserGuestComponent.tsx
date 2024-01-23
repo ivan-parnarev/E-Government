@@ -7,7 +7,7 @@ import usePinInput from "../../hooks/usePinInput.js";
 import useAuth from "../../hooks/AuthContext.js";
 
 function UserGuestComponent() {
-  const { userPin, login } = useAuth();
+  const { login } = useAuth();
   const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
