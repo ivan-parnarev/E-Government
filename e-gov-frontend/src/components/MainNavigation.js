@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import useAuth from "../hooks/AuthContext";
 
 export function MainNavigation() {
-  const { userPin, logout } = useAuth();
+  const { userPin, isAdmin, logout } = useAuth();
 
   return (
     <div className={styles.navbarNav}>
@@ -26,7 +26,7 @@ export function MainNavigation() {
               Активни кампании
             </Link>
 
-            {userPin == "1111111111" && (
+            {isAdmin && (
               <Link to="/create-campaign" className={styles.navbarNavLink}>
                 Създаване на кампания
               </Link>

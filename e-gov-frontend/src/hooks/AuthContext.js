@@ -5,12 +5,14 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userPin, setUserPin] = useState(sessionStorage.getItem("userPin") || ""); //prettier-ignore
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const login = async (pin) => {
     try {
       const response = await authenticateUser(pin);
-      setUserPin(response.userPin);
-      sessionStorage.setItem("userPin", response.userPin);
+      setUserPin(pin);
+      setIsAdmin(response.isAdmin);
+      sessionStorage.setItem("userPin", pin);
     } catch (error) {
       console.error("Authentication failed:", error);
       throw error;
@@ -20,12 +22,13 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     sessionStorage.removeItem("userPin");
     setUserPin("");
+    setIsAdmin(false);
   };
 
+  const contextValue = { userPin, isAdmin, login, logout };
+
   return (
-    <AuthContext.Provider value={{ userPin, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 
