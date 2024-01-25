@@ -7,7 +7,7 @@ import usePinInput from "../../hooks/usePinInput.js";
 import useAuth from "../../hooks/AuthContext.js";
 
 function UserGuestComponent() {
-  const { login } = useAuth();
+  const { userPin, login } = useAuth();
   const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
@@ -42,6 +42,7 @@ function UserGuestComponent() {
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
       <FloatingLabel controlId="floatingInput" label="ЕГН:" className="mb-3">
         <Form.Control
+          className={styles.inputGroupInputField}
           type="text"
           placeholder=""
           value={pinValue}
@@ -53,7 +54,11 @@ function UserGuestComponent() {
         <p className={styles.invalidInput}>{errorMessage}</p>
       )}
 
-      <Button onClick={() => login(pinValue)}>Влез</Button>
+      <div className={styles.loginButtonContainer}>
+        <Button disabled={!pinValue} onClick={() => login(pinValue)}>
+          Влез
+        </Button>
+      </div>
     </div>
   );
 }

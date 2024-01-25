@@ -1,3 +1,4 @@
+import axios from "axios";
 import API_URLS from "../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -44,24 +45,28 @@ function CensusModalComponent({
   const handleFormSubmit = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    fetch(API_URLS.CENSUS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userData),
-    })
+    let location = "";
+
+    axios
+      .post(API_URLS.CENSUS, userData, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((response) => {
         if (response.status === 201) {
-          return response.json().then((data) => {
-            if (data) {
-              const successMessage = `Успешно изпращане на данни за преброяване.`;
-              alert(successMessage);
-            }
+          location = response.headers.location || "";
 
-            window.location.href = response.headers.get("location") || "";
-          });
+          return response.data;
         } else {
-          return response.json();
+          throw new Error(`Server returned ${response.status} status.`);
         }
+      })
+      .then((data) => {
+        if (data) {
+          const successMessage = `Успешно изпращане на данни за преброяване.`;
+          alert(successMessage);
+        }
+
+        window.location.href = location;
       })
       .catch((error) => console.error("Error:", error.message));
   };
@@ -218,7 +223,6 @@ function CensusModalComponent({
           submitButtonDisabled="false"
           buttonText="Изпрати"
           onSubmit={handleFormSubmit}
-          onHide={onHide}
         />
       </Modal.Footer>
     </Modal>

@@ -9,7 +9,7 @@ export function ProfilePage() {
     <div className={styles.containerBackground}>
       <div className={styles.container}>
         {userPin ? (
-          <p>This is the profile page. ✨</p>
+          <p style={{ textAlign: "center" }}>This is the profile page. ✨</p>
         ) : (
           <div>
             <UserAuthenticationComponent />

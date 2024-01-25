@@ -7,6 +7,7 @@ const API_URLS = {
   ACTIVE_CENSUS: `${API_BASE_URL}/campaigns/active/census`,
   CREATE_VOTE: `${API_BASE_URL}/campaigns/create/vote`,
   CREATE_CENSUS: `${API_BASE_URL}/campaigns/create/census`,
+  GET_REGIONS: `${API_BASE_URL}/regions`,
 };
 
 export default API_URLS;

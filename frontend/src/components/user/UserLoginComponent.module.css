@@ -1,13 +1,3 @@
-.loginInputGroupContainer {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
-}
-
-.loginInputGroup {
-  margin: 10px 0px;
-}
-
 .loginInputGroupInputLabel {
-  margin-bottom: 0px !important;
+  width: var(--input-width) !important;
 }

@@ -18,25 +18,21 @@
 }
 
 .navbarNavLink {
-  color: var(--gray) !important;
-  font-size: 1.1rem;
-  padding: 10px;
+  color: var(--light) !important;
+  font-size: 1.2rem;
+  padding: 10px 0px 5px 0px;
+  margin: 0px 15px;
   text-decoration: none;
   border: none;
   background: none;
 }
 
 .navbarNavLink:hover {
-  color: var(--blue-dark) !important;
+  border-bottom: 2px solid var(--light);
   text-decoration: none;
 }
 
-.activeCampaigns {
-  background-color: var(--gray);
-  color: var(--light) !important;
-}
-
-.activeCampaigns:hover {
-  background-color: var(--blue-dark);
-  color: var(--light) !important;
+.navbarNavLink:active,
+.navbarNavLink.active {
+  color: red;
 }

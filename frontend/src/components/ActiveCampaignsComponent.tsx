@@ -1,3 +1,4 @@
+import axios from "axios";
 import API_URLS from "../utils/apiUtils.js";
 import useAuth from "../hooks/AuthContext.js";
 import { useEffect, useState } from "react";
@@ -10,9 +11,8 @@ import { CensusCampaignProps, VoteCampaignProps } from "../interfaces/ActiveCamp
 
 async function fetchCampaignData(url: string): Promise<any> {
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    const response = await axios.get(url);
+    return response.data;
   } catch (error) {
     console.error("Error fetching campaigns:", error);
     return null;

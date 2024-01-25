@@ -1,12 +1,13 @@
 version: "3.8"
 
 services:
-  database:
+
+  postgres:
     container_name: e-gov-postgres
     build:
-      context: ../../e-gov-dev-env
-      dockerfile: ../Dockerfile
-    image: postgres:16
+      context: ../../dev-env
+      dockerfile: dockerfiles/postgres.Dockerfile
+    image: postgres
     env_file:
       - ../docker.env
     restart: always
@@ -18,21 +19,37 @@ services:
   frontend:
     container_name: e-gov-react
     build:
-      context: ../../e-gov-frontend
-      dockerfile: ../e-gov-frontend/Dockerfile
+      context: ../../frontend
+      dockerfile: ../frontend/frontend.Dockerfile
+    image: react
     ports:
       - "3000:3000"
 
-  backend:
+  main:
     container_name: e-gov-spring-boot
     build:
-      context: ../../e-gov-backend
-      dockerfile: ../e-gov-backend/Dockerfile
+      context: ../../main
+      dockerfile: ../main/main.Dockerfile
+    image: main
     env_file:
       - ../docker.env
     ports:
       - "8080:8080"
 
+  access-control:
+    container_name: e-gov-access-control
+    build:
+      context: ../../access-control
+      dockerfile: ../access-control/access-control.Dockerfile
+    image: access-control
+    ports:
+      - "8083:8083"
 
-volumes:
-  postgres_data:
+  auth:
+    container_name: e-gov-auth
+    build:
+      context: ../../authentication
+      dockerfile: ../authentication/authentication.Dockerfile
+    image: auth
+    ports:
+      - "8082:8082"
