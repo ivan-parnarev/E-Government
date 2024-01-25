@@ -12,7 +12,5 @@ import java.security.spec.InvalidKeySpecException;
 
 @RequestMapping(ApiPaths.BASE_API_PATH)
 public interface AuthenticationControllerInterface {
-
-//response entity is returned with the response of the client
     ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }

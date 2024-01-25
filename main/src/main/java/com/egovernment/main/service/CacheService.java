@@ -18,8 +18,7 @@ public class CacheService {
     private final RedisTemplate<String, String> checksumRedisTemplate;
     private final AccessControlClient accessControlClient;
 
-    public List<CampaignFilteredDTO> getCachedCampaigns //checkSum calculations and upadting cache
-            (String regionName) {
+    public List<CampaignFilteredDTO> getCachedCampaigns(String regionName) {
 
         String checksumKey = getChecksumKey(regionName);
         String dataKey = getDataKey(regionName);
