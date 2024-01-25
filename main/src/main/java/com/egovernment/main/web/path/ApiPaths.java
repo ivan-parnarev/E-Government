@@ -9,5 +9,6 @@ public class ApiPaths {
     public static final String CENSUS_PATH = "/census";
     public static final String ACTIVE_PATH = "/active";
     public static final String REGIONS_PATH = "/regions";
+    public static final String RESULTS_PATH = "/results";
 
 }
