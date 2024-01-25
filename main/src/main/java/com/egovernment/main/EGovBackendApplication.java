@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@EnableCaching //added annotation Enable Caching
+@EnableCaching
 public class EGovBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EGovBackendApplication.class, args);

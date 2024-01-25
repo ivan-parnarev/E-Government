@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequestMapping(ApiPaths.BASE_API_PATH + ApiPaths.CAMPAIGN_PATH)
 public interface CampaignControllerInterface {
-    //removed get operations for each campaign type because we are sending campaign title and id and
-    // then we get each campaign by its id
+
     ResponseEntity<VoteCampaignDTO> getVotingCampaignById(@PathVariable("campaignId") Long campaignId);
     ResponseEntity<CensusCampaignDTO> getCensusCampaignById(@PathVariable("campaignId") Long campaignId);
     ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody CreateVotingCampaignDTO createVotingCampaignDTO);

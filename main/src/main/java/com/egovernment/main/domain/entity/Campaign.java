@@ -27,7 +27,7 @@ public class Campaign extends BaseEntity {
     @Column
     private String description;
     @ManyToOne
-    private User from; //with role administrator
+    private User from;
     @Column
     private LocalDateTime startDate;
     @Column

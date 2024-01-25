@@ -44,7 +44,6 @@ public class AuthenticationController implements AuthenticationControllerInterfa
 
         return authenticationService.authenticateUser(authRequest.getUserPin());
 
-// ResponseEntity is returned with the response of the client
     }
 
     @ExceptionHandler(UserNotFoundException.class)

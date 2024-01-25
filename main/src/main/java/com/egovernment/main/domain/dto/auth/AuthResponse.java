@@ -15,5 +15,4 @@ import java.util.List;
 public class AuthResponse {
     private boolean isAdmin;
     private List<CampaignFilteredDTO> filteredCampaigns;
-    //added filtered campaign
 }

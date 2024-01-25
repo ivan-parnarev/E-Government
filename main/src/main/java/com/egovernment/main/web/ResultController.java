@@ -18,8 +18,6 @@ public class ResultController implements ResultControllerInterface {
     @GetMapping
     public ResponseEntity<CampaignsOverviewDTO> getResults() {
 
-        //sample results to see the returned structure
-
         TotalRegionVotesDTO globalVote = TotalRegionVotesDTO.builder()
                 .regionName("GLOBAL")
                 .totalRegionVotes(123821L)

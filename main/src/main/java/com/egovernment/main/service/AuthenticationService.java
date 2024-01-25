@@ -56,7 +56,6 @@ public class AuthenticationService {
                 return ResponseEntity.status(HttpStatus.OK)
                         .header("Authorization", "Bearer " + token).body(response);
             } else {
-// extracting region name and sending it to access-control client
                 String token = extractToken(responseFromClient);
                 Object address = extractClaimsFromToken(responseFromClient.getBody(), token)
                         .getBody().get("address");
