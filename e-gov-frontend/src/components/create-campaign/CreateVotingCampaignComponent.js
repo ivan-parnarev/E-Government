@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../hooks/useAxiosInterceptor.js";
 import API_URLS from "../../utils/apiUtils";
 import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
@@ -177,7 +177,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
                 <option value="MAYOR">Местни избори</option>
                 <option value="PRESIDENT">Президентски избори</option>
                 <option value="PARLIAMENT">Парламентарни избори</option>
-                <option value="COUNCIL">Изброи за Европейски парламент</option>
+                <option value="COUNCIL">Избори за общински съвет</option>
               </Form.Select>
             </FloatingLabel>
 

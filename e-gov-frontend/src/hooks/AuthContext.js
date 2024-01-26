@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     sessionStorage.removeItem("userPin");
+    localStorage.removeItem("jwtToken");
     setUserPin("");
     setIsAdmin(false);
   };

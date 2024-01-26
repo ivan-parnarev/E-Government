@@ -1,5 +1,3 @@
-import axios from "axios";
-import API_URLS from "../../utils/apiUtils";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";

@@ -1,11 +1,10 @@
-import axios from "axios";
+import axios from "../../../hooks/useAxiosInterceptor.js";
 import API_URLS from "../../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import styles from "./VotingModalComponent.module.css";
 import { MouseEvent, useState } from "react";
 import CampaignModalFooterComponent from "../../CampaignModalFooterComponent.tsx";
 import VotingActiveCampaignFormContainer from "../VotingActiveCampaignFormContainer.tsx";
-import usePinInput from "../../../hooks/usePinInput.js";
 import useAuth from "../../../hooks/AuthContext.js";
 import { UserData, VotingModalProps } from "../../../interfaces/voting/VotingModalInterface.ts"; //prettier-ignore
 
@@ -17,7 +16,6 @@ export function VotingModalComponent({
   electionId,
   electionCandidates,
 }: VotingModalProps) {
-  const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const { userPin } = useAuth();
   const [checkedId, setCheckedId] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -44,6 +42,7 @@ export function VotingModalComponent({
       .post(API_URLS.VOTE, userData, {
         headers: { "Content-Type": "application/json" },
       })
+      //@ts-ignore
       .then((response) => {
         if (response.status === 201) {
           location = response.headers.location || "";
@@ -51,6 +50,7 @@ export function VotingModalComponent({
           return response.data;
         }
       })
+      //@ts-ignore
       .then((data) => {
         if (data) {
           const successMessage = `${data.message} `;
@@ -59,6 +59,7 @@ export function VotingModalComponent({
 
         window.location.href = location;
       })
+      //@ts-ignore
       .catch((error) => console.error("Error:", error.message));
   };
 

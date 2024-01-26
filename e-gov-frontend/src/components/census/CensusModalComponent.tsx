@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../hooks/useAxiosInterceptor.js";
 import API_URLS from "../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -51,6 +51,7 @@ function CensusModalComponent({
       .post(API_URLS.CENSUS, userData, {
         headers: { "Content-Type": "application/json" },
       })
+      //@ts-ignore
       .then((response) => {
         if (response.status === 201) {
           location = response.headers.location || "";
@@ -60,6 +61,7 @@ function CensusModalComponent({
           throw new Error(`Server returned ${response.status} status.`);
         }
       })
+      //@ts-ignore
       .then((data) => {
         if (data) {
           const successMessage = `Успешно изпращане на данни за преброяване.`;
@@ -68,6 +70,7 @@ function CensusModalComponent({
 
         window.location.href = location;
       })
+      //@ts-ignore
       .catch((error) => console.error("Error:", error.message));
   };
 
