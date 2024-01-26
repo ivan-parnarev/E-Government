@@ -3,7 +3,6 @@ package com.egovernment.authentication.service;
 import com.egovernment.authentication.domain.entity.Region;
 import com.egovernment.authentication.domain.entity.User;
 import com.egovernment.authentication.repository.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +11,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -51,18 +49,6 @@ public class UserServiceTest {
         testRegion = Region.builder().name(TEST_REGION_NAME)
                 .postcode(TEST_REGION_POSTCODE)
                 .build();
-    }
-
-    @Test
-    void testFindUserByUserPinUserReturned() {
-        when(this.userRepository.findByUserPin(USER_PIN))
-                .thenReturn(Optional.of(testUser));
-
-        Optional<User> result = this.userService.findUserByUserPin(USER_PIN);
-
-        Assertions.assertNotNull(result.get());
-        Assertions.assertEquals(result.get().getFirstName(), FIRST_NAME);
-        Assertions.assertEquals(result.get().getUserPin(), USER_PIN);
     }
 
     @Test

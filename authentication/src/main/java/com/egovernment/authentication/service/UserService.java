@@ -1,5 +1,4 @@
 package com.egovernment.authentication.service;
-
 import com.egovernment.authentication.domain.entity.*;
 import com.egovernment.authentication.domain.enums.Country;
 import com.egovernment.authentication.factory.userFactory.UserFactory;
@@ -30,7 +29,8 @@ public class UserService {
 
     private final UserFactory userFactory = new UserFactory();
 
-    public Optional<User> findUserByUserPin(String hashedUserPin) {
+    public Optional<User> findUserByUserPin(String userPin) throws NoSuchAlgorithmException {
+        String hashedUserPin = generateHashedUserPin(userPin);
         return this.userRepository.findByUserPin(hashedUserPin);
     }
 
@@ -51,24 +51,24 @@ public class UserService {
 
         this.addressRepository.save(address);
 
-        User adminTestUser = userFactory.createUser(generateHashedUserPin("00000000"),
+        User adminTestUser = userFactory.createUser(generateHashedUserPin("1111111111"),
                 TestUserData.TEST_ADMIN_NAME,
                 TestUserData.TEST_ADMIN_NAME,
                 TestUserData.TEST_ADMIN_NAME,
                 address);
         adminTestUser.setAdmin(true);
 
-        User firstTestUser = userFactory.createUser(generateHashedUserPin("00000001"),
+        User firstTestUser = userFactory.createUser(generateHashedUserPin("000000001"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
                 address);
-        User secondTestUser = userFactory.createUser(generateHashedUserPin("00000002"),
+        User secondTestUser = userFactory.createUser(generateHashedUserPin("000000002"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
                 address);
-        User thirdTestUser = userFactory.createUser(generateHashedUserPin("00000003"),
+        User thirdTestUser = userFactory.createUser(generateHashedUserPin("000000003"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
