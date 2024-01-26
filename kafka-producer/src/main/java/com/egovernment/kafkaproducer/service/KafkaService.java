@@ -15,7 +15,9 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -29,19 +31,38 @@ public class KafkaService {
         AdminClient adminClient = AdminClient.create(kafkaAdmin.getConfigurationProperties());
 
         NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactor);
-        adminClient.createTopics(Collections.singletonList(newTopic));
 
-        LOGGER.info("New topic {} is created", topicName);
+        try {
 
-        adminClient.close();
+            adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
+            LOGGER.info("New topic {} is created", topicName);
+
+        } catch (InterruptedException e) {
+
+            Thread.currentThread().interrupt();
+            LOGGER.error("Thread was interrupted during the topic creation process", e);
+
+        } catch (ExecutionException e) {
+
+            LOGGER.error("Error occurred while creating topic {}: {}", topicName, e.getCause().getMessage());
+
+        } catch (Exception e) {
+
+            LOGGER.error("An unexpected error occurred while creating topic {}: {}", topicName, e.getMessage());
+
+        } finally {
+            adminClient.close();
+        }
+
     }
 
     public ApiCustomResponse sendMessage(UserVotedInfoDTO message, String topic) {
-        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, message);
+        String messageKey = UUID.randomUUID().toString();
+        CompletableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, messageKey, message);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                LOGGER.info("Sent message=[{}] with offset=[{}]",
-                        message, result.getRecordMetadata().offset());
+                LOGGER.info("Sent message=[{}] with key {} with offset=[{}]",
+                        message, messageKey, result.getRecordMetadata().offset());
             } else {
                 LOGGER.info("Unable to send message=[{}] due to : {}",
                         message, ex.getMessage());
@@ -59,7 +80,7 @@ public class KafkaService {
 
         campaignsTopicDTO
                 .getCampaignTitles()
-                .forEach(t -> this.createTopic(t, 2, (short)1));
+                .forEach(t -> this.createTopic(t, 2, (short) 1));
 
         return ApiCustomResponse
                 .builder()
