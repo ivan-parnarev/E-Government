@@ -10,8 +10,8 @@ import java.util.Optional;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegionsCatalog {
-
     private List<Region> regions = new ArrayList<>();
+
 
     public Optional<Region> findRegionById(int regionId) {
         return regions.stream()

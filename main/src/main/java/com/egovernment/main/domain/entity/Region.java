@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Region {
     private int id;
+
     private String regionName;
 
 }

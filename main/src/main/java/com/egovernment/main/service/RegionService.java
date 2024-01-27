@@ -5,7 +5,7 @@ import com.egovernment.main.domain.entity.Region;
 import com.egovernment.main.domain.entity.RegionsCatalog;
 import com.egovernment.main.domain.factory.region.RegionFactory;
 import lombok.RequiredArgsConstructor;
-
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +17,18 @@ import java.util.stream.Collectors;
 public class RegionService {
 
     private final RegionFactory regionFactory = new RegionFactory();
+
+
+    private final ModelMapper modelMapper;
+
+
     private final RegionsCatalog regionsCatalog;
 
     public void initRegions() {
 
         if (regionsCatalog.getRegions().size() == 0) {
 
-            Region global = this.regionFactory
-                    .createRegion(1, "global");
+            Region global = this.regionFactory.createRegion(1, "global");
 
             Region blagoevgrad = this.regionFactory
                     .createRegion(2700, "blagoevgrad");
@@ -108,7 +112,11 @@ public class RegionService {
                     .createRegion(9700, "shumen");
 
             Region yambol = this.regionFactory
+
+
                     .createRegion(8600, "yambol");
+
+
 
             List<Region> regions = List.of(global, blagoevgrad, burgas, varna,
                     velikoTarnovo, vidin, vratsa, gabrovo, dobrich, kardzhali,
@@ -127,13 +135,11 @@ public class RegionService {
     }
 
     public List<RegionDTO> getAllRegions() {
-
         return regionsCatalog.getRegions()
                 .stream()
                 .map(this::mapRegionToRegionDTO)
                 .collect(Collectors.toList());
     }
-
     private RegionDTO mapRegionToRegionDTO(Region region){
         return RegionDTO.builder()
                 .id(region.getId())
@@ -141,5 +147,4 @@ public class RegionService {
                 .bulgarianRegionName(this.regionsCatalog.translateRegionNameToBulgarian(region.getRegionName()))
                 .build();
     }
-
 }
