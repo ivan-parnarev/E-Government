@@ -5,6 +5,7 @@ import com.egovernment.main.domain.entity.Region;
 import com.egovernment.main.domain.entity.RegionsCatalog;
 import com.egovernment.main.domain.factory.region.RegionFactory;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -140,4 +141,5 @@ public class RegionService {
                 .bulgarianRegionName(this.regionsCatalog.translateRegionNameToBulgarian(region.getRegionName()))
                 .build();
     }
+
 }

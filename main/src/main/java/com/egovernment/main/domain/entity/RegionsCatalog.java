@@ -117,5 +117,4 @@ public class RegionsCatalog {
         return translatedName;
     }
 
-
 }
