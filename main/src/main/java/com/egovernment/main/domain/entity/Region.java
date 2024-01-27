@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Region {
     private int id;
-    private String englishRegionName;
-    private String bulgarianRegionName;
+    private String regionName;
 }
