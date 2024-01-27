@@ -140,6 +140,7 @@ public class RegionService {
                 .map(this::mapRegionToRegionDTO)
                 .collect(Collectors.toList());
     }
+
     private RegionDTO mapRegionToRegionDTO(Region region){
         return RegionDTO.builder()
                 .id(region.getId())

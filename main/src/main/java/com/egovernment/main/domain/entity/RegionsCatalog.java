@@ -12,7 +12,6 @@ import java.util.Optional;
 public class RegionsCatalog {
     private List<Region> regions = new ArrayList<>();
 
-
     public Optional<Region> findRegionById(int regionId) {
         return regions.stream()
                 .filter(region -> region.getId() == regionId)
@@ -114,7 +113,9 @@ public class RegionsCatalog {
                 translatedName = "Unknown";
                 break;
         }
+
         return translatedName;
+
     }
 
 }
