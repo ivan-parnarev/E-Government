@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class TopicDto {
+public class ListenerTopicDTO {
+
     private String topic;
+
 }

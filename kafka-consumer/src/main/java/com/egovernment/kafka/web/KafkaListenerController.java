@@ -1,6 +1,6 @@
 package com.egovernment.kafka.web;
 
-import com.egovernment.kafka.domain.dto.TopicDto;
+import com.egovernment.kafka.domain.dto.ListenerTopicDto;
 import com.egovernment.kafka.response.ApiCustomResponse;
 import com.egovernment.kafka.response.message.ApiResponseMessage;
 import com.egovernment.kafka.service.KafkaListenerCreationService;
@@ -19,7 +19,7 @@ public class KafkaListenerController implements KafkaListenerControllerInterface
 
     @Override
     @PostMapping(path = "/create")
-    public ResponseEntity<ApiCustomResponse> createTopicListener(@RequestBody TopicDto topic) {
+    public ResponseEntity<ApiCustomResponse> createTopicListener(@RequestBody ListenerTopicDto topic) {
         kafkaListenerCreationService.createAndRegisterListener(topic.getTopic());
         ApiCustomResponse apiCustomResponse = ApiCustomResponse
                 .builder()

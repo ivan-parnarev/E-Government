@@ -1,6 +1,8 @@
 package com.egovernment.kafka.service;
 
+import com.egovernment.kafka.client.KafkaConsumerClient;
 import com.egovernment.kafka.domain.dto.CampaignsTopicDTO;
+import com.egovernment.kafka.domain.dto.ListenerTopicDTO;
 import com.egovernment.kafka.domain.dto.UserVotedInfoDTO;
 import com.egovernment.kafka.response.ApiCustomResponse;
 import com.egovernment.kafka.response.message.ApiResponseMessage;
@@ -25,6 +27,7 @@ public class KafkaProducerService {
 
     private final KafkaTemplate kafkaTemplate;
     private final KafkaAdmin kafkaAdmin;
+    private final KafkaConsumerClient kafkaConsumerClient;
     private final Logger LOGGER = LoggerFactory.getLogger(KafkaProducerService.class);
 
     private void createTopic(String topicName, int partitions, short replicationFactor) {
@@ -36,6 +39,10 @@ public class KafkaProducerService {
 
             adminClient.createTopics(Collections.singletonList(newTopic)).all().get();
             LOGGER.info("New topic {} is created", topicName);
+
+            ListenerTopicDTO listenerTopicDTO = ListenerTopicDTO.builder().topic(topicName).build();
+            this.kafkaConsumerClient.createTopicListener(listenerTopicDTO);
+            LOGGER.info("Called kafka consumer client to subscribe to new topic {}.", topicName);
 
         } catch (InterruptedException e) {
 
