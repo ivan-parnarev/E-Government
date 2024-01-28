@@ -7,10 +7,12 @@ import com.egovernment.main.domain.entity.User;
 import com.egovernment.main.domain.entity.Vote;
 import com.egovernment.main.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -20,9 +22,11 @@ public class VoteService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final UserService userService;
+    private final StringRedisTemplate redisTemplate;
 
     public boolean hasUserVotedForCampaign(String userPin, Long electionId) {
-        return this.voteRepository.voteExistsByUserPinAndElectionId(userPin, electionId);
+        String key = buildCacheKey(userPin, electionId);
+        return Boolean.TRUE.equals(redisTemplate.hasKey(key));
     }
 
     public void saveVote(UserVotedInfoDTO voteDTO) {
@@ -47,7 +51,16 @@ public class VoteService {
                     .build();
 
             this.voteRepository.save(vote);
+
+            String key = buildCacheKey(voteDTO.getUserPin(), voteDTO.getElectionId());
+            redisTemplate.opsForValue().set(key, "voted", 3, TimeUnit.DAYS.DAYS);
+
         }
 
     }
+
+    private String buildCacheKey(String userPin, Long electionId) {
+        return "vote:" + userPin + ":" + electionId;
+    }
+
 }

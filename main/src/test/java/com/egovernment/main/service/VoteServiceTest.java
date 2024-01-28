@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 
 import java.util.Optional;
 
@@ -25,13 +27,14 @@ public class VoteServiceTest {
     private  VoteRepository voteRepository;
     @Mock
     private  CandidateService candidateService;
-
     @Mock
     private UserService userService;
     @Mock
     private ElectionService electionService;
-
-
+    @Mock
+    private StringRedisTemplate redisTemplate;
+    @Mock
+    private ValueOperations<String, String> valueOperations;
     private VoteService voteServiceToTest;
     private final String CANDIDATE_NAME = "Test Candidate";
     private final String USER_PIN = "0000000000";
@@ -44,7 +47,8 @@ public class VoteServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.voteServiceToTest = new VoteService(voteRepository, electionService, candidateService, userService);
+        this.voteServiceToTest = new VoteService(voteRepository, electionService, candidateService, userService, redisTemplate);
+        lenient().when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     }
 
     @Test
@@ -78,29 +82,19 @@ public class VoteServiceTest {
     }
 
     @Test
-    void testHasUserVotedForElectionReturnsFalseWhenUserVoted(){
+    void testHasUserVotedForCampaignCacheHit() {
+        when(redisTemplate.hasKey(anyString())).thenReturn(true);
 
-        when(this.voteRepository
-                .voteExistsByUserPinAndElectionId("0000000000", ID))
-                .thenReturn(true);
-
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID);
-
-        assertTrue(result);
-
+        assertTrue(voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID));
+        verify(redisTemplate, times(1)).hasKey(anyString());
     }
 
     @Test
-    void testHasUserVotedForCampaignReturnsTrueWhenUserHasNotVoted(){
+    void testHasUserVotedForCampaign_CacheMissAndDatabaseCheck() {
+        when(redisTemplate.hasKey(anyString())).thenReturn(false);
 
-        when(this.voteRepository
-                .voteExistsByUserPinAndElectionId("0000000000", ID))
-                .thenReturn(false);
-
-        boolean result = this.voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID);
-
-        assertFalse(result);
-
+        assertFalse(voteServiceToTest.hasUserVotedForCampaign(USER_PIN, ID));
+        verify(redisTemplate, times(1)).hasKey(anyString());
     }
 
 }
