@@ -1,5 +1,5 @@
-import React from "react";
-import { BarChart, PieChart } from "@mui/x-charts";
+import React, { useState } from "react";
+import { PieChart } from "@mui/x-charts";
 import styles from "./ResultsPage.module.css";
 
 const campaign = {
@@ -114,97 +114,89 @@ const campaign = {
 };
 
 export function ResultsPage() {
-  const barChartCategories = campaign.LOCAL.results.map(
-    (result) => result.regionName
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
+
+  const totalGlobalVotes = campaign.GLOBAL.results[0].candidates.reduce(
+    (total, candidate) => total + candidate.candidateVotes,
+    0
   );
-  const barChartData = campaign.LOCAL.results.map((result) => {
-    const totalVotes = result.candidates.reduce(
-      (total, candidate) => total + candidate.candidateVotes,
-      0
-    );
-    return totalVotes;
-  });
 
   return (
     <div className={styles.containerBackground}>
       <div className={styles.container}>
         <div className={styles.resultsContainer}>
           <h2>{campaign.LOCAL.campaignTitle}</h2>
-          {campaign.LOCAL.results.map((districtResult) => (
-            <div key={districtResult.regionName}>
-              <h3>
-                <b>{districtResult.regionName}</b>
-              </h3>
-              <BarChart
-                xAxis={[
-                  {
-                    id: `barCategories_${districtResult.regionName}`,
-                    data: districtResult.candidates.map(
-                      (candidate) => candidate.candidateName
-                    ),
-                    scaleType: "band",
-                  },
-                ]}
-                series={[
-                  {
-                    data: districtResult.candidates.map(
-                      (candidate) => candidate.candidateVotes
-                    ),
-                    color: "dodgerblue",
-                  },
-                ]}
-                width={500}
-                height={300}
-              />
+          <select
+            value={selectedDistrict || ""}
+            onChange={(e) => setSelectedDistrict(e.target.value || null)}
+          >
+            <option value="">Избери регион</option>
+            {campaign.LOCAL.results.map((districtResult) => (
+              <option
+                key={districtResult.regionName}
+                value={districtResult.regionName}
+              >
+                {districtResult.regionName}
+              </option>
+            ))}
+          </select>
 
-              <PieChart
-                series={[
-                  {
-                    data: districtResult.candidates.map((candidate, index) => ({
-                      id: index,
-                      value: candidate.candidateVotes,
-                      label: candidate.candidateName,
-                    })),
-                    innerRadius: 90,
-                    outerRadius: 130,
-                    paddingAngle: 0,
-                    cornerRadius: 0,
-                    startAngle: -90,
-                    endAngle: 90,
-                    cx: 150,
-                    cy: 150,
-                  },
-                ]}
-                width={500}
-                height={200}
-              />
-            </div>
-          ))}
+          {campaign.LOCAL.results.map((districtResult) => {
+            if (
+              selectedDistrict &&
+              districtResult.regionName !== selectedDistrict
+            ) {
+              return null; // Skip rendering if not selected district
+            }
+
+            const totalVotes = districtResult.candidates.reduce(
+              (total, candidate) => total + candidate.candidateVotes,
+              0
+            );
+
+            return (
+              <div key={districtResult.regionName}>
+                <h3>
+                  <b>{districtResult.regionName}</b>
+                </h3>
+                <PieChart
+                  series={[
+                    {
+                      data: districtResult.candidates.map(
+                        (candidate, index) => ({
+                          id: index,
+                          value: candidate.candidateVotes,
+                          label: `${candidate.candidateName} (${(
+                            (candidate.candidateVotes / totalVotes) *
+                            100
+                          ).toFixed(2)}%)`,
+                        })
+                      ),
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: {
+                        innerRadius: 90,
+                        additionalRadius: 0,
+                        color: "gray",
+                      },
+                      innerRadius: 90,
+                      outerRadius: 130,
+                      paddingAngle: 0,
+                      cornerRadius: 0,
+                      startAngle: -90,
+                      endAngle: 90,
+                      cx: 150,
+                      cy: 150,
+                    },
+                  ]}
+                  width={500}
+                  height={200}
+                />
+              </div>
+            );
+          })}
 
           <h2>{campaign.GLOBAL.campaignTitle}</h2>
           <div key="global">
-            <BarChart
-              xAxis={[
-                {
-                  id: "barCategories_global",
-                  data: campaign.GLOBAL.results[0].candidates.map(
-                    (candidate) => candidate.candidateName
-                  ),
-                  scaleType: "band",
-                },
-              ]}
-              series={[
-                {
-                  data: campaign.GLOBAL.results[0].candidates.map(
-                    (candidate) => candidate.candidateVotes
-                  ),
-                  color: "dodgerblue",
-                },
-              ]}
-              width={500}
-              height={300}
-            />
-
             <PieChart
               series={[
                 {
@@ -212,9 +204,18 @@ export function ResultsPage() {
                     (candidate, index) => ({
                       id: index,
                       value: candidate.candidateVotes,
-                      label: candidate.candidateName,
+                      label: `${candidate.candidateName} (${(
+                        (candidate.candidateVotes / totalGlobalVotes) *
+                        100
+                      ).toFixed(2)}%)`,
                     })
                   ),
+                  highlightScope: { faded: "global", highlighted: "item" },
+                  faded: {
+                    innerRadius: 90,
+                    additionalRadius: 0,
+                    color: "gray",
+                  },
                   innerRadius: 90,
                   outerRadius: 130,
                   paddingAngle: 0,
