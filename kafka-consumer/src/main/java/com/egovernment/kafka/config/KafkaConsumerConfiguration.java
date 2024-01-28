@@ -1,5 +1,6 @@
 package com.egovernment.kafka.config;
 
+import com.egovernment.kafka.domain.dto.UserVotedInfoDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
@@ -36,7 +37,10 @@ public class KafkaConsumerConfiguration {
                 StringDeserializer.class);
         props.put(
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                ErrorHandlingDeserializer.class.getName());
+                JsonDeserializer.class.getName());
+        props.put(
+                JsonDeserializer.VALUE_DEFAULT_TYPE,
+                UserVotedInfoDTO.class.getName());
         props.put(
                 JsonDeserializer.TRUSTED_PACKAGES,
                 "*");
@@ -46,7 +50,6 @@ public class KafkaConsumerConfiguration {
 
         return new DefaultKafkaConsumerFactory<>(props);
     }
-
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<String, String>
