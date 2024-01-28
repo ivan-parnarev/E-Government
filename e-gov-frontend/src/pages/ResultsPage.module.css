@@ -1,5 +1,4 @@
 .container {
-  /* From https://css.glass */
   background: rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -10,10 +9,8 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 40px 30px;
-  /* color: var(--light); */
 }
 
 .resultsContainer {
-  /* background-color: var(--light); */
   padding: 50px;
 }

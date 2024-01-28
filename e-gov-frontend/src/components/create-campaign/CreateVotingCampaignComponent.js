@@ -76,6 +76,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
 
   const handleStartDateChange = (e) => {
     const startDate = e.target.value;
+
     setCampaignData({
       ...campaignData,
       campaignStartDate: startDate,
@@ -105,7 +106,42 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
     const currUserData = {
       creatorUserPin: userPin,
       campaignType: "VOTING",
-      ...campaignData,
+      campaignTitle: campaignData.campaignTitle,
+      campaignDescription: campaignData.campaignDescription,
+      campaignStartDate: campaignData.campaignStartDate,
+      campaignEndDate: campaignData.campaignEndDate,
+      campaignRegion:
+        campaignData.electionType === "MAYOR" ||
+        campaignData.electionType === "PRESIDENT"
+          ? "LOCAL"
+          : "GLOBAL",
+      elections: Object.keys(campaignData.candidates)
+        .filter((electionRegion) => electionRegion.trim() !== "")
+        .map((electionRegion) => {
+          const candidates = campaignData.candidates[electionRegion]
+            .filter(
+              (candidate) =>
+                candidate.candidateName.trim() !== "" &&
+                candidate.candidateParty.trim() !== "" &&
+                candidate.candidateNumber.trim() !== ""
+            )
+            .map((candidate) => ({
+              candidateName: candidate.candidateName,
+              candidateParty: candidate.candidateParty,
+              candidateNumber: candidate.candidateNumber,
+            }));
+
+          if (candidates.length > 0) {
+            return {
+              electionType: campaignData.electionType,
+              electionRegion,
+              candidates,
+            };
+          }
+
+          return null;
+        })
+        .filter((election) => election !== null),
     };
 
     axios
@@ -120,7 +156,6 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
         }
       })
       .then((data) => {
-        console.log(data);
         if (data) {
           const successMessage = `${data.message} `;
           alert(successMessage);
