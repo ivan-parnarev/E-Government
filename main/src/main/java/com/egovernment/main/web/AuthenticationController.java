@@ -40,10 +40,7 @@ public class AuthenticationController implements AuthenticationControllerInterfa
     @Override
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
-
-        AuthResponse authResponse = authenticationService.authenticateUser(authRequest.getUserPin());
-
-        return ResponseEntity.ok(authResponse);
+        return authenticationService.authenticateUser(authRequest.getUserPin());
     }
 
     @ExceptionHandler(UserNotFoundException.class)
