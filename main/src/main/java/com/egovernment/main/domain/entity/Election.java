@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "elections")
 @Data
@@ -18,7 +20,11 @@ public class Election extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column
     private ElectionType electionType;
-    @OneToOne
+    @Column
+    private String electionRegion;
+    @ManyToOne
     private Campaign campaign;
+    @OneToMany
+    private List<Candidate> candidateList;
 
 }

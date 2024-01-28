@@ -1,14 +1,20 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.AccessControlClient;
 import com.egovernment.main.client.AuthenticationClient;
 import com.egovernment.main.domain.dto.auth.AuthRequest;
 import com.egovernment.main.domain.dto.auth.AuthResponse;
 import com.egovernment.main.domain.dto.auth.FeignAuthResponse;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.main.domain.dto.region.AddressDTO;
 import com.egovernment.main.exceptions.UserNotFoundException;
+import com.egovernment.main.utils.JwtTokenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,65 +25,54 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private final ModelMapper modelMapper;
     private final AuthenticationClient authenticationClient;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final CampaignService campaignService;
 
-    public AuthResponse authenticateUser(String hashedUserPin) throws NoSuchAlgorithmException, InvalidKeySpecException {
-
-        AuthRequest authRequest = AuthRequest.builder()
-                .userPin(hashedUserPin)
-                .build();
+    public ResponseEntity<AuthResponse> authenticateUser(AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         ResponseEntity<FeignAuthResponse> responseFromClient = this.authenticationClient.authenticateUser(authRequest);
         HttpStatusCode statusCode = responseFromClient.getStatusCode();
 
         if (statusCode.is2xxSuccessful()) {
-            Boolean isAdmin = checkIsUserAdmin(Objects.requireNonNull(responseFromClient));
+            String token = this.jwtTokenUtil.extractToken(responseFromClient);
+            Boolean isAdmin = this.jwtTokenUtil.validateAdminToken(token);
 
             if (isAdmin) {
                 AuthResponse response = AuthResponse.builder()
                         .isAdmin(true)
                         .build();
-                return response;
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Authorization", "Bearer " + token)
+                        .body(response);
             } else {
-                //TODO: extract the address from the claims
-                //TODO: call Access Control Service Via FeignClient
-                //TODO: return AuthResponse with the filtered Campaigns
-                return null;
+                String publicKeyString = Objects.requireNonNull(responseFromClient.getBody()).getPublicKey();
+                Object address = this.jwtTokenUtil.extractClaimsFromToken(publicKeyString, token)
+                        .getBody().get("address");
+
+                AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
+                String region = addressDTO.getRegion();
+
+                List<CampaignFilteredDTO> filteredCampaigns = this.campaignService.getActiveCampaigns(region);
+
+                AuthResponse response = AuthResponse.builder()
+                        .filteredCampaigns(filteredCampaigns)
+                        .build();
+
+                return ResponseEntity.status(HttpStatus.OK)
+                        .header("Authorization", "Bearer " + token)
+                        .body(response);
             }
         } else {
             throw new UserNotFoundException();
         }
-    }
-
-    private PublicKey createPublicKey(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(key));
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        PublicKey publicKey = kf.generatePublic(keySpec);
-        return publicKey;
-    }
-
-    private Boolean checkIsUserAdmin(ResponseEntity<FeignAuthResponse> responseFromClient) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        FeignAuthResponse body = responseFromClient.getBody();
-        String token = Objects.requireNonNull(responseFromClient.getHeaders().get("Authorization")).get(0);
-        token = token.replace("Bearer ", "");
-        Jws<Claims> jwtClaims = extractClaimsFromToken(body, token);
-
-        return (boolean) jwtClaims.getBody().get("isAdmin");
-    }
-
-    private Jws<Claims> extractClaimsFromToken(FeignAuthResponse body, String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        PublicKey publicKey = createPublicKey(Objects.requireNonNull(body).getPublicKey());
-
-        Jws<Claims> jwtClaims = Jwts.parserBuilder()
-                .setSigningKey(publicKey)
-                .build()
-                .parseClaimsJws(token);
-        return jwtClaims;
     }
 }

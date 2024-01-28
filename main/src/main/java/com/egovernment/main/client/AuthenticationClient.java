@@ -16,7 +16,6 @@ public interface AuthenticationClient {
     @PostMapping("/authenticate")
     ResponseEntity<FeignAuthResponse> authenticateUser(@RequestBody AuthRequest authRequest);
 
-    @Cacheable("publicKey")
     @GetMapping("/publicKey")
     ResponseEntity<PublicKeyDTO> getPublicKey();
 }

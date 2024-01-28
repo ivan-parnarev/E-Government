@@ -1,6 +1,9 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
 import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.Candidate;
 import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.enums.ElectionType;
 import com.egovernment.main.domain.factory.election.ElectionFactory;
@@ -8,12 +11,16 @@ import com.egovernment.main.repository.ElectionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ElectionService {
 
+    private final CandidateService candidateService;
     private final ElectionRepository electionRepository;
     private final ElectionFactory electionFactory = new ElectionFactory();
 
@@ -36,10 +43,33 @@ public class ElectionService {
         return this.electionRepository.findByCampaignId(campaignId);
     }
 
-    public Election createElection(String electionTypeString, Campaign campaign) {
-        ElectionType electionType = ElectionType.valueOf(electionTypeString);
-        Election election = launchElection(electionType, campaign);
+    public Election mapElectionDTOtoElection(ElectionDTO electionDTO) {
+        return Election.builder()
+                .electionRegion(electionDTO.getElectionRegion())
+                .electionType(ElectionType.valueOf(electionDTO.getElectionType()))
+                .build();
+    }
+
+    public void createElectionsWithCandidates(List<ElectionDTO> electionsDTOList, Campaign campaign) {
+
+        for (ElectionDTO electionDTO : electionsDTOList) {
+            List<CandidateDTO> candidates = electionDTO.getCandidates();
+            List<Candidate> candidatesInElection = new ArrayList<>();
+
+            for (CandidateDTO candidateDTO : candidates) {
+                Candidate candidate = this.candidateService.mapCandidateDTOtoCandidate(candidateDTO);
+                candidatesInElection.add(candidate);
+            }
+            this.candidateService.saveCandidates(candidatesInElection);
+
+            Election election = mapElectionDTOtoElection(electionDTO);
+            election.setCampaign(campaign);
+            election.setCandidateList(candidatesInElection);
+            saveElection(election);
+        }
+    }
+
+    public void saveElection(Election election) {
         this.electionRepository.save(election);
-        return election;
     }
 }

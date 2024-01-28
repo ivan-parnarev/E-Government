@@ -1,9 +1,12 @@
 package com.egovernment.main.domain.dto.common;
 
 import com.egovernment.main.domain.annotation.pin.ValidUserPin;
+import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +19,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateCampaignCommon {
-    @NotBlank(message = "Campaign type is a required but not found.")
-    private String campaignType;
+    @NotNull(message = "Campaign type cannot be null.")
+    private CampaignType campaignType;
     @NotBlank(message = "Campaign title is a required but not found.")
     private String campaignTitle;
     @NotBlank(message = "Campaign description is a required but not found.")
@@ -29,6 +32,6 @@ public class CreateCampaignCommon {
     private LocalDateTime campaignStartDate;
     @Future
     private LocalDateTime campaignEndDate;
-    private String campaignRegion;
-    private Long campaignReferenceId;
+    @NotNull(message = "Campaign region must be LOCAL or GLOBAL, cannot be null.")
+    private CampaignRegion campaignRegion;
 }
