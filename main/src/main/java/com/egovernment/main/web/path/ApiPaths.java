@@ -10,5 +10,8 @@ public class ApiPaths {
     public static final String ACTIVE_PATH = "/active";
     public static final String REGIONS_PATH = "/regions";
     public static final String RESULTS_PATH = "/results";
+    public static final String MESSAGE_PATH = "/message";
+    public static final String CREATE_PATH = "/create";
+    public static final String SEND_PATH = "/send";
 
 }

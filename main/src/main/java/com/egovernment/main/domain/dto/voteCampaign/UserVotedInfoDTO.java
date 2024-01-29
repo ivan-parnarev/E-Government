@@ -23,6 +23,6 @@ public class UserVotedInfoDTO {
     private Long electionId;
     @NotNull(message = "Candidate id is required but it is not found.")
     private Long candidateId;
-
+    private String campaignTitle;
 
 }
