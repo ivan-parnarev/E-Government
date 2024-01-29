@@ -78,7 +78,7 @@ public class CandidateService {
                 .build();
     }
 
-    public void saveCandidates(List<Candidate> candidates) {
-        this.candidateRepository.saveAllAndFlush(candidates);
+    public List<Candidate> saveCandidates(List<Candidate> candidates) {
+        return this.candidateRepository.saveAllAndFlush(candidates);
     }
 }

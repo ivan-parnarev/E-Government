@@ -8,13 +8,13 @@ import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.enums.ElectionType;
 import com.egovernment.main.domain.factory.election.ElectionFactory;
 import com.egovernment.main.repository.ElectionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,21 +50,25 @@ public class ElectionService {
                 .build();
     }
 
+    @Transactional
     public void createElectionsWithCandidates(List<ElectionDTO> electionsDTOList, Campaign campaign) {
 
         for (ElectionDTO electionDTO : electionsDTOList) {
             List<CandidateDTO> candidates = electionDTO.getCandidates();
-            List<Candidate> candidatesInElection = new ArrayList<>();
-
-            for (CandidateDTO candidateDTO : candidates) {
-                Candidate candidate = this.candidateService.mapCandidateDTOtoCandidate(candidateDTO);
-                candidatesInElection.add(candidate);
-            }
-            this.candidateService.saveCandidates(candidatesInElection);
+            List<Candidate> candidatesToBeSaved = new ArrayList<>();
 
             Election election = mapElectionDTOtoElection(electionDTO);
             election.setCampaign(campaign);
-            election.setCandidateList(candidatesInElection);
+            saveElection(election);
+
+            for (CandidateDTO candidateDTO : candidates) {
+                Candidate candidate = this.candidateService.mapCandidateDTOtoCandidate(candidateDTO);
+                candidate.setElection(election);
+                candidatesToBeSaved.add(candidate);
+            }
+            List<Candidate> savedCandidates = this.candidateService.saveCandidates(candidatesToBeSaved);
+
+            election.setCandidateList(savedCandidates);
             saveElection(election);
         }
     }

@@ -3,6 +3,8 @@ package com.egovernment.main.domain.dto.common;
 import com.egovernment.main.domain.annotation.pin.ValidUserPin;
 import com.egovernment.main.domain.enums.CampaignRegion;
 import com.egovernment.main.domain.enums.CampaignType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -32,6 +34,5 @@ public class CreateCampaignCommon {
     private LocalDateTime campaignStartDate;
     @Future
     private LocalDateTime campaignEndDate;
-    @NotNull(message = "Campaign region must be LOCAL or GLOBAL, cannot be null.")
     private CampaignRegion campaignRegion;
 }

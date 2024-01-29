@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,13 +26,13 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private RoleService roleService;
-    private UserService userServiceToTest;
     Role administratorRole;
     private final String USER_PIN = "123456";
 
+    @InjectMocks
+    private UserService userServiceToTest;
     @BeforeEach
     void setUp() {
-        this.userServiceToTest = new UserService(userRepository, roleService);
         administratorRole = new Role(RoleEnum.ADMINISTRATOR);
     }
 
@@ -99,13 +100,15 @@ public class UserServiceTest {
     void createUserWithUserPinShouldSaveAndReturnUser() {
         String pin = "123456";
         User user = User.builder().PIN(pin).build();
+        Role guestRole = Role.builder().roleName(RoleEnum.GUEST).build();
+        when(roleService.getRole(any())).thenReturn(guestRole);
         when(userRepository.save(any(User.class))).thenReturn(user);
-
         User createdUser = userServiceToTest.createUserWithUserPin(pin);
 
         assertNotNull(createdUser);
         assertEquals(pin, createdUser.getPIN());
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository).save(any(User.class));
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test

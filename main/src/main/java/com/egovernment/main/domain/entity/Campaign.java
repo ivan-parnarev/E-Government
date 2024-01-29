@@ -32,6 +32,7 @@ public class Campaign extends BaseEntity {
     @Column
     private LocalDateTime endDate;
     @Column
+    @Enumerated(EnumType.STRING)
     private CampaignRegion campaignRegion;
     @Column
     private boolean isActive ;

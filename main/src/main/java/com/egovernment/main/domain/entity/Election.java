@@ -24,7 +24,7 @@ public class Election extends BaseEntity{
     private String electionRegion;
     @ManyToOne
     private Campaign campaign;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Candidate> candidateList;
 
 }
