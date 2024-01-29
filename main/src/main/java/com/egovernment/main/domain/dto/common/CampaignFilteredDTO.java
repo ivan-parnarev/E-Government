@@ -5,13 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CampaignFilteredDTO {
+public class CampaignFilteredDTO implements Serializable {
 
-    private String campaignId;
+    private Long campaignId;
     private String campaignTitle;
+    private String regionName;
+    private String campaignType;
 
 }

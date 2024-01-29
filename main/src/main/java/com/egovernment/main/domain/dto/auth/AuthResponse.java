@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthResponse {
     Boolean isAdmin;
-    List<CampaignFilteredDTO> filteredCampaigns;
+    private List<CampaignFilteredDTO> filteredCampaigns;
 }

@@ -10,7 +10,7 @@ E-Government enables voters to cast their votes for candidates or policies from 
 2. Maven
 3. Git
 4. Programming IDE (Intellij Recommended, but it works as well in VS Code)
-
+5. Redis that is working at port 6379
 
 ## Clone the repository 
 If you want to clone the whole project:
