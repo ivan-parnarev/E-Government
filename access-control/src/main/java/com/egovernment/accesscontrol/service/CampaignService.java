@@ -1,5 +1,6 @@
 package com.egovernment.accesscontrol.service;
 
+import com.egovernment.accesscontrol.domain.entity.Campaign;
 import com.egovernment.accesscontrol.repository.CampaignRepository;
 import com.egovernment.accesscontrol.validation.ActiveCampaignValidator;
 import com.egovernment.accesscontrol.domain.entity.Address;
@@ -22,30 +23,29 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CampaignService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CampaignService.class);
     private final CampaignRepository campaignRepository;
-    private final ModelMapper modelMapper;
-    private final KeyService keyService;
 
     @Transactional
-    public List<CampaignFilteredDTO> getActiveLocalCampaigns() {
+    public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
 
-        try {
-            Address address = keyService.extractAddress();
+        return this.campaignRepository
+                .findAll()
+                .stream()
+                .filter(c -> CampaignRegionFilter.filterByRegionAndIsActive(c, regionName))
+                .map(this::mapCampaignToCampaignFilteredDTO)
+                .collect(Collectors.toList());
 
-            return this.campaignRepository
-                    .findAll()
-                    .stream()
-                    .filter(ActiveCampaignValidator::isCampaignActive)
-                    .filter(c -> CampaignRegionFilter.filterByRegion(c, address))
-                    .map(c -> this.modelMapper.map(c, CampaignFilteredDTO.class))
-                    .collect(Collectors.toList());
+    }
 
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | JsonProcessingException e) {
-            LOGGER.error("Error processing campaign data: ", e);
-            return Collections.emptyList();
-        }
+    private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(Campaign campaign) {
+
+        return CampaignFilteredDTO.builder()
+                .campaignTitle(campaign.getTitle())
+                .regionName(campaign.getRegionName())
+                .campaignId(campaign.getId())
+                .campaignType(campaign.getCampaignType().name())
+                .build();
+
     }
 
 }

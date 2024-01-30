@@ -42,6 +42,7 @@ public class AuthenticationService {
                 AuthResponse response = AuthResponse.builder()
                         .isAdmin(true)
                         .build();
+
                 return ResponseEntity.status(HttpStatus.OK)
                         .header("Authorization", "Bearer " + token)
                         .body(response);
