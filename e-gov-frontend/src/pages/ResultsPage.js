@@ -125,110 +125,121 @@ export function ResultsPage() {
     <div className={styles.containerBackground}>
       <div className={styles.container}>
         <div className={styles.resultsContainer}>
-          <h2>{campaign.LOCAL.campaignTitle}</h2>
-          <select
-            value={selectedDistrict || ""}
-            onChange={(e) => setSelectedDistrict(e.target.value || null)}
-          >
-            <option value="">Избери регион</option>
-            {campaign.LOCAL.results.map((districtResult) => (
-              <option
-                key={districtResult.regionName}
-                value={districtResult.regionName}
-              >
-                {districtResult.regionName}
-              </option>
-            ))}
-          </select>
-
-          {campaign.LOCAL.results.map((districtResult) => {
-            if (
-              selectedDistrict &&
-              districtResult.regionName !== selectedDistrict
-            ) {
-              return null; // Skip rendering if not selected district
-            }
-
-            const totalVotes = districtResult.candidates.reduce(
-              (total, candidate) => total + candidate.candidateVotes,
-              0
-            );
-
-            return (
-              <div key={districtResult.regionName}>
-                <h3>
-                  <b>{districtResult.regionName}</b>
-                </h3>
-                <PieChart
-                  series={[
-                    {
-                      data: districtResult.candidates.map(
-                        (candidate, index) => ({
-                          id: index,
-                          value: candidate.candidateVotes,
-                          label: `${candidate.candidateName} (${(
-                            (candidate.candidateVotes / totalVotes) *
-                            100
-                          ).toFixed(2)}%)`,
-                        })
-                      ),
-                      highlightScope: { faded: "global", highlighted: "item" },
-                      faded: {
-                        innerRadius: 90,
-                        additionalRadius: 0,
-                        color: "gray",
-                      },
+          <div className={styles.results}>
+            <h2>{campaign.GLOBAL.campaignTitle}</h2>
+            <div key="global">
+              <PieChart
+                series={[
+                  {
+                    data: campaign.GLOBAL.results[0].candidates.map(
+                      (candidate, index) => ({
+                        id: index,
+                        value: candidate.candidateVotes,
+                        label: `${candidate.candidateName} (${(
+                          (candidate.candidateVotes / totalGlobalVotes) *
+                          100
+                        ).toFixed(2)}%)`,
+                      })
+                    ),
+                    highlightScope: { faded: "global", highlighted: "item" },
+                    faded: {
                       innerRadius: 90,
-                      outerRadius: 130,
-                      paddingAngle: 0,
-                      cornerRadius: 0,
-                      startAngle: -90,
-                      endAngle: 90,
-                      cx: 150,
-                      cy: 150,
+                      additionalRadius: 0,
+                      color: "gray",
                     },
-                  ]}
-                  width={500}
-                  height={200}
-                />
-              </div>
-            );
-          })}
-
-          <h2>{campaign.GLOBAL.campaignTitle}</h2>
-          <div key="global">
-            <PieChart
-              series={[
-                {
-                  data: campaign.GLOBAL.results[0].candidates.map(
-                    (candidate, index) => ({
-                      id: index,
-                      value: candidate.candidateVotes,
-                      label: `${candidate.candidateName} (${(
-                        (candidate.candidateVotes / totalGlobalVotes) *
-                        100
-                      ).toFixed(2)}%)`,
-                    })
-                  ),
-                  highlightScope: { faded: "global", highlighted: "item" },
-                  faded: {
                     innerRadius: 90,
-                    additionalRadius: 0,
-                    color: "gray",
+                    outerRadius: 130,
+                    paddingAngle: 0,
+                    cornerRadius: 0,
+                    startAngle: -90,
+                    endAngle: 90,
+                    cx: 150,
+                    cy: 150,
                   },
-                  innerRadius: 90,
-                  outerRadius: 130,
-                  paddingAngle: 0,
-                  cornerRadius: 0,
-                  startAngle: -90,
-                  endAngle: 90,
-                  cx: 150,
-                  cy: 150,
-                },
-              ]}
-              width={500}
-              height={200}
-            />
+                ]}
+                width={520}
+                height={200}
+              />
+            </div>
+          </div>
+
+          <div className={styles.results}>
+            <h2>{campaign.LOCAL.campaignTitle}</h2>
+            <select
+              className={styles.regionSelect}
+              value={selectedDistrict || ""}
+              onChange={(e) => setSelectedDistrict(e.target.value || null)}
+            >
+              <option value="">Избери регион</option>
+              {campaign.LOCAL.results.map((districtResult) => (
+                <option
+                  key={districtResult.regionName}
+                  value={districtResult.regionName}
+                >
+                  {districtResult.regionName}
+                </option>
+              ))}
+            </select>
+
+            {campaign.LOCAL.results.map((districtResult) => {
+              if (
+                selectedDistrict &&
+                districtResult.regionName !== selectedDistrict
+              ) {
+                return null;
+              }
+
+              const totalVotes = districtResult.candidates.reduce(
+                (total, candidate) => total + candidate.candidateVotes,
+                0
+              );
+
+              return (
+                <div
+                  key={districtResult.regionName}
+                  className={styles.regionResults}
+                >
+                  <h3 className={styles.regionTitle}>
+                    <b>{districtResult.regionName}</b>
+                  </h3>
+                  <PieChart
+                    series={[
+                      {
+                        data: districtResult.candidates.map(
+                          (candidate, index) => ({
+                            id: index,
+                            value: candidate.candidateVotes,
+                            label: `${candidate.candidateName} (${(
+                              (candidate.candidateVotes / totalVotes) *
+                              100
+                            ).toFixed(2)}%)`,
+                          })
+                        ),
+                        highlightScope: {
+                          faded: "global",
+                          highlighted: "item",
+                        },
+                        faded: {
+                          innerRadius: 90,
+                          additionalRadius: 0,
+                          color: "gray",
+                        },
+                        innerRadius: 90,
+                        outerRadius: 130,
+                        paddingAngle: 0,
+                        cornerRadius: 0,
+                        startAngle: -90,
+                        endAngle: 90,
+                        cx: 150,
+                        cy: 150,
+                      },
+                    ]}
+                    width={520}
+                    height={200}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

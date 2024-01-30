@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authenticateUser(pin);
       setUserPin(pin);
       setIsAdmin(response.isAdmin);
-      sessionStorage.setItem("userPin", pin);
+      localStorage.setItem("userPin", pin);
     } catch (error) {
       console.error("Authentication failed:", error);
       throw error;
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    sessionStorage.removeItem("userPin");
+    localStorage.removeItem("userPin");
     localStorage.removeItem("jwtToken");
     setUserPin("");
     setIsAdmin(false);

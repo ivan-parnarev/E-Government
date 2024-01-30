@@ -38,7 +38,7 @@ function UserGuestComponent() {
 
   return (
     <div>
-      <h4>Продължете като гост</h4>
+      <h4>Влезте в профила си</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
       <FloatingLabel controlId="floatingInput" label="ЕГН:" className="mb-3">
         <Form.Control

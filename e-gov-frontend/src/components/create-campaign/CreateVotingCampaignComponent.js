@@ -112,7 +112,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
       campaignEndDate: campaignData.campaignEndDate,
       campaignRegion:
         campaignData.electionType === "MAYOR" ||
-        campaignData.electionType === "PRESIDENT"
+        campaignData.electionType === "COUNCIL"
           ? "LOCAL"
           : "GLOBAL",
       elections: Object.keys(campaignData.candidates)
@@ -209,7 +209,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
                 value={electionType}
               >
                 <option></option>
-                <option value="MAYOR">Местни избори</option>
+                <option value="MAYOR">Избори за кмет</option>
                 <option value="PRESIDENT">Президентски избори</option>
                 <option value="PARLIAMENT">Парламентарни избори</option>
                 <option value="COUNCIL">Избори за общински съвет</option>
@@ -286,6 +286,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
         {currentStep === 3 && (
           <CreateVotingReviewCandidatesComponent
             campaignData={campaignData}
+            electionType={electionType}
             regions={regions}
           />
         )}
