@@ -1,0 +1,8 @@
+.activeCampaignsSection {
+  display: flex;
+  justify-content: center;
+}
+
+.activeCampaignsButton {
+  font-size: 1.7rem;
+}

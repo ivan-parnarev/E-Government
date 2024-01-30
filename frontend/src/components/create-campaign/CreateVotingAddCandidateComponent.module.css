@@ -1,0 +1,59 @@
+.createVotingCampaignContainer {
+  padding: 20px 0px;
+}
+
+.createVotingCampaignCandidate {
+  margin: 5px 0px;
+}
+
+.createVotingCampaignCandidateColumn {
+  flex: 0 0 0%;
+}
+
+.createVotingCampaignCandidateAddButton {
+  color: var(--green);
+  background: transparent;
+  border: none;
+}
+
+.createVotingCampaignCandidateAddButton:hover {
+  color: var(--green);
+  background: transparent;
+}
+
+.createVotingCampaignCandidateAddButton:disabled {
+  color: var(--gray);
+  background: transparent;
+}
+
+.createVotingCampaignCandidateModifyButton {
+  color: dodgerblue;
+  background: transparent;
+  border: none;
+}
+
+.createVotingCampaignCandidateModifyButton:hover {
+  color: dodgerblue;
+  background: none;
+}
+
+.createVotingCampaignCandidateModifyButton:focus {
+  color: dodgerblue;
+  background: none;
+}
+
+.createVotingCampaignCandidateDeleteButton {
+  color: var(--red);
+  background: transparent;
+  border: none;
+}
+
+.createVotingCampaignCandidateDeleteButton:hover {
+  color: var(--red);
+  background: none;
+}
+
+.createVotingCampaignCandidateDeleteButton:focus {
+  color: var(--red);
+  background: none;
+}

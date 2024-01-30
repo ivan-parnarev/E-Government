@@ -1,0 +1,31 @@
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 70px 30px;
+  text-align: center;
+  color: var(--light);
+}
+
+.title {
+  font-weight: bold;
+  font-size: 4.3rem;
+  line-height: 100%;
+  margin-bottom: 20px;
+}
+
+.subTitle {
+  font-size: 24px;
+  margin-bottom: 100px;
+}
+
+.featuresSection,
+.aboutSection,
+.activeCampaignsSection {
+  margin-top: 40px;
+  text-align: left;
+}
+
+.featuresList {
+  list-style-type: disc;
+  padding-left: 20px;
+}

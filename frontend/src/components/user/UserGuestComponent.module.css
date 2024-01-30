@@ -1,0 +1,12 @@
+.invalidInput {
+  color: var(--red) !important;
+}
+
+.inputGroupInputField {
+  width: var(--input-width) !important;
+}
+
+.loginButtonContainer {
+  display: flex;
+  flex-direction: row;
+}

@@ -1,0 +1,10 @@
+.modalFooterButtonGroup {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  padding: 0px 20px;
+}
+
+.modalFooterButton {
+  background-color: var(--blue-dark);
+}
