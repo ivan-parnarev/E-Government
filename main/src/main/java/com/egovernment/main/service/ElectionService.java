@@ -1,7 +1,9 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
 import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
+import com.egovernment.main.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Candidate;
 import com.egovernment.main.domain.entity.Election;
@@ -10,6 +12,7 @@ import com.egovernment.main.domain.factory.election.ElectionFactory;
 import com.egovernment.main.repository.ElectionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ public class ElectionService {
     private final CandidateService candidateService;
     private final ElectionRepository electionRepository;
     private final ElectionFactory electionFactory = new ElectionFactory();
+    private final ModelMapper modelMapper;
 
     public void initSampleElections(Campaign campaign) {
         if(this.electionRepository.count() == 0){
@@ -39,7 +43,7 @@ public class ElectionService {
         return this.electionRepository.findById(id);
     }
 
-    public Optional<Election> getElectionByCampaignId(Long campaignId) {
+    public List<Election> getElectionsByCampaignId(Long campaignId) {
         return this.electionRepository.findByCampaignId(campaignId);
     }
 
@@ -76,4 +80,51 @@ public class ElectionService {
     public void saveElection(Election election) {
         this.electionRepository.save(election);
     }
+
+    public CampaignFilteredDTO mapElectionToCampaignFilteredDTO(Election election) {
+
+        Campaign campaign = election.getCampaign();
+
+        return CampaignFilteredDTO.builder()
+                .campaignTitle(campaign.getTitle())
+                .regionName(election.getElectionRegion())
+                .campaignType(campaign.getCampaignType().toString())
+                .electionId(election.getId())
+                .electionType(election.getElectionType().toString())
+                .build();
+
+    }
+
+    public VoteCampaignDTO getCampaignElectionById(Long electionId) {
+        Optional<Election> optionalElection = this.electionRepository.findById(electionId);
+
+        if(optionalElection.isEmpty()){
+            System.out.println("optional not found");
+            return null;
+        }
+
+        Election election = optionalElection.get();
+
+        List<CandidateDTO> candidateDTOS = election
+                .getCandidateList()
+                .stream()
+                .map(c -> this.modelMapper.map(c, CandidateDTO.class))
+                .toList();
+
+        Campaign campaign = election.getCampaign();
+
+        VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
+                .campaignType(campaign.getCampaignType().toString())
+                .campaignTitle(campaign.getTitle())
+                .campaignDescription(campaign.getDescription())
+                .campaignStartDate(campaign.getStartDate())
+                .campaignEndDate(campaign.getEndDate())
+                .electionId(electionId)
+                .electionType(election.getElectionType().toString())
+                .electionCandidates(candidateDTOS)
+                .build();
+
+        return voteCampaignDTO;
+    }
+
 }
