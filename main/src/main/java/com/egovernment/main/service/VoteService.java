@@ -1,11 +1,12 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.KafkaProducerClient;
 import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.main.domain.entity.Candidate;
 import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.entity.User;
 import com.egovernment.main.domain.entity.Vote;
-import com.egovernment.main.repository.VoteRepository;
+import com.egovernment.main.translator.CyrillicToLatinTopicTranslator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class VoteService {
 
-    private final VoteRepository voteRepository;
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final UserService userService;
     private final StringRedisTemplate redisTemplate;
+    private final KafkaProducerClient kafkaProducerClient;
 
     public boolean hasUserVotedForCampaign(String userPin, Long electionId) {
         String key = buildCacheKey(userPin, electionId);
@@ -43,17 +44,24 @@ public class VoteService {
         Optional<Candidate> optCandidate = this.candidateService.getCandidateById(voteDTO.getCandidateId());
 
         if(optElection.isPresent() && optCandidate.isPresent()){
+
+            Election election = optElection.get();
+
             Vote vote = Vote.builder()
                     .user(votedUser)
-                    .election(optElection.get())
+                    .election(election)
                     .candidate(optCandidate.get())
                     .timestamp(LocalDateTime.now())
                     .build();
 
-            this.voteRepository.save(vote);
-
             String key = buildCacheKey(voteDTO.getUserPin(), voteDTO.getElectionId());
             redisTemplate.opsForValue().set(key, "voted", 3, TimeUnit.DAYS.DAYS);
+
+            String title = CyrillicToLatinTopicTranslator
+                    .transliterateBulgarianToEnglish(election.getCampaign().getTitle());
+
+            voteDTO.setCampaignTitle(title);
+            this.kafkaProducerClient.sendMessage(voteDTO);
 
         }
 
