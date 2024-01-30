@@ -1,5 +1,6 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
 import com.egovernment.main.domain.dto.voteCampaign.CandidateTemplateDTO;
 import com.egovernment.main.domain.entity.Candidate;
 import com.egovernment.main.domain.entity.Election;
@@ -7,6 +8,7 @@ import com.egovernment.main.domain.factory.candidate.CandidateFactory;
 import com.egovernment.main.repository.CandidateRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,13 +16,20 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class CandidateService {
 
     private final CandidateRepository candidateRepository;
     private final ElectionService electionService;
     private final ModelMapper modelMapper;
     private final CandidateFactory candidateFactory = new CandidateFactory();
+
+    public CandidateService(@Lazy ElectionService electionService,
+                            CandidateRepository candidateRepository,
+                            ModelMapper modelMapper) {
+        this.candidateRepository = candidateRepository;
+        this.electionService = electionService;
+        this.modelMapper = modelMapper;
+    }
 
     public void initSampleCandidates() {
         if(this.candidateRepository.count() == 0){
@@ -59,5 +68,17 @@ public class CandidateService {
                 .toList();
         this.candidateRepository.saveAll(candidates);
 
+    }
+
+    public Candidate mapCandidateDTOtoCandidate(CandidateDTO candidateDTO) {
+        return Candidate.builder()
+                .name(candidateDTO.getCandidateName())
+                .party(candidateDTO.getCandidateParty())
+                .candidateNumber(candidateDTO.getCandidateNumber())
+                .build();
+    }
+
+    public List<Candidate> saveCandidates(List<Candidate> candidates) {
+        return this.candidateRepository.saveAllAndFlush(candidates);
     }
 }

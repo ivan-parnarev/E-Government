@@ -1,5 +1,7 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.domain.dto.voteCampaign.CandidateTemplateDTO;
+import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.enums.CampaignType;
@@ -9,9 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,7 +28,9 @@ public class ElectionServiceTest {
     @Mock
     private ElectionRepository electionRepository;
 
-    private ElectionService electionServiceToTest;
+    @Mock
+    private CandidateService candidateService;
+
     private final String CAMPAIGN_TITLE = "Test Title";
     private final String CANDIDATE_NAME = "Test Name";
     private final Long ID = 1L;
@@ -37,10 +43,8 @@ public class ElectionServiceTest {
             .campaign(MOCK_CAMPAIGN)
             .build();
 
-    @BeforeEach
-    public void setUp() {
-        electionServiceToTest = new ElectionService(electionRepository);
-    }
+    @InjectMocks
+    private ElectionService electionServiceToTest;
 
         @Test
     public void testInitSampleElections() {
@@ -97,26 +101,4 @@ public class ElectionServiceTest {
 
         assertFalse(result.isPresent());
     }
-
-//    @Test
-//    public void testCreateElectionLaunchesElection() {
-//        CandidateTemplateDTO candidateTemplateDTO = CandidateTemplateDTO
-//                .builder()
-//                .candidateName(CANDIDATE_NAME)
-//                .build();
-//
-//        CreateVotingCampaignDTO createVotingCampaignDTO = CreateVotingCampaignDTO.builder()
-//                .electionType(ELECTION_TYPE_STRING)
-//                .candidates(List.of(candidateTemplateDTO))
-//                .build();
-//
-//        Election result = this.electionServiceToTest.createElection(createVotingCampaignDTO.getElectionType(), MOCK_CAMPAIGN);
-//        verify(electionRepository).save(any(Election.class));
-//
-//        assertNotNull(result);
-//        assertEquals(MOCK_ELECTION.getElectionType(), result.getElectionType());
-//        assertEquals(MOCK_ELECTION.getCampaign().getTitle(), result.getCampaign().getTitle());
-//
-//    }
-
 }

@@ -13,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthResponse {
-    boolean isAdmin;
+    Boolean isAdmin;
     private List<CampaignFilteredDTO> filteredCampaigns;
-
 }
