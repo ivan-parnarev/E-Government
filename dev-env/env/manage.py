@@ -1,5 +1,8 @@
-import argparse
+import click
 import subprocess
+from scripts.api.api_keys import APIKeys
+from file_instances import transfer_files
+from cryptography.hazmat.primitives.asymmetric import ec
 
 
 class DevEnvironmentManager:
@@ -7,48 +10,47 @@ class DevEnvironmentManager:
         pass
 
     @staticmethod
-    def start_frontend():
-        subprocess.run(["docker-compose", "up", "-d", "spring-boot", "postgres"])
-
-    @staticmethod
-    def start_backend():
-        subprocess.run(["docker-compose", "up", "-d", "react-app", "postgres"])
-
-    @staticmethod
-    def start_manager():
+    @click.command()
+    def start():
+        get_api_keys()
+        transfer_files()
         subprocess.run(["docker-compose", "up", "-d"])
+        click.echo("Starting to develop containers...")
+
+    @staticmethod
+    @click.command()
+    def end():
+        subprocess.run(["docker-compose", "down"])
+        click.echo("Deleting running containers...")
+
+    @staticmethod
+    @click.command()
+    def stop():
+        subprocess.run(["docker-compose", "stop"])
+        click.echo("Stopping running containers...")
+
+
+def get_api_keys():
+    keys = APIKeys()
+
+    keys.private_key = ec.generate_private_key(ec.SECP256R1())
+    keys.public_key = keys.private_key.public_key()
+
+    public_pem, private_pem = keys.generate_key_pair()
+    keys.create_pem_files_with_keys(public_pem, private_pem)
 
 
 def main():
     dev_manager = DevEnvironmentManager()
+    cli = click.Group()
 
-    parser = argparse.ArgumentParser(description='Dev Environment Configuration CLI')
-    parser.add_argument(
-        'command',
-        choices=[
-            'start_frontend',
-            'start_backend',
-            'start_manager'
-        ],
-        help='Command to perform',
-    )
+    for attr_name in dir(dev_manager):
+        attr = getattr(dev_manager, attr_name)
 
-    parser.add_argument(
-        '--num_people',
-        type=int,
-        help='Number of people to generate',
-        default=50,
-    )
+        if isinstance(attr, click.core.Command):
+            cli.add_command(attr)
 
-    args = parser.parse_args()
+    cli()
 
-    if args.command == 'start_frontend':
-        dev_manager.start_frontend()
-    elif args.command == 'start_backend':
-        dev_manager.start_backend()
-    elif args.command == 'start_manager':
-        dev_manager.start_manager()
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

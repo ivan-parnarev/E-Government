@@ -5,6 +5,7 @@ import com.egovernment.main.domain.entity.Region;
 import com.egovernment.main.domain.entity.RegionsCatalog;
 import com.egovernment.main.domain.factory.region.RegionFactory;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.stream.Collectors;
 public class RegionService {
 
     private final RegionFactory regionFactory = new RegionFactory();
+
+
     private final RegionsCatalog regionsCatalog;
 
     public void initRegions() {
@@ -109,6 +112,7 @@ public class RegionService {
             Region yambol = this.regionFactory
                     .createRegion(8600, "yambol");
 
+
             List<Region> regions = List.of(global, blagoevgrad, burgas, varna,
                     velikoTarnovo, vidin, vratsa, gabrovo, dobrich, kardzhali,
                     kyustendil, lovech, montana, pazardzhik, pernik, pleven,
@@ -140,4 +144,5 @@ public class RegionService {
                 .bulgarianRegionName(this.regionsCatalog.translateRegionNameToBulgarian(region.getRegionName()))
                 .build();
     }
+
 }

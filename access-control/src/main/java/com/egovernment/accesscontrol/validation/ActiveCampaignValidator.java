@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 public class ActiveCampaignValidator {
 
     public static boolean isCampaignActive(Campaign campaign) {
-        //
-
         LocalDateTime currentTime = LocalDateTime.now();
         if (campaign == null) {
             return false;

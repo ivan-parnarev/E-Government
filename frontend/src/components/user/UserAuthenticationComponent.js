@@ -5,9 +5,11 @@ import styles from "./UserAuthenticationComponent.module.css";
 function UserAuthenticationComponent() {
   return (
     <div className={styles.authenticationFormContainer}>
-      <UserLoginComponent />
-      <p>или</p>
-      <UserGuestComponent />
+      <div>
+        <UserLoginComponent />
+        <p>или</p>
+        <UserGuestComponent />
+      </div>
     </div>
   );
 }

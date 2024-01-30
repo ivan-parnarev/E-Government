@@ -8,6 +8,7 @@ import com.egovernment.main.repository.CandidateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -26,15 +27,14 @@ public class CandidateServiceTest {
     private  ElectionService electionService;
     @Mock
     private  ModelMapper modelMapper;
-    private CandidateService candidateServiceToTest;
+
     private final String TEST_NAME = "Test Name";
     private final String TEST_PARTY = "Test Party";
     private final Long ID = 1L;
 
-    @BeforeEach
-    public void setUp() {
-        candidateServiceToTest = new CandidateService(candidateRepository, electionService, modelMapper);
-    }
+    @InjectMocks
+    private CandidateService candidateServiceToTest;
+
 
     @Test
     public void testInitSampleCandidates() {

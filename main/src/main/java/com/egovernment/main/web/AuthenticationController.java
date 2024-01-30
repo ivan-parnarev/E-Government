@@ -5,6 +5,7 @@ import com.egovernment.main.domain.dto.auth.AuthResponse;
 import com.egovernment.main.exceptions.UserNotFoundException;
 import com.egovernment.main.service.AuthenticationService;
 import com.egovernment.main.web.interfaces.AuthenticationControllerInterface;
+import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,18 +40,13 @@ public class AuthenticationController implements AuthenticationControllerInterfa
     })
     @Override
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthRequest authRequest)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<AuthResponse> authenticateUser(@RequestBody AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
-        return authenticationService.authenticateUser(authRequest.getUserPin());
-
-// ResponseEntity is returned with the response of the client
+        return authenticationService.authenticateUser(authRequest);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex){
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                ex.getMessage());
+    @ExceptionHandler({UserNotFoundException.class, FeignException.class})
+    public ResponseEntity<?> handleExceptions(){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }

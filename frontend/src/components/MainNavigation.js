@@ -22,16 +22,19 @@ export function MainNavigation() {
               Начало
             </Link>
 
-            <Link
-              to="/active-campaigns"
-              className={`${styles.navbarNavLink} ${styles.activeCampaigns}`}
-            >
+            <Link to="/active-campaigns" className={styles.navbarNavLink}>
               Активни кампании
             </Link>
 
             {userPin == "1111111111" && (
               <Link to="/create-campaign" className={styles.navbarNavLink}>
                 Създаване на кампания
+              </Link>
+            )}
+
+            {userPin && (
+              <Link to="/results" className={styles.navbarNavLink}>
+                Резултати
               </Link>
             )}
 

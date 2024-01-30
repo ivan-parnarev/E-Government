@@ -1,5 +1,9 @@
 package com.egovernment.accesscontrol.service;
 
+import com.egovernment.accesscontrol.domain.entity.Campaign;
+import com.egovernment.accesscontrol.repository.CampaignRepository;
+import com.egovernment.accesscontrol.validation.ActiveCampaignValidator;
+import com.egovernment.accesscontrol.domain.entity.Address;
 import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.domain.entity.Campaign;
 import com.egovernment.accesscontrol.filter.CampaignRegionFilter;
@@ -14,13 +18,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CampaignService {
-
     private final CampaignRepository campaignRepository;
 
     @Transactional
     public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
-
-        //
 
         return this.campaignRepository
                 .findAll()

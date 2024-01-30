@@ -27,10 +27,6 @@ public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
 
-// Removed methods for active/vote and active/census
-    //because we return the suitable active campaigns in jwt token
-    // and then we expect GET request with campaign id and
-    //type
 
     @Operation(summary = "Get Voting Campaign by ID",
             description = "Retrieves detailed information about a specific voting campaign based on its ID.")
@@ -85,7 +81,7 @@ public class CampaignController implements CampaignControllerInterface {
     @Override
     @PostMapping("/create/vote")
     public ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody
-                                                                   CreateVotingCampaignDTO createVotingCampaignDTO) {
+                                                                 CreateVotingCampaignDTO createVotingCampaignDTO) {
         this.campaignService.createVotingCampaign(createVotingCampaignDTO);
         URI location = URI.create("http://localhost:3000");
         ApiCustomResponse apiResponse = ApiCustomResponse.builder()

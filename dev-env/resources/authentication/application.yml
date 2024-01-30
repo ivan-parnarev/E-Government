@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=e_gov_auth
+    url: jdbc:postgresql://host.docker.internal:5432/postgres?currentSchema=e_gov_auth
     username: postgres
-    password: 1234
+    password: 1234qwer
   sql:
     init:
       mode: always

@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 public class CampaignFilteredDTO {
 
     private Long campaignId;
-    private String campaignTitle;//added campaign title and type
+    private String campaignTitle;
     private String regionName;
     private String campaignType;
 

@@ -1,3 +1,4 @@
+import axios from "axios";
 import API_URLS from "../../utils/apiUtils";
 import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
@@ -14,9 +15,8 @@ import { CreateCensusEditAnswersComponent } from "./CreateCensusEditAnswersCompo
 
 async function fetchCampaignData(url) {
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
+    const response = await axios.get(url);
+    return response.data;
   } catch (error) {
     console.error("Error fetching campaigns:", error);
     return null;
@@ -37,8 +37,6 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      // setIsLoading(true);
-
       const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
 
       try {
@@ -48,7 +46,6 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
       } catch (error) {
         console.error("Error fetching campaigns:", error);
       } finally {
-        // setIsLoading(false);
       }
     };
 
@@ -78,6 +75,8 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
   };
 
   const handleUpdateCensusQuestions = () => {
+    let location = "";
+
     const currUserData = {
       creatorUserPin: userPin,
       campaignType: "CENSUS",
@@ -88,28 +87,28 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
       questions: censusQuestions,
     };
 
-    fetch(API_URLS.CREATE_CENSUS, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(currUserData),
-    })
+    axios
+      .post(API_URLS.CREATE_CENSUS, currUserData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
       .then((response) => {
         if (response.status === 201) {
-          return response.json().then((data) => {
-            if (data) {
-              const successMessage = `${data.message} `;
-              alert(successMessage);
-            }
+          location = response.headers.get("location") || "";
 
-            window.location.href = response.headers.get("location") || "";
-          });
+          return response.data;
         } else {
-          return response.json().then((errorData) => {
-            console.error("Error:", errorData);
-          });
+          throw new Error(`Server returned ${response.status} status.`);
         }
+      })
+      .then((data) => {
+        if (data) {
+          const successMessage = `${data.message} `;
+          alert(successMessage);
+        }
+
+        window.location.href = location;
       })
       .catch((error) =>
         console.error("Error updating census questions:", error)

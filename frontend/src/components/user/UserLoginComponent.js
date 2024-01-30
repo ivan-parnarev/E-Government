@@ -21,6 +21,7 @@ function UserLoginComponent() {
 
       <FloatingLabel label="Потребителско име:" className="mb-3">
         <Form.Control
+          className={styles.loginInputGroupInputLabel}
           type="text"
           placeholder=""
           value={username}
@@ -30,6 +31,7 @@ function UserLoginComponent() {
 
       <FloatingLabel label="Парола:" className="mb-3">
         <Form.Control
+          className={styles.loginInputGroupInputLabel}
           type="password"
           placeholder=""
           value={password}
