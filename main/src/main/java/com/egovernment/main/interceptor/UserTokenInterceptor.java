@@ -29,7 +29,12 @@ public class UserTokenInterceptor implements HandlerInterceptor {
         }
 
         try {
-            jwtTokenUtil.validateUserToken(jwtToken);
+            Boolean isAdmin = jwtTokenUtil.validateTokenForAdminRole(jwtToken);
+            if (isAdmin) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Access Denied: Admin cannot use Regular user functionalities");
+                return false;
+            }
         } catch (ExpiredJwtException ex) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Access Denied: Token is Expired");

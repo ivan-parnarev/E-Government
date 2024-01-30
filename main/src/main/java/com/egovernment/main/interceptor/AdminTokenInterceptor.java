@@ -29,7 +29,7 @@ public class AdminTokenInterceptor implements HandlerInterceptor {
         }
 
         try {
-            isAdmin = jwtTokenUtil.validateAdminToken(jwtToken);
+            isAdmin = jwtTokenUtil.validateTokenForAdminRole(jwtToken);
             if (!isAdmin) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("Access Denied");

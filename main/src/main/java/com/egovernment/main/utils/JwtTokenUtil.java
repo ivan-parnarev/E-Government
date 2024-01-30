@@ -27,20 +27,9 @@ public class JwtTokenUtil {
                 .getBody()).getPublicKey();
     }
 
-    public Boolean validateAdminToken(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        token = token.replace("Bearer ", "");
-        String publicKeyString = getPublicKeyString();
-        Jws<Claims> jwtClaims = extractClaimsFromToken(publicKeyString, token);
-
+    public Boolean validateTokenForAdminRole(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        Jws<Claims> jwtClaims = getJwtClaims(token);
         return (Boolean) jwtClaims.getBody().get("isAdmin");
-    }
-
-    public Boolean validateUserToken(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        token = token.replace("Bearer ", "");
-        String publicKeyString = getPublicKeyString();
-        Jws<Claims> jwtClaims = extractClaimsFromToken(publicKeyString, token);
-
-        return true;
     }
 
     private PublicKey createPublicKeyObject(String key) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -48,6 +37,13 @@ public class JwtTokenUtil {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey publicKey = kf.generatePublic(keySpec);
         return publicKey;
+    }
+
+    private Jws<Claims> getJwtClaims(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        token = token.replace("Bearer ", "");
+        String publicKeyString = getPublicKeyString();
+        Jws<Claims> jwtClaims = extractClaimsFromToken(publicKeyString, token);
+        return jwtClaims;
     }
 
     public <T> String extractToken(ResponseEntity<T> responseFromClient) {
