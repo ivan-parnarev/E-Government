@@ -1,6 +1,9 @@
 package com.egovernment.main.service;
 
 import com.egovernment.main.client.KafkaConsumerClient;
+import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
+import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
 import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Candidate;
@@ -8,8 +11,10 @@ import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.entity.Result;
 import com.egovernment.main.repository.ResultRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,6 +27,7 @@ public class ResultService {
     private final KafkaConsumerClient kafkaConsumerClient;
     private final ElectionService electionService;
     private final CampaignService campaignService;
+    private final ModelMapper modelMapper;
 
     public void updateResults() {
 
@@ -66,8 +72,67 @@ public class ResultService {
 
             }
         }
+    }
 
+    public List<CreateVotingCampaignDTO> getCampaignsResult(){
 
+        List<Campaign> votingCampaigns = this.campaignService.getAllVotingCampaigns();
+
+        List<CreateVotingCampaignDTO> votingCampaignsResult = new ArrayList<>();
+
+        for (Campaign currentCampaign : votingCampaigns) {
+
+            CreateVotingCampaignDTO votingCampaignDTO = this.modelMapper
+                    .map(currentCampaign, CreateVotingCampaignDTO.class);
+            votingCampaignDTO.setElections(new ArrayList<>());
+
+            List<Election> elections = this.electionService
+                    .getElectionsByCampaignId(currentCampaign.getId());
+
+            for (Election election : elections) {
+
+                ElectionDTO electionDTO = ElectionDTO
+                        .builder()
+                        .electionRegion(election.getElectionRegion())
+                        .electionType(election.getElectionType().toString())
+                        .build();
+
+                List<CandidateDTO> candidateDtoList = new ArrayList<>();
+
+                Long totalElectionVotes = 0L;
+
+                for (Candidate candidate : election.getCandidateList()) {
+
+                    CandidateDTO candidateDTO = CandidateDTO
+                            .builder()
+                            .candidateId(candidate.getId())
+                            .candidateName(candidate.getName())
+                            .candidateParty(candidate.getParty())
+                            .candidateNumber(candidate.getCandidateNumber())
+                            .build();
+
+                    Optional<Result> optResult = this.resultRepository
+                            .findByElectionIdAndCandidateId(election.getId(), candidate.getId());
+                    Long candidateVotes = 0L;
+
+                    if(optResult.isPresent()){
+                        candidateVotes = optResult.get().getVotesCount();
+                    }
+
+                    candidateDTO.setCandidateVotes(candidateVotes);
+                    candidateDtoList.add(candidateDTO);
+                    totalElectionVotes += candidateVotes;
+                }
+
+                electionDTO.setCandidates(candidateDtoList);
+                electionDTO.setTotalVotes(totalElectionVotes);
+                votingCampaignDTO.getElections().add(electionDTO);
+            }
+
+            votingCampaignsResult.add(votingCampaignDTO);
+
+        }
+        return votingCampaignsResult;
     }
 
 }

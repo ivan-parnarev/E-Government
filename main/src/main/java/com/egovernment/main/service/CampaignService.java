@@ -214,4 +214,8 @@ public class CampaignService {
                 .filter(ActiveCampaignValidator::isCampaignActive)
                 .collect(Collectors.toList());
     }
+
+    public  List<Campaign> getAllVotingCampaigns() {
+        return this.campaignRepository.getAllByCampaignType(CampaignType.VOTING);
+    }
 }
