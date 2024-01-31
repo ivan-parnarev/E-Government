@@ -33,4 +33,15 @@ public class MessageCatalog {
         }
     }
 
+    public static List<UserVotedInfoDTO> getCampaignsResult(){
+
+        List<UserVotedInfoDTO> campaignResultDTOS = new ArrayList<>();
+
+        for (Map.Entry<String, List<UserVotedInfoDTO>> campaign : voteMessagesMap.entrySet()) {
+            campaignResultDTOS.addAll(campaign.getValue());
+
+        }
+        return campaignResultDTOS;
+    }
+
 }

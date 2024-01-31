@@ -1,11 +1,11 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.KafkaProducerClient;
 import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
+import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Candidate;
 import com.egovernment.main.domain.entity.Election;
-import com.egovernment.main.domain.entity.Vote;
 import com.egovernment.main.domain.enums.ElectionType;
-import com.egovernment.main.repository.VoteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,9 +22,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class VoteServiceTest {
-
-    @Mock
-    private  VoteRepository voteRepository;
     @Mock
     private  CandidateService candidateService;
     @Mock
@@ -35,6 +32,8 @@ public class VoteServiceTest {
     private StringRedisTemplate redisTemplate;
     @Mock
     private ValueOperations<String, String> valueOperations;
+    @Mock
+    private  KafkaProducerClient kafkaProducerClient;
     private VoteService voteServiceToTest;
     private final String CANDIDATE_NAME = "Test Candidate";
     private final String USER_PIN = "0000000000";
@@ -47,7 +46,7 @@ public class VoteServiceTest {
 
     @BeforeEach
     void setUp() {
-        this.voteServiceToTest = new VoteService(voteRepository, electionService, candidateService, userService, redisTemplate);
+        this.voteServiceToTest = new VoteService(electionService, candidateService, userService, redisTemplate, kafkaProducerClient);
         lenient().when(redisTemplate.opsForValue()).thenReturn(valueOperations);
     }
 
@@ -58,16 +57,20 @@ public class VoteServiceTest {
                 .name(CANDIDATE_NAME)
                 .build();
 
+        Campaign campaign = Campaign.builder()
+                .title("TestTitle")
+                .build();
+
         Election election = Election.builder()
                 .electionType(ElectionType.PARLIAMENT)
+                .campaign(campaign)
                 .build();
 
         when(this.candidateService.getCandidateById(ID)).thenReturn(Optional.of(candidate));
         when(this.electionService.getElectionById(ID)).thenReturn(Optional.of(election));
 
         this.voteServiceToTest.saveVote(VOTE_DTO);
-
-        verify(voteRepository, times(1)).save(any(Vote.class));
+        verify(kafkaProducerClient, times(1)).sendMessage(VOTE_DTO);
 
     }
 
@@ -78,7 +81,7 @@ public class VoteServiceTest {
 
         this.voteServiceToTest.saveVote(VOTE_DTO);
 
-        verify(voteRepository, never()).save(any(Vote.class));
+        verify(kafkaProducerClient, never()).sendMessage(VOTE_DTO);
     }
 
     @Test

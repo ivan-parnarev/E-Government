@@ -1,6 +1,7 @@
 package com.egovernment.main.web;
 
 import com.egovernment.main.domain.dto.result.*;
+import com.egovernment.main.service.ResultService;
 import com.egovernment.main.web.interfaces.ResultControllerInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResultController implements ResultControllerInterface {
 
+    private final ResultService resultService;
+
     @Override
     @GetMapping
     public ResponseEntity<CampaignsOverviewDTO> getResults() {
 
-        //sample results to see the returned structure
+        this.resultService.updateResults();
 
         TotalRegionVotesDTO globalVote = TotalRegionVotesDTO.builder()
                 .regionName("GLOBAL")

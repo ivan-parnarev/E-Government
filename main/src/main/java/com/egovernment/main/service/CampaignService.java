@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -206,4 +207,11 @@ public class CampaignService {
         return campaign;
     }
 
+    public List<Campaign> getAllActiveCampaigns() {
+        return this.campaignRepository
+                .findAll()
+                .stream()
+                .filter(ActiveCampaignValidator::isCampaignActive)
+                .collect(Collectors.toList());
+    }
 }
