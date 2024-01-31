@@ -44,4 +44,16 @@ public class MessageCatalog {
         return campaignResultDTOS;
     }
 
+    public static boolean removeCampaignTopic(String topic){
+        boolean containsKey = voteMessagesMap.containsKey(topic);
+
+        if(!containsKey){
+            return false;
+        }
+
+        voteMessagesMap.remove(topic);
+
+        return true;
+    }
+
 }
