@@ -14,6 +14,7 @@ public class KafkaTemplateListener implements MessageListener<String, UserVotedI
     public void onMessage(ConsumerRecord<String, UserVotedInfoDTO> data) {
         LOGGER.info("RECORD PROCESSING: {} WITH KEY {} IN TOPIC {}", data.value(), data.key(), data.topic());
         MessageCatalog.addVoteToTopic(data.topic(), data.value());
+        MessageCatalog.printEntrySet();
     }
 
 }

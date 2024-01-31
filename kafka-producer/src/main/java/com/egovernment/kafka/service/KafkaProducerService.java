@@ -83,11 +83,9 @@ public class KafkaProducerService {
 
     }
 
-    public ApiCustomResponse createTopics(CampaignsTopicDTO campaignsTopicDTO) {
+    public ApiCustomResponse createTopics(ListenerTopicDTO topicDTO) {
 
-        campaignsTopicDTO
-                .getCampaignTitles()
-                .forEach(t -> this.createTopic(t, 2, (short) 1));
+        this.createTopic(topicDTO.getTopic(), 2, (short) 1);
 
         return ApiCustomResponse
                 .builder()

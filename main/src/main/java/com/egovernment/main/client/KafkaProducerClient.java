@@ -1,5 +1,6 @@
 package com.egovernment.main.client;
 
+import com.egovernment.main.domain.dto.kafka.topic.ListenerTopicDTO;
 import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
 import com.egovernment.main.domain.response.ApiCustomResponse;
 import com.egovernment.main.web.path.ApiPaths;
@@ -13,5 +14,8 @@ public interface KafkaProducerClient {
 
     @PostMapping(ApiPaths.MESSAGE_PATH + ApiPaths.SEND_PATH)
     ResponseEntity<ApiCustomResponse> sendMessage(@RequestBody UserVotedInfoDTO userVotedInfoDTO);
+
+    @PostMapping(ApiPaths.TOPIC_PATH + ApiPaths.CREATE_PATH)
+    ResponseEntity<ApiCustomResponse> createTopic(@RequestBody ListenerTopicDTO topicDTO);
 
 }

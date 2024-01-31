@@ -1,6 +1,7 @@
 package com.egovernment.kafka.web;
 
 import com.egovernment.kafka.domain.dto.CampaignsTopicDTO;
+import com.egovernment.kafka.domain.dto.ListenerTopicDTO;
 import com.egovernment.kafka.response.ApiCustomResponse;
 import com.egovernment.kafka.service.KafkaProducerService;
 import com.egovernment.kafka.web.interfaces.KafkaTopicControllerInterface;
@@ -32,9 +33,9 @@ public class KafkaTopicController implements KafkaTopicControllerInterface {
     })
     @Override
     @PostMapping("/create")
-    public ResponseEntity<ApiCustomResponse> createCampaignsTopic(CampaignsTopicDTO campaignsTopicDTO) {
+    public ResponseEntity<ApiCustomResponse> createCampaignsTopic(ListenerTopicDTO topicDTO) {
 
-        ApiCustomResponse response = kafkaService.createTopics(campaignsTopicDTO);
+        ApiCustomResponse response = kafkaService.createTopics(topicDTO);
 
         return ResponseEntity.ok().body(response);
     }

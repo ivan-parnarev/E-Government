@@ -13,5 +13,6 @@ public class ApiPaths {
     public static final String MESSAGE_PATH = "/message";
     public static final String CREATE_PATH = "/create";
     public static final String SEND_PATH = "/send";
+    public static final String TOPIC_PATH = "/topic";
 
 }

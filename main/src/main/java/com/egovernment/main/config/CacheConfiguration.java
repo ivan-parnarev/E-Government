@@ -32,3 +32,4 @@ public class CacheConfiguration {
     public RedisCacheConfiguration redisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig();
     }
+}
