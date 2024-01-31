@@ -22,7 +22,7 @@ public class Election extends BaseEntity{
     private ElectionType electionType;
     @Column
     private String electionRegion;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Campaign campaign;
     @OneToMany(fetch = FetchType.EAGER)
     private List<Candidate> candidateList;

@@ -8,6 +8,7 @@ import com.egovernment.main.domain.response.ApiCustomResponse;
 import com.egovernment.main.domain.response.message.ApiResponseMessage;
 import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.service.CampaignService;
+import com.egovernment.main.service.ElectionService;
 import com.egovernment.main.web.interfaces.CampaignControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -26,7 +27,7 @@ import java.net.URI;
 public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
-
+    private final ElectionService electionService;
 
     @Operation(summary = "Get Voting Campaign by ID",
             description = "Retrieves detailed information about a specific voting campaign based on its ID.")
@@ -40,9 +41,9 @@ public class CampaignController implements CampaignControllerInterface {
                     content = @Content(schema = @Schema(implementation = CampaignNotFoundException.class)))
     })
     @Override
-    @GetMapping("/{campaignId}/VOTING")
-    public ResponseEntity<VoteCampaignDTO> getVotingCampaignById(@PathVariable("campaignId") Long campaignId) {
-        VoteCampaignDTO votingCampaign = this.campaignService.getVotingCampaignById(campaignId);
+    @GetMapping("/{electionId}/VOTING")
+    public ResponseEntity<VoteCampaignDTO> getVotingCampaignById(@PathVariable("electionId") Long electionId) {
+        VoteCampaignDTO votingCampaign = this.electionService.getCampaignElectionById(electionId);
         return ResponseEntity.ok(votingCampaign);
     }
 
