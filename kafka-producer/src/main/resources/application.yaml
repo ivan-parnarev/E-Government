@@ -1,0 +1,14 @@
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    bootstrap-servers: localhost:9092
+  cloud:
+    openfeign:
+      client:
+        config:
+          kafka-consumer-client:
+            url: http://localhost:9393/api/v1
+server:
+  port: 9191
