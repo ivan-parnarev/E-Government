@@ -1,11 +1,11 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
-import com.egovernment.main.domain.entity.Candidate;
-import com.egovernment.main.domain.entity.Election;
-import com.egovernment.main.domain.entity.User;
-import com.egovernment.main.domain.entity.Vote;
-import com.egovernment.main.repository.VoteRepository;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.entity.Candidate;
+import com.egovernment.egovbackend.domain.entity.Election;
+import com.egovernment.egovbackend.domain.entity.User;
+import com.egovernment.egovbackend.domain.entity.Vote;
+import com.egovernment.egovbackend.repository.VoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

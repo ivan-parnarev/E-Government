@@ -1,4 +1,4 @@
-package com.egovernment.main.exceptions;
+package com.egovernment.egovbackend.exceptions;
 
 public class UserNotFoundException extends RuntimeException {
 

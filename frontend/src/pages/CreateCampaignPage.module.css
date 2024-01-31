@@ -1,10 +1,6 @@
-.containerBackground {
-  background: linear-gradient(144deg, #004ea2, var(--blue-dark));
-}
-
 .container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 700px;
+  margin: 0px auto;
   padding: 40px 30px;
   text-align: center;
   color: var(--light);

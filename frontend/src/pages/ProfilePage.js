@@ -9,7 +9,9 @@ export function ProfilePage() {
     <div className={styles.containerBackground}>
       <div className={styles.container}>
         {userPin ? (
-          <p style={{ textAlign: "center" }}>This is the profile page. ✨</p>
+          <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
+            Влезнахте успешно в профила си.
+          </p>
         ) : (
           <div>
             <UserAuthenticationComponent />

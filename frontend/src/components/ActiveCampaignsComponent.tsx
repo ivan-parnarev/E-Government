@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../hooks/useAxiosInterceptor.js";
 import API_URLS from "../utils/apiUtils.js";
 import useAuth from "../hooks/AuthContext.js";
 import { useEffect, useState } from "react";

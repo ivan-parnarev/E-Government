@@ -1,6 +1,6 @@
-package com.egovernment.main.domain.entity;
+package com.egovernment.egovbackend.domain.entity;
 
-import com.egovernment.main.hashing.HashUtil;
+import com.egovernment.egovbackend.hashing.HashUtil;
 import jakarta.persistence.*;
 import lombok.*;
 

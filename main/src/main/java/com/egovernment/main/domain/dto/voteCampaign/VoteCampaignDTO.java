@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.dto.voteCampaign;
+package com.egovernment.egovbackend.domain.dto.voteCampaign;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +18,8 @@ public class VoteCampaignDTO {
     private String campaignDescription;
     private LocalDateTime campaignStartDate;
     private LocalDateTime campaignEndDate;
-    private Long electionId;
     private String electionType;
-    private List<CandidateDTO> electionCandidates;
+    private Long electionId;
+    private List<CandidateTemplateDTO> electionCandidates;
 
 }

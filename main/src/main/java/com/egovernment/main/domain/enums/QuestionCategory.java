@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.enums;
+package com.egovernment.egovbackend.domain.enums;
 
 public enum QuestionCategory {
     PERSONAL, HOUSING, POPULATION, HEALTH

@@ -1,7 +1,6 @@
-package com.egovernment.main.domain.entity;
+package com.egovernment.egovbackend.domain.entity;
 
-import com.egovernment.main.domain.enums.CampaignRegion;
-import com.egovernment.main.domain.enums.CampaignType;
+import com.egovernment.egovbackend.domain.enums.CampaignType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,18 +21,19 @@ public class Campaign extends BaseEntity {
     @Column
     private CampaignType campaignType;
     @Column
+    private Long campaignReferenceId;
+    @Column
     private String title;
     @Column
     private String description;
     @ManyToOne
-    private User from;
+    private User from; //with role administrator
     @Column
     private LocalDateTime startDate;
     @Column
     private LocalDateTime endDate;
     @Column
-    @Enumerated(EnumType.STRING)
-    private CampaignRegion campaignRegion;
+    private String regionName;
     @Column
     private boolean isActive ;
 
