@@ -86,8 +86,8 @@ public class ElectionServiceTest {
         List<Election> result = electionServiceToTest.getElectionsByCampaignId(ID);
 
         assertTrue(result.size() > 0);
-        assertEquals(MOCK_ELECTION, result.get(1));
-        assertEquals(MOCK_ELECTION.getElectionType(), result.get(1).getElectionType());
+        assertEquals(MOCK_ELECTION, result.get(0));
+        assertEquals(MOCK_ELECTION.getElectionType(), result.get(0).getElectionType());
 
     }
 
