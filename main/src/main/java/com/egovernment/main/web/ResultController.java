@@ -19,7 +19,6 @@ public class ResultController implements ResultControllerInterface {
     @Override
     @GetMapping
     public ResponseEntity<List<CreateVotingCampaignDTO>> getResults() {
-        this.resultService.updateResults();
         List<CreateVotingCampaignDTO> campaignsResult = this.resultService.getCampaignsResult();
         return ResponseEntity.ok(campaignsResult);
     }
