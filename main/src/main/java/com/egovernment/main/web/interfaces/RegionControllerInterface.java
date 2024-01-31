@@ -1,7 +1,7 @@
-package com.egovernment.main.web.interfaces;
+package com.egovernment.egovbackend.web.interfaces;
 
-import com.egovernment.main.domain.dto.region.RegionDTO;
-import com.egovernment.main.web.path.ApiPaths;
+import com.egovernment.egovbackend.domain.dto.region.RegionDTO;
+import com.egovernment.egovbackend.web.path.ApiPaths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 

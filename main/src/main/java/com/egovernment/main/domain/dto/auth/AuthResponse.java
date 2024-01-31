@@ -1,6 +1,6 @@
-package com.egovernment.main.domain.dto.auth;
+package com.egovernment.egovbackend.domain.dto.auth;
 
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.egovbackend.domain.dto.common.CampaignFilteredDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthResponse {
     Boolean isAdmin;
-    private List<CampaignFilteredDTO> filteredCampaigns;
+    List<CampaignFilteredDTO> filteredCampaigns;
 }

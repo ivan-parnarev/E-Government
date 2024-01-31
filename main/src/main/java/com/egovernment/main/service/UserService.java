@@ -1,9 +1,9 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.entity.Role;
-import com.egovernment.main.domain.entity.User;
-import com.egovernment.main.domain.enums.RoleEnum;
-import com.egovernment.main.repository.UserRepository;
+import com.egovernment.egovbackend.domain.entity.Role;
+import com.egovernment.egovbackend.domain.entity.User;
+import com.egovernment.egovbackend.domain.enums.RoleEnum;
+import com.egovernment.egovbackend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

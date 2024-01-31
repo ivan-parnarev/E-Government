@@ -1,7 +1,7 @@
-package com.egovernment.main.init;
+package com.egovernment.egovbackend.init;
 
-import com.egovernment.main.database.DatabaseInitializer;
-import com.egovernment.main.service.*;
+import com.egovernment.egovbackend.database.DatabaseInitializer;
+import com.egovernment.egovbackend.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

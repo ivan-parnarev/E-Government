@@ -1,7 +1,7 @@
-package com.egovernment.main.domain.dto.voteCampaign;
+package com.egovernment.egovbackend.domain.dto.voteCampaign;
 
-import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
-import jakarta.validation.constraints.NotNull;
+import com.egovernment.egovbackend.domain.dto.common.CreateCampaignCommon;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateVotingCampaignDTO extends CreateCampaignCommon {
-    @NotNull(message = "Election list is required but not found")
-    private List<ElectionDTO> elections;
+    @NotBlank(message = "Election type is a required but not found.")
+    private String electionType;
+    private CandidateRegionTemplateDTO candidates;
+
 }

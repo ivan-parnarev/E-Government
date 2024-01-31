@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.dto.censusCampaign;
+package com.egovernment.egovbackend.domain.dto.censusCampaign;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -3,10 +3,8 @@ import { ActiveCampaignsContainerComponent } from "../components/ActiveCampaigns
 
 export function ActiveCampaignsPage() {
   return (
-    <div className={styles.containerBackground}>
-      <div className={styles.container}>
-        <ActiveCampaignsContainerComponent />
-      </div>
+    <div className={styles.container}>
+      <ActiveCampaignsContainerComponent />
     </div>
   );
 }

@@ -1,7 +1,7 @@
-package com.egovernment.main.repository;
+package com.egovernment.egovbackend.repository;
 
-import com.egovernment.main.domain.entity.Role;
-import com.egovernment.main.domain.enums.RoleEnum;
+import com.egovernment.egovbackend.domain.entity.Role;
+import com.egovernment.egovbackend.domain.enums.RoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

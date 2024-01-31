@@ -1,11 +1,11 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
-import com.egovernment.main.domain.entity.Candidate;
-import com.egovernment.main.domain.entity.Election;
-import com.egovernment.main.domain.entity.Vote;
-import com.egovernment.main.domain.enums.ElectionType;
-import com.egovernment.main.repository.VoteRepository;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
+import com.egovernment.egovbackend.domain.entity.Candidate;
+import com.egovernment.egovbackend.domain.entity.Election;
+import com.egovernment.egovbackend.domain.entity.Vote;
+import com.egovernment.egovbackend.domain.enums.ElectionType;
+import com.egovernment.egovbackend.repository.VoteRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

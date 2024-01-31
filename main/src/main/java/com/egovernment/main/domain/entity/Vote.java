@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.entity;
+package com.egovernment.egovbackend.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

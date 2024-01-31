@@ -1,14 +1,14 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.dto.censusCampaign.AnswerDTO;
-import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
-import com.egovernment.main.domain.entity.Answer;
-import com.egovernment.main.domain.entity.Campaign;
-import com.egovernment.main.domain.entity.CensusQuestion;
-import com.egovernment.main.domain.enums.QuestionCategory;
-import com.egovernment.main.hashing.HashUtil;
-import com.egovernment.main.repository.CampaignRepository;
-import com.egovernment.main.repository.CensusQuestionRepository;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.AnswerDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
+import com.egovernment.egovbackend.domain.entity.Answer;
+import com.egovernment.egovbackend.domain.entity.Campaign;
+import com.egovernment.egovbackend.domain.entity.CensusQuestion;
+import com.egovernment.egovbackend.domain.enums.QuestionCategory;
+import com.egovernment.egovbackend.hashing.HashUtil;
+import com.egovernment.egovbackend.repository.CampaignRepository;
+import com.egovernment.egovbackend.repository.CensusQuestionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

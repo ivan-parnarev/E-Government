@@ -1,7 +1,7 @@
-package com.egovernment.main.domain.entity;
+package com.egovernment.egovbackend.domain.entity;
 
-import com.egovernment.main.domain.enums.QuestionCategory;
-import com.egovernment.main.hashing.HashUtil;
+import com.egovernment.egovbackend.domain.enums.QuestionCategory;
+import com.egovernment.egovbackend.hashing.HashUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

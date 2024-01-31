@@ -1,15 +1,16 @@
-package com.egovernment.main.web;
+package com.egovernment.egovbackend.web;
 
-import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
-import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
-import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
-import com.egovernment.main.domain.dto.voteCampaign.VoteCampaignDTO;
-import com.egovernment.main.domain.response.ApiCustomResponse;
-import com.egovernment.main.domain.response.message.ApiResponseMessage;
-import com.egovernment.main.exceptions.CampaignNotFoundException;
-import com.egovernment.main.service.CampaignService;
-import com.egovernment.main.service.ElectionService;
-import com.egovernment.main.web.interfaces.CampaignControllerInterface;
+import com.egovernment.egovbackend.domain.dto.CampaignViewDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
+import com.egovernment.egovbackend.domain.response.ApiCustomResponse;
+import com.egovernment.egovbackend.domain.response.message.ApiResponseMessage;
+import com.egovernment.egovbackend.exceptions.ActiveCensusCampaignNotFoundException;
+import com.egovernment.egovbackend.service.CampaignService;
+import com.egovernment.egovbackend.web.interfaces.CampaignControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,51 +19,76 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class CampaignController implements CampaignControllerInterface {
 
     private final CampaignService campaignService;
-    private final ElectionService electionService;
 
-    @Operation(summary = "Get Voting Campaign by ID",
-            description = "Retrieves detailed information about a specific voting campaign based on its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved the voting campaign details",
+    @Operation(summary = "Method Name: getAllActiveCampaigns; Retrieves a list of all active campaigns.")
+    @ApiResponses(
+            value = @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved list of active campaigns",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CensusCampaignDTO.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "Voting campaign not found for the given ID",
-                    content = @Content(schema = @Schema(implementation = CampaignNotFoundException.class)))
-    })
+                            schema = @Schema(
+                                    type = "array",
+                                    implementation = CampaignViewDTO.class))})
+    )
     @Override
-    @GetMapping("/{electionId}/VOTING")
-    public ResponseEntity<VoteCampaignDTO> getVotingCampaignById(@PathVariable("electionId") Long electionId) {
-        VoteCampaignDTO votingCampaign = this.electionService.getCampaignElectionById(electionId);
-        return ResponseEntity.ok(votingCampaign);
+    @GetMapping("/active")
+    public ResponseEntity<List<CampaignFilteredDTO>> getAllActiveCampaigns() {
+        List<CampaignFilteredDTO> campaigns = this.campaignService.getActiveCampaigns();
+        return ResponseEntity.ok(campaigns);
     }
 
-    @Operation(summary = "Get Census Campaign by ID",
-            description = "Retrieves detailed information about a specific census campaign based on its ID.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Successfully retrieved the census campaign details",
+    @Operation(summary = "Method Name: getAllActiveVoteCampaigns; Retrieves a list of all active campaigns for VOTING.")
+    @ApiResponses(
+            value = @ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved list of active VOTING campaigns",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CensusCampaignDTO.class))}),
-            @ApiResponse(responseCode = "404",
-                    description = "Census campaign not found for the given ID",
-                    content = @Content(schema = @Schema(implementation = CampaignNotFoundException.class)))
-    })
+                            schema = @Schema(
+                                    type = "array",
+                                    implementation = VoteCampaignDTO.class))})
+    )
     @Override
-    @GetMapping("/{campaignId}/CENSUS")
-    public ResponseEntity<CensusCampaignDTO> getCensusCampaignById(@PathVariable("campaignId") Long campaignId) {
-        CensusCampaignDTO censusCampaignDTO = this.campaignService.getCensusCampaignById(campaignId);
-        return ResponseEntity.ok(censusCampaignDTO);
+    @GetMapping("/active/vote")
+    public ResponseEntity<List<VoteCampaignDTO>> getAllActiveVoteCampaigns() {
+        List<VoteCampaignDTO> activeVotingCampaigns = this.campaignService
+                .getActiveVotingCampaigns();
+        return ResponseEntity.ok(activeVotingCampaigns);
+    }
+
+    @Operation(summary = "Method Name: getActiveCensusCampaign; Retrieves active campaign for CENSUS.")
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200",
+                    description = "Successfully retrieved active CENSUS campaign",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(
+                                    type = "object",
+                                    implementation = CensusCampaignDTO.class))})
+                    ,@ApiResponse(responseCode = "400",
+                    description = "Bad Request - Active census campaign not found.",
+                    content = {@Content(mediaType = "application/json")}
+            )
+            }
+    )
+    @Override
+    @GetMapping("/active/census")
+    public ResponseEntity<List<CensusCampaignDTO>> getActiveCensusCampaigns() {
+        try {
+            List<CensusCampaignDTO> activeCensusCampaignDTO = this.campaignService.getActiveCensusCampaigns();
+            return ResponseEntity.ok(activeCensusCampaignDTO);
+        } catch (ActiveCensusCampaignNotFoundException ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @Operation(summary = "Create a new voting campaign",
@@ -82,7 +108,7 @@ public class CampaignController implements CampaignControllerInterface {
     @Override
     @PostMapping("/create/vote")
     public ResponseEntity<ApiCustomResponse> saveNewVoteCampaign(@Valid @RequestBody
-                                                                 CreateVotingCampaignDTO createVotingCampaignDTO) {
+                                                                   CreateVotingCampaignDTO createVotingCampaignDTO) {
         this.campaignService.createVotingCampaign(createVotingCampaignDTO);
         URI location = URI.create("http://localhost:3000");
         ApiCustomResponse apiResponse = ApiCustomResponse.builder()
