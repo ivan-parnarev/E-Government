@@ -1,10 +1,12 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.KafkaProducerClient;
 import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
+import com.egovernment.main.domain.dto.kafka.topic.ListenerTopicDTO;
 import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
 import com.egovernment.main.domain.entity.Campaign;
@@ -18,6 +20,7 @@ import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.exceptions.CustomValidationException;
 import com.egovernment.main.filter.ActiveElectionFilter;
 import com.egovernment.main.repository.CampaignRepository;
+import com.egovernment.main.translator.CyrillicToLatinTopicTranslator;
 import com.egovernment.main.validation.ActiveCampaignValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +42,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+    private final KafkaProducerClient kafkaProducerClient;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0) {
@@ -159,6 +164,12 @@ public class CampaignService {
 
         this.campaignRepository.save(campaign);
 
+        String topicTitle = CyrillicToLatinTopicTranslator
+                .transliterateBulgarianToEnglish(campaign.getTitle());
+
+        ListenerTopicDTO topicDTO = ListenerTopicDTO.builder().topic(topicTitle).build();
+        this.kafkaProducerClient.createTopic(topicDTO);
+
         List<ElectionDTO> electionsDTOList = createVotingCampaignDTO.getElections();
 
         this.electionService.createElectionsWithCandidates(electionsDTOList, campaign);
@@ -196,4 +207,15 @@ public class CampaignService {
         return campaign;
     }
 
+    public List<Campaign> getAllActiveCampaigns() {
+        return this.campaignRepository
+                .findAll()
+                .stream()
+                .filter(ActiveCampaignValidator::isCampaignActive)
+                .collect(Collectors.toList());
+    }
+
+    public  List<Campaign> getAllVotingCampaigns() {
+        return this.campaignRepository.getAllByCampaignType(CampaignType.VOTING);
+    }
 }

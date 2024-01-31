@@ -1,6 +1,5 @@
 package com.egovernment.main.domain.dto.voteCampaign;
 
-import com.egovernment.main.domain.enums.ElectionType;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,4 +18,5 @@ public class ElectionDTO {
     @NotBlank(message = "Election region must not be blank")
     private String electionRegion;
     private List<CandidateDTO> candidates;
+    private Long totalVotes;
 }
