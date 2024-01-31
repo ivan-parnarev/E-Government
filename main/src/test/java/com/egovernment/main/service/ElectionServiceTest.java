@@ -1,13 +1,10 @@
 package com.egovernment.main.service;
 
-import com.egovernment.main.domain.dto.voteCampaign.CandidateTemplateDTO;
-import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
 import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Election;
 import com.egovernment.main.domain.enums.CampaignType;
 import com.egovernment.main.domain.enums.ElectionType;
 import com.egovernment.main.repository.ElectionRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -15,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,22 +81,22 @@ public class ElectionServiceTest {
 
     @Test
     public void testGetElectionByCampaignIdFound() {
-        when(electionRepository.findByCampaignId(ID)).thenReturn(Optional.of(MOCK_ELECTION));
+        when(electionRepository.findByCampaignId(ID)).thenReturn(List.of(MOCK_ELECTION));
 
-        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(ID);
+        List<Election> result = electionServiceToTest.getElectionsByCampaignId(ID);
 
-        assertTrue(result.isPresent());
-        assertEquals(MOCK_ELECTION, result.get());
-        assertEquals(MOCK_ELECTION.getElectionType(), result.get().getElectionType());
+        assertTrue(result.size() > 0);
+        assertEquals(MOCK_ELECTION, result.get(0));
+        assertEquals(MOCK_ELECTION.getElectionType(), result.get(0).getElectionType());
 
     }
 
     @Test
     public void testGetElectionByCampaignIdNotFound() {
-        when(electionRepository.findByCampaignId(ID)).thenReturn(Optional.empty());
+        when(electionRepository.findByCampaignId(ID)).thenReturn(Collections.emptyList());
 
-        Optional<Election> result = electionServiceToTest.getElectionByCampaignId(ID);
+        List<Election> result = electionServiceToTest.getElectionsByCampaignId(ID);
 
-        assertFalse(result.isPresent());
+        assertTrue(result.size() == 0);
     }
 }
