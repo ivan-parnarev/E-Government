@@ -1,5 +1,3 @@
-import axios from "axios";
-import API_URLS from "../../utils/apiUtils";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Form from "react-bootstrap/Form";
@@ -16,7 +14,9 @@ export function CreateVotingAddCandidateComponent({
   regions,
 }) {
   const [addButtonDisabled, setAddButtonDisabled] = useState(true);
-  const [activeRegion, setActiveRegion] = useState("");
+  const [activeRegion, setActiveRegion] = useState(
+    regions.length > 0 ? regions[0].englishRegionName : ""
+  );
   const [modifyingIndex, setModifyingIndex] = useState(null);
 
   const initializeCandidates = () => {
@@ -113,7 +113,7 @@ export function CreateVotingAddCandidateComponent({
 
   return (
     <div className={styles.createVotingCampaignContainer}>
-      {electionType === "MAYOR" &&
+      {(electionType === "MAYOR" || electionType === "COUNCIL") &&
         groupedRegions.map((row, rowIndex) => (
           <Row key={rowIndex} className="mb-2">
             <ButtonGroup aria-label="Basic example">
@@ -142,7 +142,7 @@ export function CreateVotingAddCandidateComponent({
       <InputGroup className={styles.createVotingCampaignInputGroup}>
         <p className={styles.createVotingCampaignInputGroupInputLabel}>
           Кандидати
-          {electionType === "MAYOR" &&
+          {(electionType === "MAYOR" || electionType === "COUNCIL") &&
             ` за ${
               regions.find(
                 (region) => region.englishRegionName === activeRegion
@@ -190,13 +190,13 @@ export function CreateVotingAddCandidateComponent({
                     className={styles.createVotingCampaignCandidateModifyButton}
                     onClick={() => startModifyCandidate(index)}
                   >
-                    промени
+                    ПРОМЕНИ
                   </Button>
                   <Button
                     className={styles.createVotingCampaignCandidateDeleteButton}
                     onClick={() => removeCandidate(index)}
                   >
-                    изтрий
+                    ИЗТРИЙ
                   </Button>
                 </Col>
               )}
@@ -207,7 +207,7 @@ export function CreateVotingAddCandidateComponent({
                   className={styles.createVotingCampaignCandidateAddButton}
                   onClick={addCandidate}
                 >
-                  добави
+                  ДОБАВИ
                 </Button>
               </Col>
             )}

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../hooks/useAxiosInterceptor.js";
 import API_URLS from "../../utils/apiUtils";
 import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";

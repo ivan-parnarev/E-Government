@@ -1,6 +1,6 @@
-package com.egovernment.main.utils;
+package com.egovernment.egovbackend.utils;
 
-import com.egovernment.main.client.AuthenticationClient;
+import com.egovernment.egovbackend.client.AuthenticationClient;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -27,8 +27,15 @@ public class JwtTokenUtil {
                 .getBody()).getPublicKey();
     }
 
-    public Boolean validateTokenForAdminRole(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        Jws<Claims> jwtClaims = getJwtClaims(token);
+    public Boolean validateAdminToken(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        token = token.replace("Bearer ", "");
+        String publicKeyString = getPublicKeyString();
+        PublicKey publicKey = createPublicKeyObject(publicKeyString);
+        Jws<Claims> jwtClaims = Jwts.parserBuilder()
+                .setSigningKey(publicKey)
+                .build()
+                .parseClaimsJws(token);
+
         return (Boolean) jwtClaims.getBody().get("isAdmin");
     }
 
@@ -37,13 +44,6 @@ public class JwtTokenUtil {
         KeyFactory kf = KeyFactory.getInstance("RSA");
         PublicKey publicKey = kf.generatePublic(keySpec);
         return publicKey;
-    }
-
-    private Jws<Claims> getJwtClaims(String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        token = token.replace("Bearer ", "");
-        String publicKeyString = getPublicKeyString();
-        Jws<Claims> jwtClaims = extractClaimsFromToken(publicKeyString, token);
-        return jwtClaims;
     }
 
     public <T> String extractToken(ResponseEntity<T> responseFromClient) {

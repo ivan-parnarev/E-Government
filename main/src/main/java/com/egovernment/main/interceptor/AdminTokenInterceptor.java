@@ -1,6 +1,6 @@
-package com.egovernment.main.interceptor;
+package com.egovernment.egovbackend.interceptor;
 
-import com.egovernment.main.utils.JwtTokenUtil;
+import com.egovernment.egovbackend.utils.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.PrematureJwtException;
@@ -29,14 +29,14 @@ public class AdminTokenInterceptor implements HandlerInterceptor {
         }
 
         try {
-            isAdmin = jwtTokenUtil.validateTokenForAdminRole(jwtToken);
+            isAdmin = jwtTokenUtil.validateAdminToken(jwtToken);
             if (!isAdmin) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 response.getWriter().write("Access Denied");
                 return false;
             }
         } catch (ExpiredJwtException ex) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Access Denied: Token is Expired");
             return false;
         } catch (UnsupportedJwtException | MalformedJwtException | SignatureException | PrematureJwtException ex) {

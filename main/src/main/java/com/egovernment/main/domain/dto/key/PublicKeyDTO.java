@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.dto.key;
+package com.egovernment.egovbackend.domain.dto.key;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PublicKeyDTO {
+
     String publicKey;
 }

@@ -7,7 +7,7 @@ import usePinInput from "../../hooks/usePinInput.js";
 import useAuth from "../../hooks/AuthContext.js";
 
 function UserGuestComponent() {
-  const { userPin, login } = useAuth();
+  const { login } = useAuth();
   const { pinValue, isValidPinValue, handlePinChange } = usePinInput();
   const [errorMessage, setErrorMessage] = useState<string | null>("");
   const timeoutDuration = 2000;
@@ -38,7 +38,7 @@ function UserGuestComponent() {
 
   return (
     <div>
-      <h4>Продължете като гост</h4>
+      <h4>Влезте в профила си</h4>
       <p>Моля въведете ЕГН, за да се идентифицирате:</p>
       <FloatingLabel controlId="floatingInput" label="ЕГН:" className="mb-3">
         <Form.Control

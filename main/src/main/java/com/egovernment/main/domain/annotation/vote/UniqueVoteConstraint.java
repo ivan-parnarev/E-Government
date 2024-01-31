@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.annotation.vote;
+package com.egovernment.egovbackend.domain.annotation.vote;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

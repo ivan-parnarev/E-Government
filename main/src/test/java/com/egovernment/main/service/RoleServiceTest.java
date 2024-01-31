@@ -1,8 +1,8 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.entity.Role;
-import com.egovernment.main.domain.enums.RoleEnum;
-import com.egovernment.main.repository.RoleRepository;
+import com.egovernment.egovbackend.domain.entity.Role;
+import com.egovernment.egovbackend.domain.enums.RoleEnum;
+import com.egovernment.egovbackend.repository.RoleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
