@@ -1,15 +1,16 @@
-package com.egovernment.main.domain.factory.region;
+package com.egovernment.egovbackend.domain.factory.region;
 
-import com.egovernment.main.domain.entity.Region;
+import com.egovernment.egovbackend.domain.entity.Region;
 
 public class RegionFactory implements RegionFactoryInterface {
 
     @Override
-
-    public Region createRegion(int postalCode, String regionName){
+    public Region createRegion(int id, String englishRegionName
+            , String bulgarianRegionName){
         return Region.builder()
-                .id(postalCode)
-                .regionName(regionName)
+                .id(id)
+                .englishRegionName(englishRegionName)
+                .bulgarianRegionName(bulgarianRegionName)
                 .build();
     }
 

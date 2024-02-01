@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../hooks/useAxiosInterceptor.js";
 import API_URLS from "../../utils/apiUtils";
 import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
 import Modal from "react-bootstrap/Modal";
@@ -76,6 +76,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
 
   const handleStartDateChange = (e) => {
     const startDate = e.target.value;
+
     setCampaignData({
       ...campaignData,
       campaignStartDate: startDate,
@@ -105,7 +106,42 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
     const currUserData = {
       creatorUserPin: userPin,
       campaignType: "VOTING",
-      ...campaignData,
+      campaignTitle: campaignData.campaignTitle,
+      campaignDescription: campaignData.campaignDescription,
+      campaignStartDate: campaignData.campaignStartDate,
+      campaignEndDate: campaignData.campaignEndDate,
+      campaignRegion:
+        campaignData.electionType === "MAYOR" ||
+        campaignData.electionType === "COUNCIL"
+          ? "LOCAL"
+          : "GLOBAL",
+      elections: Object.keys(campaignData.candidates)
+        .filter((electionRegion) => electionRegion.trim() !== "")
+        .map((electionRegion) => {
+          const candidates = campaignData.candidates[electionRegion]
+            .filter(
+              (candidate) =>
+                candidate.candidateName.trim() !== "" &&
+                candidate.candidateParty.trim() !== "" &&
+                candidate.candidateNumber.trim() !== ""
+            )
+            .map((candidate) => ({
+              candidateName: candidate.candidateName,
+              candidateParty: candidate.candidateParty,
+              candidateNumber: candidate.candidateNumber,
+            }));
+
+          if (candidates.length > 0) {
+            return {
+              electionType: campaignData.electionType,
+              electionRegion,
+              candidates,
+            };
+          }
+
+          return null;
+        })
+        .filter((election) => election !== null),
     };
 
     axios
@@ -120,7 +156,6 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
         }
       })
       .then((data) => {
-        console.log(data);
         if (data) {
           const successMessage = `${data.message} `;
           alert(successMessage);
@@ -174,10 +209,10 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
                 value={electionType}
               >
                 <option></option>
-                <option value="MAYOR">Местни избори</option>
+                <option value="MAYOR">Избори за кмет</option>
                 <option value="PRESIDENT">Президентски избори</option>
                 <option value="PARLIAMENT">Парламентарни избори</option>
-                <option value="COUNCIL">Изброи за Европейски парламент</option>
+                <option value="COUNCIL">Избори за общински съвет</option>
               </Form.Select>
             </FloatingLabel>
 
@@ -251,6 +286,7 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
         {currentStep === 3 && (
           <CreateVotingReviewCandidatesComponent
             campaignData={campaignData}
+            electionType={electionType}
             regions={regions}
           />
         )}

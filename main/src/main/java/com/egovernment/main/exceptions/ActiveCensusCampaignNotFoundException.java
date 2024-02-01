@@ -1,4 +1,4 @@
-package com.egovernment.main.exceptions;
+package com.egovernment.egovbackend.exceptions;
 
 public class ActiveCensusCampaignNotFoundException extends RuntimeException {
 

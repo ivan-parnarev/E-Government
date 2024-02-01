@@ -1,4 +1,4 @@
-package com.egovernment.main.validation;
+package com.egovernment.egovbackend.validation;
 
 public class UserPinValidator {
 

@@ -1,4 +1,4 @@
-package com.egovernment.main.web.path;
+package com.egovernment.egovbackend.web.path;
 
 public class ApiPaths {
     public static final String API_PATH = "/api";

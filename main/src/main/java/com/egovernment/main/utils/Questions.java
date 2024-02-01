@@ -1,4 +1,4 @@
-package com.egovernment.main.utils;
+package com.egovernment.egovbackend.utils;
 
 public class Questions {
 

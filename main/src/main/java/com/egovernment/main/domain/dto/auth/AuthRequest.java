@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.dto.auth;
+package com.egovernment.egovbackend.domain.dto.auth;
 
 import lombok.*;
 

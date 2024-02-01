@@ -1,10 +1,10 @@
-package com.egovernment.main.service;
+package com.egovernment.egovbackend.service;
 
-import com.egovernment.main.domain.dto.censusCampaign.CensusDTO;
-import com.egovernment.main.domain.dto.censusCampaign.UserAnswerDTO;
-import com.egovernment.main.domain.entity.*;
-import com.egovernment.main.domain.enums.QuestionCategory;
-import com.egovernment.main.repository.UserAnswerRepository;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.UserAnswerDTO;
+import com.egovernment.egovbackend.domain.entity.*;
+import com.egovernment.egovbackend.domain.enums.QuestionCategory;
+import com.egovernment.egovbackend.repository.UserAnswerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

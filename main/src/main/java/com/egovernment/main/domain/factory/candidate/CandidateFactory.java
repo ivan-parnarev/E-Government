@@ -1,7 +1,7 @@
-package com.egovernment.main.domain.factory.candidate;
+package com.egovernment.egovbackend.domain.factory.candidate;
 
-import com.egovernment.main.domain.entity.Candidate;
-import com.egovernment.main.domain.entity.Election;
+import com.egovernment.egovbackend.domain.entity.Candidate;
+import com.egovernment.egovbackend.domain.entity.Election;
 
 public class CandidateFactory implements CandidateFactoryInterface{
     @Override

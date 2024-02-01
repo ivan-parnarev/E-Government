@@ -1,4 +1,4 @@
-package com.egovernment.main.database;
+package com.egovernment.egovbackend.database;
 
 
 import java.sql.Connection;

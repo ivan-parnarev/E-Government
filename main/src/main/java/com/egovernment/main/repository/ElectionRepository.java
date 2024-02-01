@@ -1,13 +1,13 @@
-package com.egovernment.main.repository;
+package com.egovernment.egovbackend.repository;
 
-import com.egovernment.main.domain.entity.Election;
+import com.egovernment.egovbackend.domain.entity.Election;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ElectionRepository extends JpaRepository<Election, Long> {
 
-    List<Election> findByCampaignId(Long campaignId);
+    Optional<Election> findByCampaignId(Long campaignId);
 }

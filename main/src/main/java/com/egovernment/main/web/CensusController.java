@@ -1,10 +1,10 @@
-package com.egovernment.main.web;
+package com.egovernment.egovbackend.web;
 
-import com.egovernment.main.domain.dto.censusCampaign.CensusDTO;
-import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
-import com.egovernment.main.service.CensusQuestionService;
-import com.egovernment.main.service.UserAnswerService;
-import com.egovernment.main.web.interfaces.CensusControllerInterface;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
+import com.egovernment.egovbackend.service.CensusQuestionService;
+import com.egovernment.egovbackend.service.UserAnswerService;
+import com.egovernment.egovbackend.web.interfaces.CensusControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
