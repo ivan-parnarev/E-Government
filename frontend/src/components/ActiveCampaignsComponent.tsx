@@ -31,8 +31,8 @@ export function ActiveCampaignsComponent() {
     const fetchCampaigns = async () => {
       setIsLoading(true);
 
-      const voteData = await fetchCampaignData(API_URLS.ACTIVE_VOTE);
-      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
+      const voteData = await fetchCampaignData(API_URLS.AUTHENTICATE_USER);
+      const censusData = await fetchCampaignData(API_URLS.AUTHENTICATE_USER);
 
       try {
         if (voteData) {

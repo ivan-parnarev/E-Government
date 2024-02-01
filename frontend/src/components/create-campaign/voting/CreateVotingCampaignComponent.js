@@ -80,18 +80,19 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
   const handleStartDateChange = (e) => {
     const startDate = e.target.value;
 
-    setCampaignData({
-      ...campaignData,
-      campaignStartDate: startDate,
-    });
+    setCampaignData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        campaignStartDate: startDate,
+      };
 
-    if (!campaignEndDate) {
-      const endDate = calculateDefaultEndDate(startDate);
-      setCampaignData({
-        ...campaignData,
-        campaignEndDate: formatDate(endDate),
-      });
-    }
+      if (!updatedData.campaignEndDate) {
+        const endDate = calculateDefaultEndDate(startDate);
+        updatedData.campaignEndDate = formatDate(endDate);
+      }
+
+      return updatedData;
+    });
   };
 
   const handleEndDateChange = (e) => {
