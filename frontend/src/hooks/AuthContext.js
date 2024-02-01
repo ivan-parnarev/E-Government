@@ -14,6 +14,10 @@ export const AuthProvider = ({ children }) => {
       setIsAdmin(response.isAdmin);
       localStorage.setItem("userPin", pin);
       localStorage.setItem("isAdmin", response.isAdmin);
+      localStorage.setItem(
+        "filteredCampaigns",
+        JSON.stringify(response?.filteredCampaigns) || ""
+      );
     } catch (error) {
       console.error("Authentication failed:", error);
       throw error;
@@ -22,7 +26,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("userPin");
+    localStorage.removeItem("isAdmin");
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("filteredCampaigns");
     setUserPin("");
     setIsAdmin(false);
   };

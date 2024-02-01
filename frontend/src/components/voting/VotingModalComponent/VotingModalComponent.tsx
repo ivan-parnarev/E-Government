@@ -38,6 +38,8 @@ export function VotingModalComponent({
 
     let location = "";
 
+    console.log(userData);
+
     axios
       .post(API_URLS.VOTE, userData, {
         headers: { "Content-Type": "application/json" },

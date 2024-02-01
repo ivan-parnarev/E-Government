@@ -4,7 +4,7 @@ export interface CommonCampaignProps {
   campaignDescription: string;
 }
 
-export interface VoteCampaignProps extends CommonCampaignProps {
+export interface VotingCampaignProps extends CommonCampaignProps {
   electionId: string;
   electionCandidates: {
     candidateId: string;
@@ -15,12 +15,15 @@ export interface VoteCampaignProps extends CommonCampaignProps {
 }
 
 export interface CensusCampaignProps extends CommonCampaignProps {
+  censusId: number;
   campaignId: string;
   censusQuestions: {
     text: string;
-    answers: Array<{
+    answers: {
       answerText: string;
-    }>;
+    }[];
     questionCategory: string;
   }[];
 }
+
+export type CampaignProps = VotingCampaignProps | CensusCampaignProps;

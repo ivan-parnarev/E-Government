@@ -1,16 +1,35 @@
+import axios from "axios";
+import API_URLS from "../../utils/apiUtils.js";
 import Button from "react-bootstrap/esm/Button";
 import { VotingModalComponent } from "./VotingModalComponent/VotingModalComponent.tsx";
 import styles from "./VotingActiveCampaignComponent.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VotingActiveCampaignProps } from "../../interfaces/voting/VotingActiveCampaignInterface.ts";
 
 export function VotingActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
   electionId,
-  electionCandidates,
 }: VotingActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
+  const [campaignDetails, setCampaignDetails] = useState<any>([]);
+
+  const fetchCampaignDetails = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URLS.ACTIVE_CAMPAIGNS}/${electionId}/VOTING`
+      );
+      console.log(response.data);
+
+      setCampaignDetails(response.data);
+    } catch (error) {
+      console.log("Error fetching regions: ");
+    }
+  };
+
+  useEffect(() => {
+    fetchCampaignDetails();
+  }, []);
 
   return (
     <div className={styles.activeCampaignContainer}>
@@ -29,7 +48,7 @@ export function VotingActiveCampaignComponent({
         campaignTitle={campaignTitle}
         campaignDescription={campaignDescription}
         electionId={electionId}
-        electionCandidates={electionCandidates}
+        electionCandidates={campaignDetails.electionCandidates}
       />
     </div>
   );
