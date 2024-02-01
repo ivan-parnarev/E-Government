@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 package com.egovernment.main.domain.dto;
-=======
-package com.egovernment.egovbackend.domain.dto;
->>>>>>> Stashed changes
 
 
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.web.interfaces;
+package com.egovernment.main.web.interfaces;
 
-import com.egovernment.egovbackend.domain.dto.auth.AuthRequest;
-import com.egovernment.egovbackend.domain.dto.auth.AuthResponse;
-import com.egovernment.egovbackend.web.path.ApiPaths;
+import com.egovernment.main.domain.dto.auth.AuthRequest;
+import com.egovernment.main.domain.dto.auth.AuthResponse;
+import com.egovernment.main.web.path.ApiPaths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

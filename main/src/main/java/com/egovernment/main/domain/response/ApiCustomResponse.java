@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.response;
+package com.egovernment.main.domain.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.domain.entity.Answer;
-import com.egovernment.egovbackend.repository.AnswerRepository;
+import com.egovernment.main.domain.entity.Answer;
+import com.egovernment.main.repository.AnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

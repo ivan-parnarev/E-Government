@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.entity;
+package com.egovernment.main.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Region {
     private int id;
-    private String englishRegionName;
-    private String bulgarianRegionName;
+    private String regionName;
 }

@@ -1,11 +1,13 @@
-package com.egovernment.egovbackend.domain.entity;
+package com.egovernment.main.domain.entity;
 
-import com.egovernment.egovbackend.domain.enums.ElectionType;
+import com.egovernment.main.domain.enums.ElectionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "elections")
@@ -18,7 +20,11 @@ public class Election extends BaseEntity{
     @Enumerated(EnumType.STRING)
     @Column
     private ElectionType electionType;
-    @OneToOne
+    @Column
+    private String electionRegion;
+    @ManyToOne
     private Campaign campaign;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Candidate> candidateList;
 
 }

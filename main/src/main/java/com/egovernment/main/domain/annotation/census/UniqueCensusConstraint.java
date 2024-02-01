@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.annotation.census;
+package com.egovernment.main.domain.annotation.census;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.entity;
+package com.egovernment.main.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

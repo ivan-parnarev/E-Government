@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.template;
+package com.egovernment.main.domain.template;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

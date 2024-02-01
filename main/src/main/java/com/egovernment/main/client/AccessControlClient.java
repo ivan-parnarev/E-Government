@@ -1,11 +1,10 @@
-package com.egovernment.egovbackend.client;
+package com.egovernment.main.client;
 
-import com.egovernment.egovbackend.domain.dto.common.CampaignFilteredDTO;
-import com.egovernment.egovbackend.web.path.ApiPaths;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.main.web.path.ApiPaths;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -13,9 +12,6 @@ import java.util.List;
 public interface AccessControlClient {
 
     @GetMapping(ApiPaths.CAMPAIGN_PATH + ApiPaths.ACTIVE_PATH)
-    ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns();
-
-    @GetMapping(ApiPaths.CAMPAIGN_PATH + ApiPaths.ACTIVE_PATH)
-    ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaignsNew(@RequestParam String region);
+    ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(String regionName);
 
 }

@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.database;
+package com.egovernment.main.database;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -1,6 +1,6 @@
-package com.egovernment.egovbackend.repository;
+package com.egovernment.main.repository;
 
-import com.egovernment.egovbackend.domain.entity.Candidate;
+import com.egovernment.main.domain.entity.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

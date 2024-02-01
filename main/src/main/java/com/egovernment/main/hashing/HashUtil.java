@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.hashing;
+package com.egovernment.main.hashing;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;

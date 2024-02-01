@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.exceptions;
+package com.egovernment.main.exceptions;
 
 public class InvalidCampaignException extends Exception {
     public InvalidCampaignException(String message) {

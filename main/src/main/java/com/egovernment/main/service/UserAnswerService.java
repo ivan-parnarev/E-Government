@@ -1,12 +1,12 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaign.UserAnswerDTO;
-import com.egovernment.egovbackend.domain.entity.Answer;
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.User;
-import com.egovernment.egovbackend.domain.entity.UserAnswer;
-import com.egovernment.egovbackend.repository.UserAnswerRepository;
+import com.egovernment.main.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.main.domain.dto.censusCampaign.UserAnswerDTO;
+import com.egovernment.main.domain.entity.Answer;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.User;
+import com.egovernment.main.domain.entity.UserAnswer;
+import com.egovernment.main.repository.UserAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

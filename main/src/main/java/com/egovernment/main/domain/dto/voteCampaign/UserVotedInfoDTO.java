@@ -1,7 +1,7 @@
-package com.egovernment.egovbackend.domain.dto.voteCampaign;
+package com.egovernment.main.domain.dto.voteCampaign;
 
-import com.egovernment.egovbackend.domain.annotation.pin.ValidUserPin;
-import com.egovernment.egovbackend.domain.annotation.vote.UniqueVoteConstraint;
+import com.egovernment.main.domain.annotation.pin.ValidUserPin;
+import com.egovernment.main.domain.annotation.vote.UniqueVoteConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

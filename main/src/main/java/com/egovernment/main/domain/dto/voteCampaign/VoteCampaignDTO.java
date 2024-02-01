@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.voteCampaign;
+package com.egovernment.main.domain.dto.voteCampaign;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,6 +1,6 @@
-package com.egovernment.egovbackend.repository;
+package com.egovernment.main.repository;
 
-import com.egovernment.egovbackend.domain.entity.Vote;
+import com.egovernment.main.domain.entity.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -1,6 +1,6 @@
-package com.egovernment.egovbackend.domain.dto.censusCampaign;
+package com.egovernment.main.domain.dto.censusCampaign;
 
-import com.egovernment.egovbackend.domain.dto.common.CreateCampaignCommon;
+import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;

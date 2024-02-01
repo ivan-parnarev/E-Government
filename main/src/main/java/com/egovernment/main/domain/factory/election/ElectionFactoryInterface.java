@@ -1,8 +1,9 @@
-package com.egovernment.egovbackend.domain.factory.election;
+package com.egovernment.main.domain.factory.election;
 
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.Election;
-import com.egovernment.egovbackend.domain.enums.ElectionType;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.Election;
+import com.egovernment.main.domain.enums.ElectionType;
 
 public interface ElectionFactoryInterface {
 

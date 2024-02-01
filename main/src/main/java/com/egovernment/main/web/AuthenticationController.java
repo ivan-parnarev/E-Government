@@ -1,10 +1,10 @@
-package com.egovernment.egovbackend.web;
+package com.egovernment.main.web;
 
-import com.egovernment.egovbackend.domain.dto.auth.AuthRequest;
-import com.egovernment.egovbackend.domain.dto.auth.AuthResponse;
-import com.egovernment.egovbackend.exceptions.UserNotFoundException;
-import com.egovernment.egovbackend.service.AuthenticationService;
-import com.egovernment.egovbackend.web.interfaces.AuthenticationControllerInterface;
+import com.egovernment.main.domain.dto.auth.AuthRequest;
+import com.egovernment.main.domain.dto.auth.AuthResponse;
+import com.egovernment.main.exceptions.UserNotFoundException;
+import com.egovernment.main.service.AuthenticationService;
+import com.egovernment.main.web.interfaces.AuthenticationControllerInterface;
 import feign.FeignException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
