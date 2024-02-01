@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CandidateDTO {
-    private int candidateId;
+    private long candidateId;
     @NotBlank(message = "Candidate name is required but not found")
     private String candidateName;
     private String candidateParty;
     @NotBlank(message = "Candidate number is required, but not found")
     private Integer candidateNumber;
+    private Long candidateVotes;
 }

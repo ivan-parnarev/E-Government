@@ -1,23 +1,27 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.client.AccessControlClient;
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CreateCensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.common.CampaignFilteredDTO;
-import com.egovernment.egovbackend.domain.dto.common.CreateCampaignCommon;
-import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
-import com.egovernment.egovbackend.domain.dto.voteCampaign.CreateVotingCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.voteCampaign.VoteCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusCampaignDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.Election;
-import com.egovernment.egovbackend.domain.entity.Role;
-import com.egovernment.egovbackend.domain.entity.User;
-import com.egovernment.egovbackend.domain.enums.CampaignType;
-import com.egovernment.egovbackend.domain.enums.RoleEnum;
-import com.egovernment.egovbackend.domain.factory.CampaignFactory;
-import com.egovernment.egovbackend.exceptions.CustomValidationException;
-import com.egovernment.egovbackend.repository.CampaignRepository;
+import com.egovernment.main.client.KafkaProducerClient;
+import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
+import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
+import com.egovernment.main.domain.dto.kafka.topic.ListenerTopicDTO;
+import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.Role;
+import com.egovernment.main.domain.entity.User;
+import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignType;
+import com.egovernment.main.domain.enums.RoleEnum;
+import com.egovernment.main.domain.factory.CampaignFactory;
+import com.egovernment.main.exceptions.CampaignNotFoundException;
+import com.egovernment.main.exceptions.CustomValidationException;
+import com.egovernment.main.filter.ActiveElectionFilter;
+import com.egovernment.main.repository.CampaignRepository;
+import com.egovernment.main.translator.CyrillicToLatinTopicTranslator;
+import com.egovernment.main.validation.ActiveCampaignValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +42,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
-    private final AccessControlClient accessControlClient;
-
+    private final KafkaProducerClient kafkaProducerClient;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0) {
@@ -57,7 +60,7 @@ public class CampaignService {
                 Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
                         voteCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true, "GLOBAL", null);
+                        true, CampaignRegion.GLOBAL);
 
                 String censusCampaignDescription = "Кампанията за преброяване на населението." +
                         "Този процес помага на правителството" +
@@ -66,7 +69,7 @@ public class CampaignService {
                 Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване",
                         censusCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true, "GLOBAL", null);
+                        true, CampaignRegion.GLOBAL);
 
                 this.campaignRepository.save(votingCampaign);
                 this.campaignRepository.save(censusCampaign);
@@ -77,74 +80,72 @@ public class CampaignService {
 
     public Campaign launchCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate,
-            boolean isActive, String campaignRegion, Long campaignReferenceId) {
+                                   boolean isActive, CampaignRegion campaignRegion) {
         return campaignFactory.createCampaign(type, title, description,
-                from, startDate, endDate, isActive, campaignRegion, campaignReferenceId);
+                from, startDate, endDate, isActive, campaignRegion);
     }
 
-    public List<CampaignFilteredDTO> getActiveCampaigns() {
-        return this.accessControlClient.getActiveCampaigns().getBody();
-    }
+    public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
 
-    public List<VoteCampaignDTO> getActiveVotingCampaigns() {
-        return this.campaignRepository
+        List<Campaign> allActiveCampaigns = this.campaignRepository
                 .findAll()
                 .stream()
-                .filter(c -> c.getCampaignType().equals(CampaignType.VOTING))
-                .filter(Campaign::isActive)
-                .map(this::mapCampaignToVotingCampaignDTO)
-                .collect(Collectors.toList());
-    }
+                .filter(ActiveCampaignValidator::isCampaignActive)
+                .toList();
 
-    private VoteCampaignDTO mapCampaignToVotingCampaignDTO(Campaign campaign) {
+        List<CampaignFilteredDTO> filteredCampaigns = new ArrayList<>();
 
-        Optional<Election> election = this.electionService
-                .getElectionByCampaignId(campaign.getId());
+        for (Campaign campaign : allActiveCampaigns) {
 
-        if (election.isEmpty()) {
-            return null;
+            if(campaign.getCampaignType().equals(CampaignType.VOTING)){
+
+                List<CampaignFilteredDTO> activeSuitableElections = this.electionService
+                        .getElectionsByCampaignId(campaign.getId())
+                        .stream()
+                        .filter(e -> ActiveElectionFilter.filterByRegionAndIsActive(e, regionName))
+                        .map(this.electionService::mapElectionToCampaignFilteredDTO)
+                        .toList();
+
+                filteredCampaigns.addAll(activeSuitableElections);
+
+            }else if(campaign.getCampaignType().equals(CampaignType.CENSUS)){
+
+                CampaignFilteredDTO campaignFilteredDTO = CampaignFilteredDTO
+                        .builder()
+                        .campaignId(campaign.getId())
+                        .campaignType(campaign.getCampaignType().toString())
+                        .campaignTitle(campaign.getTitle())
+                        .build();
+
+                filteredCampaigns.add(campaignFilteredDTO);
+            }
+
         }
 
-        List<CandidateTemplateDTO> candidates = this.candidateService
-                .getCandidatesForElection(election.get().getId());
-
-
-        VoteCampaignDTO voteCampaignDTO = VoteCampaignDTO.builder()
-                .campaignType(campaign.getCampaignType().name())
-                .campaignDescription(campaign.getDescription())
-                .campaignTitle(campaign.getTitle())
-                .campaignStartDate(campaign.getStartDate())
-                .campaignEndDate(campaign.getEndDate())
-                .electionType(election.get().getElectionType().name())
-                .electionId(election.get().getId())
-                .electionCandidates(candidates)
-                .build();
-
-
-        return voteCampaignDTO;
+        return filteredCampaigns;
     }
+
 
     public Optional<Campaign> getCampaignById(Long campaignId) {
         return this.campaignRepository.findById(campaignId);
     }
 
-    public List<CensusCampaignDTO> getActiveCensusCampaigns() {
-        List<CensusCampaignDTO> censusCampaignDTOS = new ArrayList<>();
-        List<Campaign> censusCampaigns = this.campaignRepository
-                .getAllByCampaignType(CampaignType.CENSUS);
 
-        List<Campaign> activeCensusCampaigns = censusCampaigns
-                .stream()
-                .filter(Campaign::isActive)
-                .toList();
+    public CensusCampaignDTO getCensusCampaignById(Long campaignId) {
+        Optional<Campaign> optCampaign = this.getCampaignById(campaignId);
 
-        for (Campaign censusCampaign : activeCensusCampaigns) {
-            List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
-                    .getCensusQuestionsForCampaign(censusCampaign.getId());
-            censusCampaignDTOS.add(mapCampaignToCensusCampaignDTO(censusCampaign, censusQuestionsForCampaign));
+        if (optCampaign.isEmpty()) {
+            throw new CampaignNotFoundException("Census campaign with id " + campaignId + " is not found !");
         }
-        return censusCampaignDTOS;
+
+        Campaign censusCampaign = optCampaign.get();
+
+        List<CensusQuestionDTO> censusQuestionsForCampaign = this.censusQuestionService
+                .getCensusQuestionsForCampaign(censusCampaign.getId());
+
+        return this.mapCampaignToCensusCampaignDTO(censusCampaign, censusQuestionsForCampaign);
     }
+
 
     private CensusCampaignDTO mapCampaignToCensusCampaignDTO(Campaign campaign, List<CensusQuestionDTO> questions) {
         return CensusCampaignDTO.builder()
@@ -163,17 +164,15 @@ public class CampaignService {
 
         this.campaignRepository.save(campaign);
 
-        Election election = this.electionService.createElection(createVotingCampaignDTO.getElectionType(), campaign);
+        String topicTitle = CyrillicToLatinTopicTranslator
+                .transliterateBulgarianToEnglish(campaign.getTitle());
 
-        String electionType = createVotingCampaignDTO.getElectionType();
+        ListenerTopicDTO topicDTO = ListenerTopicDTO.builder().topic(topicTitle).build();
+        this.kafkaProducerClient.createTopic(topicDTO);
 
-        if (electionType.equals("PRESIDENT") || electionType.equals("PARLIAMENT")) {
-            this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates().getGlobal(), election);
-        } else {
-//            this.candidateService.createCandidates(createVotingCampaignDTO.getCandidates(), election);
-        }
+        List<ElectionDTO> electionsDTOList = createVotingCampaignDTO.getElections();
 
-
+        this.electionService.createElectionsWithCandidates(electionsDTOList, campaign);
     }
 
     public void createCensusCampaign(CreateCensusCampaignDTO createCensusCampaignDTO) {
@@ -186,16 +185,16 @@ public class CampaignService {
 
 
     private Campaign createCampaignCommonInformation(CreateCampaignCommon commonCampaignInformation) {
-        CampaignType campaignType = CampaignType.valueOf(commonCampaignInformation.getCampaignType());
+        CampaignType campaignType = commonCampaignInformation.getCampaignType();
 
-//        if (!this.userService.userIsAdmin(commonCampaignInformation.getCreatorUserPin())) {
-//            throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
-//        }
+        if (!this.userService.userIsAdmin(commonCampaignInformation.getCreatorUserPin())) {
+            throw new CustomValidationException("Validation failed: User does not exist or is not admin !");
+        }
 
-        String campaignRegion;
-        if(commonCampaignInformation.getCampaignRegion() == null){
-            campaignRegion = "GLOBAL";
-        }else{
+        CampaignRegion campaignRegion;
+        if (commonCampaignInformation.getCampaignRegion() == null) {
+            campaignRegion = CampaignRegion.GLOBAL;
+        } else {
             campaignRegion = commonCampaignInformation.getCampaignRegion();
         }
 
@@ -204,8 +203,19 @@ public class CampaignService {
         Campaign campaign = launchCampaign(campaignType, commonCampaignInformation.getCampaignTitle(),
                 commonCampaignInformation.getCampaignDescription(), owner,
                 commonCampaignInformation.getCampaignStartDate(), commonCampaignInformation.getCampaignEndDate(), true,
-                campaignRegion, commonCampaignInformation.getCampaignReferenceId());
+                campaignRegion);
         return campaign;
     }
 
+    public List<Campaign> getAllActiveCampaigns() {
+        return this.campaignRepository
+                .findAll()
+                .stream()
+                .filter(ActiveCampaignValidator::isCampaignActive)
+                .collect(Collectors.toList());
+    }
+
+    public  List<Campaign> getAllVotingCampaigns() {
+        return this.campaignRepository.getAllByCampaignType(CampaignType.VOTING);
+    }
 }

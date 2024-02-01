@@ -16,13 +16,13 @@ import lombok.NoArgsConstructor;
 @UniqueVoteConstraint
 public class UserVotedInfoDTO {
 
-    @ValidUserPin
+    //    @ValidUserPin
     @NotBlank(message = "User PIN is required but it is not found.")
     private String userPin;
     @NotNull(message = "Election id is required but it is not found.")
     private Long electionId;
     @NotNull(message = "Candidate id is required but it is not found.")
     private Long candidateId;
-
+    private String campaignTitle;
 
 }
