@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.web.interfaces;
+package com.egovernment.main.web.interfaces;
 
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusDTO;
-import com.egovernment.egovbackend.domain.dto.censusCampaign.CensusQuestionDTO;
-import com.egovernment.egovbackend.web.path.ApiPaths;
+import com.egovernment.main.domain.dto.censusCampaign.CensusDTO;
+import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
+import com.egovernment.main.web.path.ApiPaths;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

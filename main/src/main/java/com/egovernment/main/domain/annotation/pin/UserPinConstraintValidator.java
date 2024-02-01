@@ -1,6 +1,6 @@
-package com.egovernment.egovbackend.domain.annotation.pin;
+package com.egovernment.main.domain.annotation.pin;
 
-import com.egovernment.egovbackend.validation.UserPinValidator;
+import com.egovernment.main.validation.UserPinValidator;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

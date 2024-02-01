@@ -1,7 +1,7 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.domain.entity.Answer;
-import com.egovernment.egovbackend.repository.AnswerRepository;
+import com.egovernment.main.domain.entity.Answer;
+import com.egovernment.main.repository.AnswerRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

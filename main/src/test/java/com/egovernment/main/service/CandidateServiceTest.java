@@ -1,13 +1,14 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.domain.dto.voteCampaign.CandidateTemplateDTO;
-import com.egovernment.egovbackend.domain.entity.Candidate;
-import com.egovernment.egovbackend.domain.entity.Election;
-import com.egovernment.egovbackend.domain.enums.ElectionType;
-import com.egovernment.egovbackend.repository.CandidateRepository;
+import com.egovernment.main.domain.dto.voteCampaign.CandidateTemplateDTO;
+import com.egovernment.main.domain.entity.Candidate;
+import com.egovernment.main.domain.entity.Election;
+import com.egovernment.main.domain.enums.ElectionType;
+import com.egovernment.main.repository.CandidateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
@@ -26,15 +27,14 @@ public class CandidateServiceTest {
     private  ElectionService electionService;
     @Mock
     private  ModelMapper modelMapper;
-    private CandidateService candidateServiceToTest;
+
     private final String TEST_NAME = "Test Name";
     private final String TEST_PARTY = "Test Party";
     private final Long ID = 1L;
 
-    @BeforeEach
-    public void setUp() {
-        candidateServiceToTest = new CandidateService(candidateRepository, electionService, modelMapper);
-    }
+    @InjectMocks
+    private CandidateService candidateServiceToTest;
+
 
     @Test
     public void testInitSampleCandidates() {

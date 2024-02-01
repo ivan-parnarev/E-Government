@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.web;
+package com.egovernment.main.web;
 
-import com.egovernment.egovbackend.domain.dto.voteCampaign.UserVotedInfoDTO;
-import com.egovernment.egovbackend.service.VoteService;
-import com.egovernment.egovbackend.web.interfaces.VoteControllerInterface;
+import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
+import com.egovernment.main.service.VoteService;
+import com.egovernment.main.web.interfaces.VoteControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +37,8 @@ public class VoteController implements VoteControllerInterface {
                     )
             }
     )
+
+
     @Override
     @PostMapping
     public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){

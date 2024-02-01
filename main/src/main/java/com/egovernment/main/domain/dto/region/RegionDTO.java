@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.region;
+package com.egovernment.main.domain.dto.region;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

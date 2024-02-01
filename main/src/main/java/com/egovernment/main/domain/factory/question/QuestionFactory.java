@@ -1,9 +1,9 @@
-package com.egovernment.egovbackend.domain.factory.question;
+package com.egovernment.main.domain.factory.question;
 
-import com.egovernment.egovbackend.domain.entity.Answer;
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.CensusQuestion;
-import com.egovernment.egovbackend.domain.enums.QuestionCategory;
+import com.egovernment.main.domain.entity.Answer;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.CensusQuestion;
+import com.egovernment.main.domain.enums.QuestionCategory;
 
 import java.util.List;
 

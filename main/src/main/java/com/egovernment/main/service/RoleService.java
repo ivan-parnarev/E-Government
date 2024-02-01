@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.domain.entity.Role;
-import com.egovernment.egovbackend.domain.enums.RoleEnum;
-import com.egovernment.egovbackend.repository.RoleRepository;
+import com.egovernment.main.domain.entity.Role;
+import com.egovernment.main.domain.enums.RoleEnum;
+import com.egovernment.main.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

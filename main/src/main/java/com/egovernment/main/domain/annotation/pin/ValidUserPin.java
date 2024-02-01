@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.annotation.pin;
+package com.egovernment.main.domain.annotation.pin;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

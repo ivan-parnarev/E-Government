@@ -1,12 +1,13 @@
-package com.egovernment.egovbackend.service;
+package com.egovernment.main.service;
 
-import com.egovernment.egovbackend.client.AccessControlClient;
-import com.egovernment.egovbackend.client.AuthenticationClient;
-import com.egovernment.egovbackend.domain.dto.auth.AuthRequest;
-import com.egovernment.egovbackend.domain.dto.auth.AuthResponse;
-import com.egovernment.egovbackend.domain.dto.auth.FeignAuthResponse;
-import com.egovernment.egovbackend.exceptions.UserNotFoundException;
-import com.egovernment.egovbackend.utils.JwtTokenUtil;
+import com.egovernment.main.client.AuthenticationClient;
+import com.egovernment.main.domain.dto.auth.AuthRequest;
+import com.egovernment.main.domain.dto.auth.AuthResponse;
+import com.egovernment.main.domain.dto.auth.FeignAuthResponse;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.main.domain.dto.region.AddressDTO;
+import com.egovernment.main.exceptions.UserNotFoundException;
+import com.egovernment.main.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,15 +17,17 @@ import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
 
     private final ModelMapper modelMapper;
-    private final AccessControlClient accessControlClient;
     private final AuthenticationClient authenticationClient;
     private final JwtTokenUtil jwtTokenUtil;
+    private final CampaignService campaignService;
 
     public ResponseEntity<AuthResponse> authenticateUser(AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -33,22 +36,33 @@ public class AuthenticationService {
 
         if (statusCode.is2xxSuccessful()) {
             String token = this.jwtTokenUtil.extractToken(responseFromClient);
-            Boolean isAdmin = this.jwtTokenUtil.validateAdminToken(token);
+            Boolean isAdmin = this.jwtTokenUtil.validateTokenForAdminRole(token);
 
             if (isAdmin) {
                 AuthResponse response = AuthResponse.builder()
                         .isAdmin(true)
                         .build();
+
                 return ResponseEntity.status(HttpStatus.OK)
-                        .header("Authorization", "Bearer " + token).body(response);
+                        .header("Authorization", "Bearer " + token)
+                        .body(response);
             } else {
-                //TODO: extract the address from the claims
-                //TODO: call Access Control Service Via FeignClient
-                //TODO: return AuthResponse with the filtered Campaigns
+                String publicKeyString = Objects.requireNonNull(responseFromClient.getBody()).getPublicKey();
+                Object address = this.jwtTokenUtil.extractClaimsFromToken(publicKeyString, token)
+                        .getBody().get("address");
+
+                AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
+                String region = addressDTO.getRegion();
+
+                List<CampaignFilteredDTO> filteredCampaigns = this.campaignService.getActiveCampaigns(region);
+
                 AuthResponse response = AuthResponse.builder()
+                        .filteredCampaigns(filteredCampaigns)
                         .build();
+
                 return ResponseEntity.status(HttpStatus.OK)
-                        .header("Authorization", "Bearer " + token).body(response);
+                        .header("Authorization", "Bearer " + token)
+                        .body(response);
             }
         } else {
             throw new UserNotFoundException();

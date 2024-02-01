@@ -1,8 +1,8 @@
-package com.egovernment.egovbackend.web;
+package com.egovernment.main.web;
 
-import com.egovernment.egovbackend.domain.dto.region.RegionDTO;
-import com.egovernment.egovbackend.service.RegionService;
-import com.egovernment.egovbackend.web.interfaces.RegionControllerInterface;
+import com.egovernment.main.domain.dto.region.RegionDTO;
+import com.egovernment.main.service.RegionService;
+import com.egovernment.main.web.interfaces.RegionControllerInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

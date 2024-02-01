@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CandidateDTO {
-    private int candidateId;
     @NotBlank(message = "Candidate name is required but not found")
     private String candidateName;
     private String candidateParty;

@@ -1,6 +1,6 @@
-package com.egovernment.egovbackend.domain.entity;
+package com.egovernment.main.domain.entity;
 
-import com.egovernment.egovbackend.domain.enums.RoleEnum;
+import com.egovernment.main.domain.enums.RoleEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

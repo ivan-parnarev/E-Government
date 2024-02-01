@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.auth;
+package com.egovernment.main.domain.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,8 +1,9 @@
-package com.egovernment.egovbackend.domain.factory;
+package com.egovernment.main.domain.factory;
 
-import com.egovernment.egovbackend.domain.entity.Campaign;
-import com.egovernment.egovbackend.domain.entity.User;
-import com.egovernment.egovbackend.domain.enums.CampaignType;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.User;
+import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignType;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +12,7 @@ public class CampaignFactory implements CampaignFactoryInterface{
     @Override
     public Campaign createCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate, boolean isActive,
-                                   String campaignRegion, Long campaignReferenceId) {
+                                   CampaignRegion campaignRegion) {
 
         return Campaign.builder()
                 .campaignType(type)
@@ -20,6 +21,7 @@ public class CampaignFactory implements CampaignFactoryInterface{
                 .from(from)
                 .startDate(startDate)
                 .endDate(endDate)
+                .campaignRegion(campaignRegion)
                 .isActive(isActive)
                 .build();
     }

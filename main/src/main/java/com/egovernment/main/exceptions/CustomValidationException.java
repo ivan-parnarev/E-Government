@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.exceptions;
+package com.egovernment.main.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
