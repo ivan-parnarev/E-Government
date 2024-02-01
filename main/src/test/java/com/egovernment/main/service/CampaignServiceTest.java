@@ -1,8 +1,12 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.KafkaProducerClient;
 import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
+import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
+import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
 import com.egovernment.main.domain.dto.voteCampaign.VoteCampaignDTO;
 import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Election;
@@ -11,8 +15,11 @@ import com.egovernment.main.domain.entity.User;
 import com.egovernment.main.domain.enums.CampaignRegion;
 import com.egovernment.main.domain.enums.CampaignType;
 import com.egovernment.main.domain.enums.RoleEnum;
+import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.exceptions.CustomValidationException;
+import com.egovernment.main.filter.ActiveElectionFilter;
 import com.egovernment.main.repository.CampaignRepository;
+import com.egovernment.main.validation.ActiveCampaignValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +28,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +52,8 @@ public class CampaignServiceTest {
     private CandidateService candidateService;
     @Mock
     private CensusQuestionService censusQuestionService;
+    @Mock
+    private KafkaProducerClient kafkaProducerClient;
     private final String VOTE_CAMPAIGN_TITLE = "Test Vote Campaign";
     private final String VOTE_CAMPAIGN_DESCRIPTION = "Test description vote campaign";
     private final String CENSUS_CAMPAIGN_TITLE = "Test Census Campaign Title";
@@ -51,11 +61,14 @@ public class CampaignServiceTest {
     private final String TEST_USER = "Test User";
     private final String TEST_USER_PIN = "1111111111";
     private final User TEST_CREATOR_USER = User.builder().firstName(TEST_USER).build();
+    private final Long ID = 1L;
+    private final String TEST_REGION = "TestRegion";
     private final Campaign VOTING_CAMPAIGN_TO_TEST = Campaign.builder()
             .campaignType(CampaignType.VOTING)
             .title(VOTE_CAMPAIGN_TITLE)
             .description(VOTE_CAMPAIGN_DESCRIPTION)
             .from(TEST_CREATOR_USER)
+            .campaignRegion(CampaignRegion.LOCAL)
             .isActive(true)
             .build();
     private final Campaign CENSUS_CAMPAIGN_TO_TEST = Campaign.builder()
@@ -87,47 +100,6 @@ public class CampaignServiceTest {
         this.campaignServiceToTest.initSampleCampaign();
         verify(campaignRepository, never()).save(any(Campaign.class));
     }
-
-
-//    @Test
-//    void testGetActiveVotingCampaigns() {
-//
-//        when(campaignRepository.findAll()).thenReturn(List.of(VOTING_CAMPAIGN_TO_TEST));
-//
-//        VoteCampaignDTO campaignViewDTO = VoteCampaignDTO.builder()
-//                .campaignType(CampaignType.VOTING.name())
-//                .campaignTitle(VOTING_CAMPAIGN_TO_TEST.getTitle())
-//                .campaignDescription(VOTING_CAMPAIGN_TO_TEST.getDescription())
-//                .build();
-//
-//
-//        List<VoteCampaignDTO> result = campaignServiceToTest.getActiveVotingCampaigns();
-//
-//        assertNotNull(result);
-//        assertEquals(VOTING_CAMPAIGN_TO_TEST.getCampaignType().name(), campaignViewDTO.getCampaignType());
-//        assertEquals(VOTING_CAMPAIGN_TO_TEST.getTitle(), campaignViewDTO.getCampaignTitle());
-//        assertEquals(VOTING_CAMPAIGN_TO_TEST.getDescription(), campaignViewDTO.getCampaignDescription());
-//    }
-
-//    @Test
-//    void testGetActiveCensusCampaign() {
-//
-//        when(campaignRepository.getAllByCampaignType(CampaignType.CENSUS))
-//                .thenReturn(List.of(CENSUS_CAMPAIGN_TO_TEST));
-//
-//        CensusCampaignDTO censusCampaignDTO = CensusCampaignDTO.builder()
-//                .campaignTitle(CENSUS_CAMPAIGN_TO_TEST.getTitle())
-//                .campaignDescription(CENSUS_CAMPAIGN_TO_TEST.getDescription())
-//                .campaignType(String.valueOf(CampaignType.CENSUS))
-//                .build();
-//
-//        CensusCampaignDTO result = campaignServiceToTest.getActiveCensusCampaigns().get(0);
-//
-//        assertNotNull(result);
-//        assertEquals(censusCampaignDTO.getCampaignTitle(), result.getCampaignTitle());
-//        assertEquals(censusCampaignDTO.getCampaignDescription(), result.getCampaignDescription());
-//        assertEquals(censusCampaignDTO.getCampaignType(), result.getCampaignType());
-//    }
 
     @Test
     void testGetCampaignByIdReturnsTheRightCampaignWhenIsPresent() {
@@ -232,6 +204,79 @@ public class CampaignServiceTest {
         });
 
         verify(campaignRepository, never()).save(any(Campaign.class));
+    }
+
+    @Test
+    public void getAllVotingCampaigns() {
+        when(campaignRepository.getAllByCampaignType(CampaignType.VOTING))
+                .thenReturn(List.of(VOTING_CAMPAIGN_TO_TEST));
+
+        List<Campaign> result = this.campaignServiceToTest.getAllVotingCampaigns();
+
+        assertEquals(1, result.size());
+        assertEquals(CampaignType.VOTING, result.get(0).getCampaignType());
+    }
+
+    @Test
+    public void getActiveCampaignReturnsTheRightDtoWhenCampaignIsVoting() {
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(2);
+
+        System.out.println(startDate);
+        System.out.println(endDate);
+        VOTING_CAMPAIGN_TO_TEST.setId(ID);
+        VOTING_CAMPAIGN_TO_TEST.setStartDate(startDate);
+        VOTING_CAMPAIGN_TO_TEST.setEndDate(endDate);
+
+        CampaignFilteredDTO campaignFilteredDTO = CampaignFilteredDTO.builder()
+                .regionName(TEST_REGION)
+                .build();
+
+        Election election = Election.builder()
+                .electionRegion(TEST_REGION)
+                .campaign(VOTING_CAMPAIGN_TO_TEST)
+                .build();
+
+        when(this.campaignRepository.findAll()).thenReturn(List.of(VOTING_CAMPAIGN_TO_TEST));
+        when(this.electionService.getElectionsByCampaignId(ID)).thenReturn(List.of(election));
+        lenient().when(this.electionService.mapElectionToCampaignFilteredDTO(election))
+                .thenReturn(campaignFilteredDTO);
+
+        List<CampaignFilteredDTO> result = this.campaignServiceToTest.getActiveCampaigns(TEST_REGION);
+
+        assertEquals(1, result.size());
+        assertEquals(campaignFilteredDTO.getRegionName(), result.get(0).getRegionName());
+    }
+
+    @Test
+    public void testGetCensusCampaignById() {
+        CENSUS_CAMPAIGN_TO_TEST.setId(ID);
+        CensusQuestionDTO censusQuestionDTO = CensusQuestionDTO.builder()
+                .text("Test Text")
+                .build();
+        CensusCampaignDTO censusCampaignDTO = CensusCampaignDTO.builder()
+                .campaignTitle(CENSUS_CAMPAIGN_TITLE)
+                .campaignDescription(CENSUS_CAMPAIGN_DESCRIPTION)
+                .build();
+        when(this.campaignRepository.findById(ID)).thenReturn(Optional.of(CENSUS_CAMPAIGN_TO_TEST));
+        when(this.censusQuestionService.getCensusQuestionsForCampaign(ID)).thenReturn(List.of(censusQuestionDTO));
+
+        CensusCampaignDTO result = this.campaignServiceToTest.getCensusCampaignById(ID);
+
+        assertNotNull(result);
+        assertEquals(censusCampaignDTO.getCampaignTitle(), result.getCampaignTitle());
+        assertEquals(censusCampaignDTO.getCampaignDescription(), result.getCampaignDescription());
+    }
+
+    @Test
+    public void getCensusCampaignById_ShouldThrowCampaignNotFoundException_WhenCampaignIsNotFound() {
+        when(campaignRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThrows(CampaignNotFoundException.class, () -> {
+            campaignServiceToTest.getCensusCampaignById(ID);
+        });
+
+        verifyNoInteractions(censusQuestionService);
     }
 
 }

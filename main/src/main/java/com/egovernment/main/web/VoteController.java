@@ -1,6 +1,7 @@
 package com.egovernment.main.web;
 
 import com.egovernment.main.domain.dto.voteCampaign.UserVotedInfoDTO;
+import com.egovernment.main.domain.response.ApiCustomResponse;
 import com.egovernment.main.service.VoteService;
 import com.egovernment.main.web.interfaces.VoteControllerInterface;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,10 +42,14 @@ public class VoteController implements VoteControllerInterface {
 
     @Override
     @PostMapping
-    public ResponseEntity<UserVotedInfoDTO> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
+    public ResponseEntity<ApiCustomResponse> saveUserVoteData(@Valid @RequestBody UserVotedInfoDTO vote){
         this.voteService.saveVote(vote);
         URI location = URI.create("http://localhost:3000/active-campaigns");
-        return ResponseEntity.created(location).body(vote);
+        ApiCustomResponse apiCustomResponse = ApiCustomResponse
+                .builder()
+                .message("Вие успешно подадохте своя вот.")
+                .build();
+        return ResponseEntity.created(location).body(apiCustomResponse);
     }
 
     @Override
