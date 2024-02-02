@@ -32,7 +32,7 @@ function CensusModalComponent({
   const fetchCampaignDetails = async () => {
     try {
       const response = await axios.get(
-        `${API_URLS.ACTIVE_CAMPAIGNS}/${censusId}/CENSUS`
+        `${API_URLS.ACTIVE_CAMPAIGNS}/${censusId}/census`
       );
 
       setCampaignDetails(response.data);

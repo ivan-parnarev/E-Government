@@ -16,7 +16,7 @@ export function VotingActiveCampaignComponent({
   const fetchCampaignDetails = async () => {
     try {
       const response = await axios.get(
-        `${API_URLS.ACTIVE_CAMPAIGNS}/${electionId}/VOTING`
+        `${API_URLS.ACTIVE_CAMPAIGNS}/${electionId}/voting`
       );
 
       setCampaignDetails(response.data);
