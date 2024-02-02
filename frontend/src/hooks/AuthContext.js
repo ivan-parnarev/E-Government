@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import { authenticateUser } from "../services/apiService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [userPin, setUserPin] = useState(localStorage.getItem("userPin") || ""); //prettier-ignore
-  const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") || "");
+  const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin"));
 
   const login = async (pin) => {
     try {
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("isAdmin", response.isAdmin);
       localStorage.setItem(
         "filteredCampaigns",
-        JSON.stringify(response?.filteredCampaigns) || ""
+        JSON.stringify(response?.filteredCampaigns)
       );
     } catch (error) {
       console.error("Authentication failed:", error);
