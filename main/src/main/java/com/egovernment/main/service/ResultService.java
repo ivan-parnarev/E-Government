@@ -63,6 +63,9 @@ public class ResultService {
                             .election(election)
                             .build());
 
+                    if(result.getVotesCount() > 0 && candidatesPerElectionVotes.size() == 0){
+                        continue;
+                    }
                     result.setVotesCount((long) candidatesPerElectionVotes.size());
 
                     this.resultRepository.save(result);
