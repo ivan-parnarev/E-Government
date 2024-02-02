@@ -35,44 +35,56 @@ public class UserService {
     }
 
     public void initTestUsers() throws NoSuchAlgorithmException {
-        Region region = this.regionRepository.findByName(TestUserData.TEST_USER_REGION);
+        Region regionSof = this.regionRepository.findByName(TestUserData.TEST_USER_REGION_SOF);
+        Region regionPld = this.regionRepository.findByName(TestUserData.TEST_USER_REGION_PLD);
 
-        Municipality municipality = this.municipalityRepository.findByName(TestUserData.TEST_USER_MUNICIPALITY);
+        Municipality municipalitySof = this.municipalityRepository.findByName(TestUserData.TEST_USER_MUNICIPALITY_SOF);
+        Municipality municipalityPld = this.municipalityRepository.findByName(TestUserData.TEST_USER_MUNICIPALITY_PLD);
 
-        City city = this.cityRepository.findByName(TestUserData.TEST_USER_CITY);
+        City citySof = this.cityRepository.findByName(TestUserData.TEST_USER_CITY_SOF);
+        City cityPld = this.cityRepository.findByName(TestUserData.TEST_USER_CITY_PLD);
 
-        Address address = Address.builder()
+        Address addressSof = Address.builder()
                 .country(Country.България)
-                .region(region)
-                .postcode(region.getPostcode())
-                .municipality(municipality)
-                .city(city)
+                .region(regionSof)
+                .postcode(regionSof.getPostcode())
+                .municipality(municipalitySof)
+                .city(citySof)
                 .build();
 
-        this.addressRepository.save(address);
+        Address addressPld = Address.builder()
+                .country(Country.България)
+                .region(regionPld)
+                .postcode(regionPld.getPostcode())
+                .municipality(municipalityPld)
+                .city(cityPld)
+                .build();
+
+        this.addressRepository.save(addressSof);
+        this.addressRepository.save(addressPld);
 
         User adminTestUser = userFactory.createUser(generateHashedUserPin("1111111111"),
                 TestUserData.TEST_ADMIN_NAME,
                 TestUserData.TEST_ADMIN_NAME,
                 TestUserData.TEST_ADMIN_NAME,
-                address);
+                addressSof);
         adminTestUser.setAdmin(true);
 
-        User firstTestUser = userFactory.createUser(generateHashedUserPin("000000001"),
+        User firstTestUser = userFactory.createUser(generateHashedUserPin("2222222222"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                address);
-        User secondTestUser = userFactory.createUser(generateHashedUserPin("000000002"),
+                addressSof);
+        User secondTestUser = userFactory.createUser(generateHashedUserPin("3333333333"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                address);
-        User thirdTestUser = userFactory.createUser(generateHashedUserPin("000000003"),
+                addressPld);
+        User thirdTestUser = userFactory.createUser(generateHashedUserPin("4444444444"),
                 TestUserData.TEST_USER_FIRST_NAME,
                 TestUserData.TEST_USER_MIDDLE_NAME,
                 TestUserData.TEST_USER_LAST_NAME,
-                address);
+                addressPld);
 
         this.userRepository.saveAll(List.of(adminTestUser, firstTestUser, secondTestUser, thirdTestUser));
     }
