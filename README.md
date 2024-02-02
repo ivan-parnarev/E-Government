@@ -1,5 +1,7 @@
 # E-Government
 
+Техническа документация / Technical documentation: [Notion Page](https://eight-ocicat-ae5.notion.site/E-Government-E-Census-E-voting-c6c446e222b64a09a7374a481be0fd02)
+
 Проектът "Е-правителство: Е-преброяване и Е-гласуване" има за цел да създаде иновативна система за преброяване на граждани и провеждане на избори онлайн. 
 
 Основни функционалности на проекта:
