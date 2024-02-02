@@ -154,7 +154,7 @@ public class CampaignServiceTest {
     void launchCampaignCreatesCampaign() {
 
         Campaign resultCampaign = this.campaignServiceToTest.launchCampaign(CampaignType.VOTING,
-                VOTE_CAMPAIGN_TITLE, VOTE_CAMPAIGN_DESCRIPTION, TEST_CREATOR_USER, null, null, true, CampaignRegion.LOCAL);
+                VOTE_CAMPAIGN_TITLE, VOTE_CAMPAIGN_DESCRIPTION, TEST_CREATOR_USER, null, null, true, CampaignRegion.LOCAL, null);
 
         assertNotNull(resultCampaign);
         assertEquals(VOTING_CAMPAIGN_TO_TEST.getCampaignType(), resultCampaign.getCampaignType());

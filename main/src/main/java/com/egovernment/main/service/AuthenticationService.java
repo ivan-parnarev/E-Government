@@ -47,14 +47,7 @@ public class AuthenticationService {
                         .header("Authorization", "Bearer " + token)
                         .body(response);
             } else {
-                String publicKeyString = Objects.requireNonNull(responseFromClient.getBody()).getPublicKey();
-                Object address = this.jwtTokenUtil.extractClaimsFromToken(publicKeyString, token)
-                        .getBody().get("address");
-
-                AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
-                String region = addressDTO.getRegion();
-
-                List<CampaignFilteredDTO> filteredCampaigns = this.campaignService.getActiveCampaigns(region);
+                List<CampaignFilteredDTO> filteredCampaigns = getCampaignFilteredDTOS(responseFromClient, token);
 
                 AuthResponse response = AuthResponse.builder()
                         .filteredCampaigns(filteredCampaigns)
@@ -68,4 +61,16 @@ public class AuthenticationService {
             throw new UserNotFoundException();
         }
     }
+
+    private List<CampaignFilteredDTO> getCampaignFilteredDTOS(ResponseEntity<FeignAuthResponse> responseFromClient, String token) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        String publicKeyString = Objects.requireNonNull(responseFromClient.getBody()).getPublicKey();
+        Object address = this.jwtTokenUtil.extractClaimsFromToken(publicKeyString, token)
+                .getBody().get("address");
+
+        AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
+        String region = addressDTO.getCity();
+
+        return this.campaignService.getActiveCampaigns(region);
+    }
+
 }
