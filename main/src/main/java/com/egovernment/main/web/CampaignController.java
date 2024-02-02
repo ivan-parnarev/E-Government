@@ -41,7 +41,7 @@ public class CampaignController implements CampaignControllerInterface {
                     content = @Content(schema = @Schema(implementation = CampaignNotFoundException.class)))
     })
     @Override
-    @GetMapping("/{electionId}/VOTING")
+    @GetMapping("/{electionId}/voting")
     public ResponseEntity<VoteCampaignDTO> getVotingCampaignById(@PathVariable("electionId") Long electionId) {
         VoteCampaignDTO votingCampaign = this.electionService.getCampaignElectionById(electionId);
         return ResponseEntity.ok(votingCampaign);
@@ -59,7 +59,7 @@ public class CampaignController implements CampaignControllerInterface {
                     content = @Content(schema = @Schema(implementation = CampaignNotFoundException.class)))
     })
     @Override
-    @GetMapping("/{campaignId}/CENSUS")
+    @GetMapping("/{campaignId}/census")
     public ResponseEntity<CensusCampaignDTO> getCensusCampaignById(@PathVariable("campaignId") Long campaignId) {
         CensusCampaignDTO censusCampaignDTO = this.campaignService.getCensusCampaignById(campaignId);
         return ResponseEntity.ok(censusCampaignDTO);
