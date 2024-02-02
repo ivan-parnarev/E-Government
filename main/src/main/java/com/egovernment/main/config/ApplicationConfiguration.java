@@ -29,6 +29,8 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvcMatcherBuilder.pattern("/api/v1/**")).anonymous()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/swagger-ui/**")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/v3/api-docs/**")).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
