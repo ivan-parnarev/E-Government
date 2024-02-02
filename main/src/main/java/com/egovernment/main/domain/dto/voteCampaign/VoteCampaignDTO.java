@@ -18,8 +18,8 @@ public class VoteCampaignDTO {
     private String campaignDescription;
     private LocalDateTime campaignStartDate;
     private LocalDateTime campaignEndDate;
-    private String electionType;
     private Long electionId;
-    private List<CandidateTemplateDTO> electionCandidates;
+    private String electionType;
+    private List<CandidateDTO> electionCandidates;
 
 }

@@ -1,4 +1,4 @@
-package com.egovernment.egovbackend.domain.dto.address;
+package com.egovernment.main.domain.dto.address;
 
 import lombok.Data;
 
