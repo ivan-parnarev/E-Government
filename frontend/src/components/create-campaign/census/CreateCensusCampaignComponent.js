@@ -1,6 +1,9 @@
-import axios from "../../hooks/useAxiosInterceptor.js";
-import API_URLS from "../../utils/apiUtils";
-import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
+import axios from "../../../hooks/useAxiosInterceptor.js";
+import API_URLS from "../../../utils/apiUtils.js";
+import {
+  formatDate,
+  calculateDefaultEndDate,
+} from "../../../utils/dateUtils.js";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -9,8 +12,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./CreateCensusCampaignComponent.module.css";
 import { useEffect, useState } from "react";
-import useAuth from "../../hooks/AuthContext.js";
-import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
+import useAuth from "../../../hooks/AuthContext.js";
+import CampaignModalFooterComponent from "../../CampaignModalFooterComponent";
 import { CreateCensusEditAnswersComponent } from "./CreateCensusEditAnswersComponent.js";
 
 async function fetchCampaignData(url) {
@@ -37,11 +40,11 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
+      const censusData = await fetchCampaignData(API_URLS.CENSUS_QUESTIONS);
 
       try {
         if (censusData) {
-          setCensusQuestions(censusData[0].censusQuestions);
+          setCensusQuestions(censusData);
         }
       } catch (error) {
         console.error("Error fetching campaigns:", error);

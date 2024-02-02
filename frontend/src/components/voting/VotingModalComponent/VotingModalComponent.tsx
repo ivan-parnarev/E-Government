@@ -53,7 +53,7 @@ export function VotingModalComponent({
       //@ts-ignore
       .then((data) => {
         if (data) {
-          const successMessage = `${data.message} `;
+          const successMessage = `Успешно изпращане на данни за гласуване.`;
           alert(successMessage);
         }
 

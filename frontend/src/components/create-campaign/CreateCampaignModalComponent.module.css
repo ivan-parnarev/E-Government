@@ -1,28 +1,28 @@
 .createCampaignContainer {
   display: flex;
   flex-direction: column;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.7px);
+  -webkit-backdrop-filter: blur(6.7px);
+  border: 1px solid rgba(255, 255, 255, 0.53);
+  color: var(--light);
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 40px 30px;
 }
 
-.createCampaignHeaderCloseButton {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-.createCampaignHeaderCloseButton:hover {
-  color: var(--gray);
+.title {
+  font-size: 1.6rem;
 }
 
 .createCampaignButton {
   font-size: 1.7rem;
   margin: 5px 0px;
-  color: var(--blue-dark);
-  background-color: transparent;
-  border-color: var(--blue-dark);
 }
 
 .createCampaignButton:hover {
-  background-color: var(--blue-dark);
-  color: var(--light);
+  background-color: var(--light);
+  color: var(--blue-dark);
 }

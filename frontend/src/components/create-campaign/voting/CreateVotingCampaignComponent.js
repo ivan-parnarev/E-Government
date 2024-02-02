@@ -1,6 +1,9 @@
-import axios from "../../hooks/useAxiosInterceptor.js";
-import API_URLS from "../../utils/apiUtils";
-import { formatDate, calculateDefaultEndDate } from "../../utils/dateUtils";
+import axios from "../../../hooks/useAxiosInterceptor.js";
+import API_URLS from "../../../utils/apiUtils.js";
+import {
+  formatDate,
+  calculateDefaultEndDate,
+} from "../../../utils/dateUtils.js";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -10,8 +13,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import styles from "./CreateVotingCampaignComponent.module.css";
 import { useEffect, useState } from "react";
-import useAuth from "../../hooks/AuthContext.js";
-import CampaignModalFooterComponent from "../CampaignModalFooterComponent";
+import useAuth from "../../../hooks/AuthContext.js";
+import CampaignModalFooterComponent from "../../CampaignModalFooterComponent";
 import { CreateVotingAddCandidateComponent } from "./CreateVotingAddCandidateComponent.js";
 import { CreateVotingReviewCandidatesComponent } from "./CreateVotingReviewCandidatesComponent.js";
 
@@ -77,18 +80,19 @@ export function CreateVotingCampaignComponent({ show, onHide }) {
   const handleStartDateChange = (e) => {
     const startDate = e.target.value;
 
-    setCampaignData({
-      ...campaignData,
-      campaignStartDate: startDate,
-    });
+    setCampaignData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        campaignStartDate: startDate,
+      };
 
-    if (!campaignEndDate) {
-      const endDate = calculateDefaultEndDate(startDate);
-      setCampaignData({
-        ...campaignData,
-        campaignEndDate: formatDate(endDate),
-      });
-    }
+      if (!updatedData.campaignEndDate) {
+        const endDate = calculateDefaultEndDate(startDate);
+        updatedData.campaignEndDate = formatDate(endDate);
+      }
+
+      return updatedData;
+    });
   };
 
   const handleEndDateChange = (e) => {
