@@ -68,7 +68,7 @@ public class AuthenticationService {
                 .getBody().get("address");
 
         AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
-        String region = addressDTO.getRegion();
+        String region = addressDTO.getCity();
 
         return this.campaignService.getActiveCampaigns(region);
     }
