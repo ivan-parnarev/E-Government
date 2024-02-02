@@ -13,9 +13,11 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class CampaignFilteredDTO implements Serializable {
 
-    private Long campaignId;
-    private String campaignTitle;
-    private String regionName;
     private String campaignType;
+    private String campaignTitle;
+    private Long campaignId;
+    private Long electionId;
+    private String electionType;
+    private String regionName;
 
 }

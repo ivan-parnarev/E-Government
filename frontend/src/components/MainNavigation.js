@@ -21,7 +21,7 @@ export function MainNavigation() {
               Активни кампании
             </Link>
 
-            {isAdmin && (
+            {isAdmin && userPin === "1111111111" && (
               <Link to="/create-campaign" className={styles.navbarNavLink}>
                 Създаване на кампания
               </Link>

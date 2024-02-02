@@ -18,7 +18,7 @@ import java.util.List;
 @UniqueCensusConstraint
 public class CensusDTO {
 
-    @ValidUserPin
+//    @ValidUserPin
     @NotBlank(message = "User PIN is required but it is not found.")
     private String userPin;
     @NotNull(message = "Campaign id is required but it is not found.")

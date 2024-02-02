@@ -6,9 +6,7 @@ import { CensusActiveCampaignProps } from "../../interfaces/census/CensusActiveC
 
 export function CensusActiveCampaignComponent({
   campaignTitle,
-  campaignDescription,
   censusId,
-  censusQuestions,
 }: CensusActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -27,9 +25,7 @@ export function CensusActiveCampaignComponent({
         show={modalShow}
         onHide={() => setModalShow(false)}
         campaignTitle={campaignTitle}
-        campaignDescription={campaignDescription}
         censusId={censusId}
-        censusQuestions={censusQuestions}
       />
     </div>
   );
