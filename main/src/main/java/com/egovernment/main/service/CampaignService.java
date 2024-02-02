@@ -6,15 +6,9 @@ import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
-import com.egovernment.main.domain.dto.voteCampaign.CandidateTemplateDTO;
-import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
-import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
-import com.egovernment.main.domain.dto.voteCampaign.VoteCampaignDTO;
+import com.egovernment.main.domain.dto.voteCampaign.*;
 import com.egovernment.main.domain.entity.*;
-import com.egovernment.main.domain.enums.CampaignRegion;
-import com.egovernment.main.domain.enums.CampaignStatus;
-import com.egovernment.main.domain.enums.CampaignType;
-import com.egovernment.main.domain.enums.RoleEnum;
+import com.egovernment.main.domain.enums.*;
 import com.egovernment.main.domain.factory.CampaignFactory;
 import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.exceptions.CustomValidationException;
@@ -47,6 +41,9 @@ public class CampaignService {
             Role administratorRole = this.roleService.getRole(RoleEnum.ADMINISTRATOR);
             Optional<User> optUser = this.userService.getUserByRole(administratorRole);
 
+            LocalDateTime today = LocalDateTime.now();
+            LocalDateTime tomorrow = today.plusDays(1);
+
             if (optUser.isPresent()) {
                 User administrator = optUser.get();
 
@@ -54,22 +51,65 @@ public class CampaignService {
                         "демократичния живот на една страна, където гражданите имат" +
                         " възможността да изразят своята воля и да изберат своите представители в законодателния орган.";
 
-                Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
-                        voteCampaignDescription, administrator, LocalDateTime.now(),
-                        LocalDateTime.of(2023, 12, 5, 23, 59),
+                String voteLocalCampaignDescription = "Местните избори са ключов момент в " +
+                        "демократичния живот на една страна, където гражданите имат" +
+                        " възможността да изразят своята воля и да изберат своите представители в законодателния орган.";
+
+                Campaign votingGlobalCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
+                        voteCampaignDescription, administrator, today,
+                        LocalDateTime.of(tomorrow.getYear(),tomorrow.getMonth(), tomorrow.getDayOfMonth(), 23, 59),
                         true, CampaignRegion.GLOBAL, CampaignStatus.ONGOING);
+
+                Campaign votingLocalCampaign = launchCampaign(CampaignType.VOTING, "Кметски избори",
+                        voteLocalCampaignDescription, administrator, today,
+                        LocalDateTime.of(tomorrow.getYear(),tomorrow.getMonth(), tomorrow.getDayOfMonth(), 23, 59),
+                        true, CampaignRegion.LOCAL, CampaignStatus.ONGOING);
 
                 String censusCampaignDescription = "Кампанията за преброяване на населението." +
                         "Този процес помага на правителството" +
                         " и други институции да разберат демографската структура, социалните и икономическите условия";
 
                 Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване",
-                        censusCampaignDescription, administrator, LocalDateTime.now(),
-                        LocalDateTime.of(2023, 12, 5, 23, 59),
+                        censusCampaignDescription, administrator, today,
+                        LocalDateTime.of(tomorrow.getYear(),tomorrow.getMonth(), tomorrow.getDayOfMonth(), 23, 59),
                         true, CampaignRegion.GLOBAL, CampaignStatus.ONGOING);
 
-                this.campaignRepository.save(votingCampaign);
+                this.campaignRepository.save(votingGlobalCampaign);
+                this.campaignRepository.save(votingLocalCampaign);
                 this.campaignRepository.save(censusCampaign);
+
+                CandidateDTO firstCandidate = CandidateDTO.builder()
+                        .candidateName("Асен Василев")
+                        .candidateNumber(1)
+                        .candidateParty("Продължаваме Промяната").build();
+
+                CandidateDTO secondCandidate = CandidateDTO.builder()
+                        .candidateName("Корнелия Нинова")
+                        .candidateNumber(2)
+                        .candidateParty("БСП").build();
+
+                CandidateDTO thirdCandidate = CandidateDTO.builder()
+                        .candidateName("Бойко Борисов")
+                        .candidateNumber(3)
+                        .candidateParty("ГЕРБ").build();
+
+                ElectionDTO globalElection = ElectionDTO.builder()
+                        .electionType(String.valueOf(ElectionType.PARLIAMENT))
+                        .electionRegion("GLOBAL")
+                        .candidates(List.of(firstCandidate, secondCandidate, thirdCandidate)).build();
+
+                ElectionDTO localElectionSof = ElectionDTO.builder()
+                        .electionType(String.valueOf(ElectionType.MAYOR))
+                        .electionRegion("София")
+                        .candidates(List.of(firstCandidate, secondCandidate, thirdCandidate)).build();
+
+                ElectionDTO localElectionPld = ElectionDTO.builder()
+                        .electionType(String.valueOf(ElectionType.MAYOR))
+                        .electionRegion("Пловдив")
+                        .candidates(List.of(firstCandidate, secondCandidate, thirdCandidate)).build();
+
+                this.electionService.createElectionsWithCandidates(List.of(globalElection), votingGlobalCampaign);
+                this.electionService.createElectionsWithCandidates(List.of(localElectionSof, localElectionPld), votingLocalCampaign);
             }
 
         }
