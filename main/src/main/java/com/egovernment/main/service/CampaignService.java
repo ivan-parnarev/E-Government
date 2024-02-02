@@ -6,9 +6,15 @@ import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
 import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
-import com.egovernment.main.domain.dto.voteCampaign.*;
-import com.egovernment.main.domain.entity.*;
-import com.egovernment.main.domain.enums.*;
+import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
+import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
+import com.egovernment.main.domain.entity.Campaign;
+import com.egovernment.main.domain.entity.Role;
+import com.egovernment.main.domain.entity.User;
+import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignStatus;
+import com.egovernment.main.domain.enums.CampaignType;
+import com.egovernment.main.domain.enums.RoleEnum;
 import com.egovernment.main.domain.factory.CampaignFactory;
 import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.exceptions.CustomValidationException;
@@ -65,7 +71,6 @@ public class CampaignService {
                         voteLocalCampaignDescription, administrator, today,
                         LocalDateTime.of(tomorrow.getYear(),tomorrow.getMonth(), tomorrow.getDayOfMonth(), 23, 59),
                         true, CampaignRegion.LOCAL, CampaignStatus.ONGOING);
-
                 String censusCampaignDescription = "Кампанията за преброяване на населението." +
                         "Този процес помага на правителството" +
                         " и други институции да разберат демографската структура, социалните и икономическите условия";
