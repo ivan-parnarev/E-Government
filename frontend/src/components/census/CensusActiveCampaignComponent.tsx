@@ -8,7 +8,6 @@ export function CensusActiveCampaignComponent({
   campaignTitle,
   campaignDescription,
   censusId,
-  censusQuestions,
 }: CensusActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
 
@@ -29,7 +28,6 @@ export function CensusActiveCampaignComponent({
         campaignTitle={campaignTitle}
         campaignDescription={campaignDescription}
         censusId={censusId}
-        censusQuestions={censusQuestions}
       />
     </div>
   );

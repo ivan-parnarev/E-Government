@@ -38,8 +38,6 @@ export function VotingModalComponent({
 
     let location = "";
 
-    console.log(userData);
-
     axios
       .post(API_URLS.VOTE, userData, {
         headers: { "Content-Type": "application/json" },
@@ -55,7 +53,7 @@ export function VotingModalComponent({
       //@ts-ignore
       .then((data) => {
         if (data) {
-          const successMessage = `${data.message} `;
+          const successMessage = `Успешно изпращане на данни за гласуване.`;
           alert(successMessage);
         }
 

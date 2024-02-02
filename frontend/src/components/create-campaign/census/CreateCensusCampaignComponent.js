@@ -40,11 +40,11 @@ export function CreateCensusCampaignComponent({ show, onHide }) {
 
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const censusData = await fetchCampaignData(API_URLS.ACTIVE_CENSUS);
+      const censusData = await fetchCampaignData(API_URLS.CENSUS_QUESTIONS);
 
       try {
         if (censusData) {
-          setCensusQuestions(censusData[0].censusQuestions);
+          setCensusQuestions(censusData);
         }
       } catch (error) {
         console.error("Error fetching campaigns:", error);

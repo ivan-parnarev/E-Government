@@ -3,7 +3,7 @@ import API_URLS from "../../utils/apiUtils.js";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import styles from "./CensusModalComponent.module.css";
 import CampaignModalFooterComponent from "../CampaignModalFooterComponent.tsx";
 import CensusCategoryInfoComponent from "./CensusCategoryInfoComponent.tsx";
@@ -20,9 +20,9 @@ function CensusModalComponent({
   campaignTitle,
   campaignDescription,
   censusId,
-  censusQuestions,
 }: CensusModalProps) {
   const { userPin } = useAuth();
+  const [campaignDetails, setCampaignDetails] = useState<any>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [userData, setUserData] = useState<UserData>({
     userPin,
@@ -30,8 +30,28 @@ function CensusModalComponent({
     censusAnswers: [],
   });
 
+  const fetchCampaignDetails = async () => {
+    try {
+      const response = await axios.get(
+        `${API_URLS.ACTIVE_CAMPAIGNS}/${censusId}/CENSUS`
+      );
+
+      setCampaignDetails(response.data);
+    } catch (error) {
+      console.log("Error fetching regions: ");
+    }
+  };
+
+  useEffect(() => {
+    fetchCampaignDetails();
+  }, []);
+
   const censusCategories = [
-    ...new Set(censusQuestions.map((question) => question.questionCategory)),
+    ...new Set(
+      (campaignDetails.censusQuestions || []).map(
+        (question: { questionCategory: string }) => question.questionCategory
+      )
+    ),
   ];
 
   const totalSteps = censusCategories.length;
@@ -118,9 +138,12 @@ function CensusModalComponent({
 
   const getCurrentComponent = () => {
     const currentCategory = censusCategories[currentStep];
-    const currentQuestions = censusQuestions.filter(
-      (q) => q.questionCategory === currentCategory
+
+    const currentQuestions = campaignDetails.censusQuestions?.filter(
+      (q: { questionCategory: string }) =>
+        q.questionCategory === currentCategory
     );
+
     switch (currentCategory) {
       case PERSONAL_INFO_DATA.questionCategory:
         return (

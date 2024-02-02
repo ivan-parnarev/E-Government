@@ -17,7 +17,6 @@ export function ActiveCampaignsComponent() {
       localStorage.getItem("filteredCampaigns");
 
     setCampaignData(JSON.parse(campaignData!));
-    console.log(campaignData);
   }, []);
 
   return !userPin ? (
@@ -44,14 +43,13 @@ export function ActiveCampaignsComponent() {
                 );
               }
             case "CENSUS":
-              if ("censusQuestions" in campaign) {
+              if ("campaignTitle" in campaign) {
                 return (
                   <CensusActiveCampaignComponent
                     key={campaign.campaignTitle}
                     campaignTitle={campaign.campaignTitle}
                     campaignDescription={campaign.campaignDescription}
                     censusId={campaign.campaignId}
-                    censusQuestions={campaign.censusQuestions}
                   />
                 );
               }

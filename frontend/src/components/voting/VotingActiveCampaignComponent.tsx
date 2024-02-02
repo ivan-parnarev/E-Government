@@ -19,7 +19,6 @@ export function VotingActiveCampaignComponent({
       const response = await axios.get(
         `${API_URLS.ACTIVE_CAMPAIGNS}/${electionId}/VOTING`
       );
-      console.log(response.data);
 
       setCampaignDetails(response.data);
     } catch (error) {
