@@ -1,5 +1,6 @@
 package com.egovernment.main.init;
 
+import com.egovernment.main.component.CampaignsCatalog;
 import com.egovernment.main.database.DatabaseInitializer;
 import com.egovernment.main.service.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class DataInit implements CommandLineRunner {
     private final CensusQuestionService censusQuestionService;
     private final RegionService regionService;
     private final DatabaseInitializer databaseInitializer;
+    private final CampaignsCatalog campaignsCatalog;
 
     @Override
     public void run(String... args) throws Exception {
@@ -30,5 +32,6 @@ public class DataInit implements CommandLineRunner {
         this.candidateService.initSampleCandidates();
         this.censusQuestionService.initTestQuestions();
         this.databaseInitializer.checkAndCreatePublication();
+        this.campaignsCatalog.loadCampaigns();
     }
 }

@@ -1,6 +1,7 @@
 package com.egovernment.main.domain.entity;
 
 import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignStatus;
 import com.egovernment.main.domain.enums.CampaignType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -36,6 +37,9 @@ public class Campaign extends BaseEntity {
     private CampaignRegion campaignRegion;
     @Column
     private boolean isActive ;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CampaignStatus campaignStatus;
 
 }
 

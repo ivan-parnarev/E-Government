@@ -1,5 +1,6 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.component.CampaignsCatalog;
 import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
@@ -11,6 +12,7 @@ import com.egovernment.main.domain.entity.Campaign;
 import com.egovernment.main.domain.entity.Role;
 import com.egovernment.main.domain.entity.User;
 import com.egovernment.main.domain.enums.CampaignRegion;
+import com.egovernment.main.domain.enums.CampaignStatus;
 import com.egovernment.main.domain.enums.CampaignType;
 import com.egovernment.main.domain.enums.RoleEnum;
 import com.egovernment.main.domain.factory.CampaignFactory;
@@ -38,6 +40,7 @@ public class CampaignService {
     private final ElectionService electionService;
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
+    private final CampaignsCatalog campaignsCatalog;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0) {
@@ -55,7 +58,7 @@ public class CampaignService {
                 Campaign votingCampaign = launchCampaign(CampaignType.VOTING, "Парламентарни избори",
                         voteCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true, CampaignRegion.GLOBAL);
+                        true, CampaignRegion.GLOBAL, CampaignStatus.ONGOING);
 
                 String censusCampaignDescription = "Кампанията за преброяване на населението." +
                         "Този процес помага на правителството" +
@@ -64,7 +67,7 @@ public class CampaignService {
                 Campaign censusCampaign = launchCampaign(CampaignType.CENSUS, "Преброяване",
                         censusCampaignDescription, administrator, LocalDateTime.now(),
                         LocalDateTime.of(2023, 12, 5, 23, 59),
-                        true, CampaignRegion.GLOBAL);
+                        true, CampaignRegion.GLOBAL, CampaignStatus.ONGOING);
 
                 this.campaignRepository.save(votingCampaign);
                 this.campaignRepository.save(censusCampaign);
@@ -75,9 +78,9 @@ public class CampaignService {
 
     public Campaign launchCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate,
-                                   boolean isActive, CampaignRegion campaignRegion) {
+                                   boolean isActive, CampaignRegion campaignRegion, CampaignStatus campaignStatus) {
         return campaignFactory.createCampaign(type, title, description,
-                from, startDate, endDate, isActive, campaignRegion);
+                from, startDate, endDate, isActive, campaignRegion, campaignStatus);
     }
 
     public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
@@ -160,6 +163,8 @@ public class CampaignService {
 
         this.campaignRepository.save(campaign);
 
+        this.campaignsCatalog.getCampaigns().add(campaign);
+
         List<ElectionDTO> electionsDTOList = createVotingCampaignDTO.getElections();
 
         this.electionService.createElectionsWithCandidates(electionsDTOList, campaign);
@@ -169,6 +174,8 @@ public class CampaignService {
         Campaign campaign = createCampaignCommonInformation(createCensusCampaignDTO);
 
         this.campaignRepository.save(campaign);
+
+        this.campaignsCatalog.getCampaigns().add(campaign);
 
         this.censusQuestionService.createCensusQuestions(createCensusCampaignDTO.getQuestions(), campaign);
     }
@@ -193,7 +200,7 @@ public class CampaignService {
         Campaign campaign = launchCampaign(campaignType, commonCampaignInformation.getCampaignTitle(),
                 commonCampaignInformation.getCampaignDescription(), owner,
                 commonCampaignInformation.getCampaignStartDate(), commonCampaignInformation.getCampaignEndDate(), true,
-                campaignRegion);
+                campaignRegion, CampaignStatus.UPCOMING);
         return campaign;
     }
 
