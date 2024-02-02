@@ -8,7 +8,6 @@ import { VotingActiveCampaignProps } from "../../interfaces/voting/VotingActiveC
 
 export function VotingActiveCampaignComponent({
   campaignTitle,
-  campaignDescription,
   electionId,
 }: VotingActiveCampaignProps) {
   const [modalShow, setModalShow] = useState(false);
@@ -45,7 +44,7 @@ export function VotingActiveCampaignComponent({
         show={modalShow}
         onHide={() => setModalShow(false)}
         campaignTitle={campaignTitle}
-        campaignDescription={campaignDescription}
+        campaignDescription={campaignDetails.campaignDescription}
         electionId={electionId}
         electionCandidates={campaignDetails.electionCandidates}
       />

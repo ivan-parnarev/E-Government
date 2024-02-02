@@ -18,7 +18,6 @@ function CensusModalComponent({
   show,
   onHide,
   campaignTitle,
-  campaignDescription,
   censusId,
 }: CensusModalProps) {
   const { userPin } = useAuth();
@@ -215,7 +214,7 @@ function CensusModalComponent({
 
       <Modal.Body className={styles.modalBodyContainer}>
         <div className={styles.censusContainer}>
-          <h5>{campaignDescription}</h5>
+          <h5>{campaignDetails.campaignDescription}</h5>
 
           <ProgressBar animated now={progressPercentage} />
           <div className={styles.censusInfoContainerPosition}>

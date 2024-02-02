@@ -2,7 +2,6 @@ export interface CensusModalProps {
   show: boolean;
   onHide: () => void;
   campaignTitle: string;
-  campaignDescription: string;
   censusId: string;
 }
 

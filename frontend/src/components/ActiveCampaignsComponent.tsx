@@ -13,10 +13,10 @@ export function ActiveCampaignsComponent() {
   const [campaignData, setCampaignData] = useState<CampaignProps[]>([]);
 
   useEffect(() => {
-    const campaignData: string | null =
+    const currCampaignData: string | null =
       localStorage.getItem("filteredCampaigns");
 
-    setCampaignData(JSON.parse(campaignData!));
+    setCampaignData(JSON.parse(currCampaignData!));
   }, []);
 
   return !userPin ? (
@@ -30,6 +30,8 @@ export function ActiveCampaignsComponent() {
         <Spinner animation="border" className={styles.spinnerColor} />
       ) : (
         campaignData.map((campaign) => {
+          console.log(campaign);
+
           switch (campaign.campaignType) {
             case "VOTING":
               if ("electionId" in campaign) {
@@ -37,7 +39,6 @@ export function ActiveCampaignsComponent() {
                   <VotingActiveCampaignComponent
                     key={campaign.campaignTitle}
                     campaignTitle={campaign.campaignTitle}
-                    campaignDescription={campaign.campaignDescription}
                     electionId={campaign.electionId}
                   />
                 );
@@ -48,7 +49,6 @@ export function ActiveCampaignsComponent() {
                   <CensusActiveCampaignComponent
                     key={campaign.campaignTitle}
                     campaignTitle={campaign.campaignTitle}
-                    campaignDescription={campaign.campaignDescription}
                     censusId={campaign.campaignId}
                   />
                 );
