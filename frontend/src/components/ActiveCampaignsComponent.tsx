@@ -17,7 +17,7 @@ export function ActiveCampaignsComponent() {
       localStorage.getItem("filteredCampaigns");
 
     setCampaignData(JSON.parse(currCampaignData!));
-  }, []);
+  }, [userPin]);
 
   return !userPin ? (
     <UserAuthenticationComponent />
@@ -29,9 +29,7 @@ export function ActiveCampaignsComponent() {
       {isLoading ? (
         <Spinner animation="border" className={styles.spinnerColor} />
       ) : (
-        campaignData.map((campaign) => {
-          console.log(campaign);
-
+        campaignData?.map((campaign) => {
           switch (campaign.campaignType) {
             case "VOTING":
               if ("electionId" in campaign) {
