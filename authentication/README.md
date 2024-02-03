@@ -55,8 +55,17 @@ during Voting and Census Campaigns.
 
 * When you start the application there will be three users already created in the database, each user has:
     - First Name, Middle Name, Last Name and hashed userPin
-* Send a POST request to http://localhost:8081/api/v1/authenticate with user credentials(hashed userPin).
-  The service will verify the user existence in the database and return a JWT token upon successful authentication, as well as Public Key to decrypt the encrypted  token
+
+## Endpoints Overview
+
+### AuthenticationController
+- **Authenticate user**
+    - **Path**: `POST /authenticate`
+    - **Description**: Receive post request with user credentials(userPin).
+      The service will verify the user existence in the database and return a JWT token upon successful authentication, as well as Public Key to decrypt the encrypted  token
+
+## SWAGGER
+SWAGGER documentation is available when the application is working on port `localhost:8081/swagger-ui/index.html`. You can test the endpoints and read the documentation about the logic behind each endpoint.
 
 ## License
 

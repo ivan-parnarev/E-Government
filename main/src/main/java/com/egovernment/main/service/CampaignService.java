@@ -97,6 +97,21 @@ public class CampaignService {
                         .candidateNumber(3)
                         .candidateParty("ГЕРБ").build();
 
+                CandidateDTO firstCandidatePld = CandidateDTO.builder()
+                        .candidateName("Десислава Атанасова")
+                        .candidateNumber(1)
+                        .candidateParty("ГЕРБ").build();
+
+                CandidateDTO secondCandidatePld = CandidateDTO.builder()
+                        .candidateName("Кристиан Вигенин")
+                        .candidateNumber(2)
+                        .candidateParty("БСП").build();
+
+                CandidateDTO thirdCandidatePld = CandidateDTO.builder()
+                        .candidateName("Николай Денков")
+                        .candidateNumber(3)
+                        .candidateParty("Продължаваме Промяната").build();
+
                 ElectionDTO globalElection = ElectionDTO.builder()
                         .electionType(String.valueOf(ElectionType.PARLIAMENT))
                         .electionRegion("GLOBAL")
@@ -110,7 +125,7 @@ public class CampaignService {
                 ElectionDTO localElectionPld = ElectionDTO.builder()
                         .electionType(String.valueOf(ElectionType.MAYOR))
                         .electionRegion("Пловдив")
-                        .candidates(List.of(firstCandidate, secondCandidate, thirdCandidate)).build();
+                        .candidates(List.of(firstCandidatePld, secondCandidatePld, thirdCandidatePld)).build();
 
                 this.electionService.createElectionsWithCandidates(List.of(globalElection), votingGlobalCampaign);
                 this.electionService.createElectionsWithCandidates(List.of(localElectionSof, localElectionPld), votingLocalCampaign);

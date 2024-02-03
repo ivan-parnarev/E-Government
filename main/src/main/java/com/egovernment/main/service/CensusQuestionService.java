@@ -39,7 +39,7 @@ public class CensusQuestionService {
 
         if(this.censusQuestionRepository.count() == 0){
 
-            Campaign censusCampaign = this.campaignRepository.findById(2L).get();
+            Campaign censusCampaign = this.campaignRepository.findById(3L).get();
 
             List<Answer> incomeAnswers = this.answerService.createAnswers
                     ("933лв. - 1200лв.; 1201лв. - 1500лв.; 1501лв. - 2300лв.; 2301лв. - 2700лв.; 2701лв. - 3400лв.; над 3401лв.");
