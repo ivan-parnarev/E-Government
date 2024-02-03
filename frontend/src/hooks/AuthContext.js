@@ -31,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("filteredCampaigns");
     setUserPin("");
     setIsAdmin(false);
+    window.location.href = "/";
   };
 
   const contextValue = { userPin, isAdmin, login, logout };
