@@ -39,6 +39,7 @@ public class CampaignService {
     private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
     private final CampaignsCatalog campaignsCatalog;
+    private final KafkaMessageService kafkaMessageService;
 
     public void initSampleCampaign() {
         if (this.campaignRepository.count() == 0) {
@@ -137,6 +138,7 @@ public class CampaignService {
     public Campaign launchCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate,
                                    boolean isActive, CampaignRegion campaignRegion, CampaignStatus campaignStatus) {
+       this.kafkaMessageService.sendMessage(title); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return campaignFactory.createCampaign(type, title, description,
                 from, startDate, endDate, isActive, campaignRegion, campaignStatus);
     }
