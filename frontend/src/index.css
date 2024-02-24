@@ -1,22 +1,23 @@
-@import "./assets/fonts/fonts.css";
+@import './assets/fonts/fonts.css';
 
 body {
-  background-image: url("./assets/images/background.jpg");
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: "Fira Sans";
+    background-image: url('./assets/images/bg-dark.jpg');
+    /* background-image: url('./assets/images/background.jpg'); */
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Fira Sans';
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 :root {
-  --blue-dark: #1a3071;
-  --input-width: 300px;
+    --blue-dark: #1a3071;
+    --input-width: 300px;
 }
