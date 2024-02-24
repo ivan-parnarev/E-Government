@@ -1,6 +1,7 @@
 import styles from "./ProfilePage.module.css";
 import useAuth from "../hooks/AuthContext";
 import UserAuthenticationComponent from "../components/user/UserAuthenticationComponent";
+import UserProfileComponent from "../components/user/UserProfileComponent";
 
 export function ProfilePage() {
   const { userPin } = useAuth();
@@ -9,9 +10,7 @@ export function ProfilePage() {
     <div className={styles.containerBackground}>
       <div className={styles.container}>
         {userPin ? (
-          <p style={{ textAlign: "center", fontSize: "1.5rem" }}>
-            Влезнахте успешно в профила си.
-          </p>
+          <UserProfileComponent />
         ) : (
           <div>
             <UserAuthenticationComponent />
