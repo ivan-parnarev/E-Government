@@ -1,4 +1,4 @@
-package com.egovernment.accesscontrol.config;
+package com.egovernment.kafka.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -37,10 +37,6 @@ public class KafkaConsumerConfiguration {
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
                 JsonDeserializer.class.getName()
         );
-//        props.put(
-//                JsonDeserializer.VALUE_DEFAULT_TYPE,
-//                UserVotedInfoDTO.class.getName()
-//        );
         props.put(
                 JsonDeserializer.TRUSTED_PACKAGES,
                 "*"

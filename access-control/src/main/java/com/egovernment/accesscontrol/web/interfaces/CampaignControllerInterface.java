@@ -1,6 +1,6 @@
 package com.egovernment.accesscontrol.web.interfaces;
 
-import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.web.path.ApiPaths;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;

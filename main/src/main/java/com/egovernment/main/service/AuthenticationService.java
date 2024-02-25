@@ -4,7 +4,7 @@ import com.egovernment.main.client.AuthenticationClient;
 import com.egovernment.main.domain.dto.auth.AuthRequest;
 import com.egovernment.main.domain.dto.auth.AuthResponse;
 import com.egovernment.main.domain.dto.auth.FeignAuthResponse;
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.region.AddressDTO;
 import com.egovernment.main.exceptions.UserNotFoundException;
 import com.egovernment.main.utils.JwtTokenUtil;

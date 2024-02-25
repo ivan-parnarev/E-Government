@@ -1,4 +1,4 @@
-package com.egovernment.main.config;
+package com.egovernment.kafka.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

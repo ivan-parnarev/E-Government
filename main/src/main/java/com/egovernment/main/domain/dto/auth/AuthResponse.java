@@ -1,6 +1,6 @@
 package com.egovernment.main.domain.dto.auth;
 
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

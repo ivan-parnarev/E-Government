@@ -1,7 +1,7 @@
 package com.egovernment.accesscontrol.service;
 
 import com.egovernment.accesscontrol.domain.entity.Campaign;
-import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.enums.CampaignType;
 import com.egovernment.accesscontrol.repository.CampaignRepository;
 import org.junit.jupiter.api.Test;

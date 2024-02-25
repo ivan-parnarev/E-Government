@@ -1,6 +1,7 @@
-package com.egovernment.main.service;
+package com.egovernment.kafka.service;
 
-import com.egovernment.main.config.KafkaTopicConfiguration;
+import com.egovernment.kafka.config.KafkaTopicConfiguration;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.main.domain.response.ApiCustomResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class KafkaMessageService {
     private final KafkaTemplate kafkaTemplate;
     private final static Logger LOGGER = LoggerFactory.getLogger(KafkaMessageService.class);
 
-    public ApiCustomResponse sendMessage(String message){
+    public ApiCustomResponse sendMessage(CampaignFilteredDTO message){
         AtomicReference<String> response = new AtomicReference<>("");
         String messageKey = UUID.randomUUID().toString();
         CompletableFuture<SendResult<String, String>> future = kafkaTemplate

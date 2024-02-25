@@ -1,19 +1,23 @@
-package com.egovernment.accesscontrol.domain.dto;
+package com.egovernment.kafka.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
+
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CampaignFilteredDTO {
+public class CampaignFilteredDTO implements Serializable {
 
-    private Long campaignId;
-    private String campaignTitle;
-    private String regionName;
     private String campaignType;
+    private String campaignTitle;
+    private Long campaignId;
+    private Long electionId;
+    private String electionType;
+    private String regionName;
 
 }

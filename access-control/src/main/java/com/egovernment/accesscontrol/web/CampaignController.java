@@ -1,6 +1,6 @@
 package com.egovernment.accesscontrol.web;
 
-import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.service.CampaignService;
 import com.egovernment.accesscontrol.web.interfaces.CampaignControllerInterface;
 import com.egovernment.accesscontrol.web.path.ApiPaths;

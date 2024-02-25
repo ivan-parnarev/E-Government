@@ -1,10 +1,11 @@
 package com.egovernment.main.service;
 
+import com.egovernment.kafka.service.KafkaMessageService;
 import com.egovernment.main.component.CampaignsCatalog;
 import com.egovernment.main.domain.dto.censusCampaign.CensusCampaignDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CensusQuestionDTO;
 import com.egovernment.main.domain.dto.censusCampaign.CreateCensusCampaignDTO;
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.common.CreateCampaignCommon;
 import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
 import com.egovernment.main.domain.dto.voteCampaign.CreateVotingCampaignDTO;
@@ -138,7 +139,6 @@ public class CampaignService {
     public Campaign launchCampaign(CampaignType type, String title, String description
             , User from, LocalDateTime startDate, LocalDateTime endDate,
                                    boolean isActive, CampaignRegion campaignRegion, CampaignStatus campaignStatus) {
-       this.kafkaMessageService.sendMessage(title); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return campaignFactory.createCampaign(type, title, description,
                 from, startDate, endDate, isActive, campaignRegion, campaignStatus);
     }
@@ -169,12 +169,7 @@ public class CampaignService {
 
             }else if(campaign.getCampaignType().equals(CampaignType.CENSUS)){
 
-                CampaignFilteredDTO campaignFilteredDTO = CampaignFilteredDTO
-                        .builder()
-                        .campaignId(campaign.getId())
-                        .campaignType(campaign.getCampaignType().toString())
-                        .campaignTitle(campaign.getTitle())
-                        .build();
+                CampaignFilteredDTO campaignFilteredDTO = mapCensusCampaignToCampaignFilteredDTO(campaign);
 
                 filteredCampaigns.add(campaignFilteredDTO);
             }
@@ -182,6 +177,15 @@ public class CampaignService {
         }
 
         return filteredCampaigns;
+    }
+
+    private CampaignFilteredDTO mapCensusCampaignToCampaignFilteredDTO(Campaign campaign) {
+        return CampaignFilteredDTO
+                .builder()
+                .campaignId(campaign.getId())
+                .campaignType(campaign.getCampaignType().toString())
+                .campaignTitle(campaign.getTitle())
+                .build();
     }
 
 
@@ -234,6 +238,7 @@ public class CampaignService {
         Campaign campaign = createCampaignCommonInformation(createCensusCampaignDTO);
 
         this.campaignRepository.save(campaign);
+        this.kafkaMessageService.sendMessage(this.mapCensusCampaignToCampaignFilteredDTO(campaign));
 
         this.campaignsCatalog.getCampaigns().add(campaign);
 

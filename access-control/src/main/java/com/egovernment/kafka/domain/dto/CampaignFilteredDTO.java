@@ -1,4 +1,4 @@
-package com.egovernment.main.domain.dto.common;
+package com.egovernment.kafka.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
