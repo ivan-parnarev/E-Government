@@ -53,3 +53,11 @@ services:
     image: auth
     ports:
       - "8082:8082"
+
+  redis:
+    container_name: e-gov-redis
+    image: redis:7.2.4
+    ports:
+      - "6379:6379"
+
+      
