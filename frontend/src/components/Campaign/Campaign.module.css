@@ -1,0 +1,25 @@
+.campaign-card {
+    background-color: inherit;
+    box-shadow: 0 0.25rem 1.875rem rgba(0, 0, 0, 0.2);
+    flex: 1 1 300px;
+    padding: 1rem;
+    border-radius: 0.313rem;
+}
+
+.region-wrapper {
+    margin-right: 0.313rem;
+}
+
+.details-button {
+    width: fit-content;
+    padding: 0.313rem 0.625rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 0.188rem;
+    cursor: pointer;
+    margin-bottom: 0;
+    transition: all 0.2s ease-in;
+}
+
+.details-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
