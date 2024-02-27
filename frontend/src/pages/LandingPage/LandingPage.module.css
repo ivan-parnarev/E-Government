@@ -1,0 +1,113 @@
+.main {
+    max-width: 1220px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10rem;
+}
+
+.heading {
+    text-align: center;
+    color: var(--light);
+    font-size: 64px;
+    line-height: 120%;
+    font-weight: 700;
+    margin-top: 100px;
+    margin-bottom: 10px;
+}
+
+.subHeading {
+    font-size: 24px;
+    line-height: 140%;
+    color: var(--light);
+    text-align: center;
+    width: 75%;
+    margin: auto;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin: auto;
+}
+
+.image {
+    margin-bottom: 76px;
+}
+
+.sHeading {
+    font-size: 32px;
+    line-height: 110%;
+    font-weight: 700;
+    color: var(--light);
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 12rem;
+}
+
+.container:last-child {
+    margin-bottom: 12rem;
+}
+
+.containerRow {
+    display: flex;
+}
+
+.containerColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.containerColumn > h2 {
+    margin-top: 32px;
+    margin-bottom: 10px;
+    text-align: left;
+    margin-bottom: 12px;
+}
+
+.containerColumn > p {
+    text-align: left;
+    margin: 0;
+}
+
+.containerImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.featureImg {
+    width: 370px;
+    margin: auto;
+}
+
+.mirror {
+    flex-direction: row-reverse;
+}
+
+.mirror > .containerColumn {
+    text-align: right;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.mirror > .containerColumn > .sHeading,
+.mirror > .containerColumn > .subHeading {
+    text-align: right;
+}
+
+.featureHeading {
+    color: rgb(204, 205, 205);
+}

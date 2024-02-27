@@ -1,0 +1,25 @@
+.link {
+    color: var(--light);
+    font-size: 1.5rem;
+    padding: 15px 20px;
+    margin: 0px 15px;
+    text-decoration: none;
+    border: 1px solid var(--light);
+    border-radius: 10px;
+    margin-top: 12px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.link:hover {
+    color: var(--dark);
+    text-decoration: none;
+    background-color: var(--light);
+}
+
+.navbarNav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
