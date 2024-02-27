@@ -14,37 +14,99 @@
   padding: 40px 30px;
 }
 
-.pieChartBackground {
-  background: var(--light);
-  border-radius: 10px;
-}
-
-.resultsContainer {
+.results {
   padding: 50px;
-}
-
-.results,
-.regionResults {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 50px;
 }
 
 .regionSelect {
   padding: 5px;
   font-size: 1.1rem;
   border-radius: 10px;
+}
+
+.buttonsGroup {
+  display: flex;
+  width: 50%;
+  justify-content: space-evenly;
+}
+
+.activeButton {
+  font-size: 1.7rem;
+  margin: 5px 0px;
+}
+
+.activeButton:hover {
+  background-color: var(--light);
+  color: var(--blue-dark);
+}
+
+.censusResultsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.votingResultsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.active {
+  background-color: var(--light);
+  color: var(--blue-dark);
+}
+
+.dropdown {
+  font-size: 1.2rem;
   position: relative;
-  margin-right: -600px;
-  margin-top: -40px;
+  display: inline-block;
+  border-radius: 5%;
+  color: var(--blue-dark);
+  z-index: 1;
 }
 
-.regionTitle {
-  padding-top: 40px;
+.dropbtn {
+  padding: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-.pieChart label {
-  color: "white" !important;
-  border: 1px solid black;
+.dropdownContent {
+  display: none;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.dropdownContentVisible {
+  background-color: #f9f9f9;
+  display: block;
+  position: absolute;
+  z-index: 1;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.dropdownContent label {
+  margin-bottom: 5px;
+}
+
+.dropdownContent input[type="checkbox"] {
+  position: relative;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+}
+
+.dropdownRegion {
+  width: 101%;
+  padding: 0px 5px;
+}
+
+.dropdownRegion label {
+  padding: 0px 5px;
 }
