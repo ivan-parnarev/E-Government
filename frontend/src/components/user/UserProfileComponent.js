@@ -69,8 +69,11 @@ export default function UserProfileComponent() {
     useEffect(() => {
         const filteredCampaigns = JSON.parse(localStorage.getItem('filteredCampaigns'));
 
-        setCampaigns((state) => [...filteredCampaigns]);
-    }, [])
+        if (filteredCampaigns) {
+            setCampaigns((state) => [...filteredCampaigns]);
+        }
+
+    }, []);
 
     return (
         <section className={styles['profile-section']}>
@@ -90,29 +93,29 @@ export default function UserProfileComponent() {
                 <p className={styles['edit-button']}>Редактирай</p>
             </Section>
 
-            <Section title='Изминали кампании' className={styles['active-campaigns']}>
+            {campaigns.length > 0 && <Section title='Изминали кампании' className={styles['active-campaigns']}>
                 <div className={styles['campaigns-wrapper']}>
                     {campaigns.map((campaign, index) => (
                         <Campaign key={index} {...campaign} />
                     ))}
                 </div>
-            </Section>
+            </Section>}
 
-            <Section title='Активни кампании' className={styles['active-campaigns']}>
+            {campaigns.length > 0 && <Section title='Активни кампании' className={styles['active-campaigns']}>
                 <div className={styles['campaigns-wrapper']}>
                     {campaigns.map((campaign, index) => (
                         <Campaign key={index} {...campaign} />
                     ))}
                 </div>
-            </Section>
+            </Section>}
 
-            <Section title='Предстоящи кампании' className={styles['future-campaigns']}> 
+            {campaigns.length > 0 && <Section title='Предстоящи кампании' className={styles['future-campaigns']}> 
                 <div className={styles['campaigns-wrapper']}>
                     {campaigns.map((campaign, index) => (
                         <Campaign key={index} {...campaign} />
                     ))}
                 </div>
-            </Section>
+            </Section>}
 
             <Section className={styles['news']}>
                 <div className={styles['news-wrapper']}>
