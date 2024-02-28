@@ -4,6 +4,7 @@ import {
     Route,
     RouterProvider,
 } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { RootLayout } from './RootLayout';
 import { HomePage } from './pages/HomePage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -35,6 +36,7 @@ const router = createBrowserRouter(routeDefinitions);
 export function App() {
     return (
         <AuthProvider>
+            <Toaster position="top-right" />
             <RouterProvider router={router} />
         </AuthProvider>
     );
