@@ -1,5 +1,6 @@
 package com.egovernment.kafka.config;
 
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ public class KafkaConsumerConfiguration {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
 
-    public ConsumerFactory<String, String> consumerFactory(){
+    public ConsumerFactory<String, CampaignFilteredDTO> consumerFactory(){
         Map<String, Object> props = new HashMap<>();
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
@@ -30,12 +31,16 @@ public class KafkaConsumerConfiguration {
                 "E-Gov-Kafka-Consumer"
         );
         props.put(
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,
+                "earliest"
+        );
+        props.put(
                 ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
                 StringDeserializer.class
         );
         props.put(
                 ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
-                JsonDeserializer.class.getName()
+                JsonDeserializer.class
         );
         props.put(
                 JsonDeserializer.TRUSTED_PACKAGES,
@@ -45,13 +50,17 @@ public class KafkaConsumerConfiguration {
                 ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS,
                 JsonDeserializer.class.getName()
         );
-        return new DefaultKafkaConsumerFactory<>(props);
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new StringDeserializer(),
+                new JsonDeserializer<>(CampaignFilteredDTO.class)
+        );
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, CampaignFilteredDTO> kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<String, String> factory =
+        ConcurrentKafkaListenerContainerFactory<String, CampaignFilteredDTO> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
