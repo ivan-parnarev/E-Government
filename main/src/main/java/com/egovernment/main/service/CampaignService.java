@@ -185,6 +185,8 @@ public class CampaignService {
                 .campaignId(campaign.getId())
                 .campaignType(campaign.getCampaignType().toString())
                 .campaignTitle(campaign.getTitle())
+                .startDate(campaign.getStartDate())
+                .endDate(campaign.getEndDate())
                 .build();
     }
 

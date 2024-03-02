@@ -94,6 +94,8 @@ public class ElectionService {
                 .campaignType(campaign.getCampaignType().toString())
                 .electionId(election.getId())
                 .electionType(election.getElectionType().toString())
+                .startDate(campaign.getStartDate())
+                .endDate(campaign.getEndDate())
                 .build();
 
     }

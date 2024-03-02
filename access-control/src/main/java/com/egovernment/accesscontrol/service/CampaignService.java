@@ -1,7 +1,7 @@
 package com.egovernment.accesscontrol.service;
 
-import com.egovernment.accesscontrol.domain.entity.Campaign;
-import com.egovernment.accesscontrol.repository.CampaignRepository;
+import com.egovernment.accesscontrol.domain.entity.FilteredCampaign;
+import com.egovernment.accesscontrol.repository.FilteredCampaignRepository;
 import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.filter.CampaignRegionFilter;
 import jakarta.transaction.Transactional;
@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CampaignService {
-    private final CampaignRepository campaignRepository;
+    private final FilteredCampaignRepository campaignRepository;
 
     @Transactional
     public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
@@ -28,13 +28,13 @@ public class CampaignService {
 
     }
 
-    private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(Campaign campaign) {
+    private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(FilteredCampaign campaign) {
 
         return CampaignFilteredDTO.builder()
-                .campaignTitle(campaign.getTitle())
+                .campaignTitle(campaign.getCampaignTitle())
                 .regionName(campaign.getRegionName())
                 .campaignId(campaign.getId())
-                .campaignType(campaign.getCampaignType().name())
+                .campaignType(campaign.getCampaignType())
                 .build();
 
     }
