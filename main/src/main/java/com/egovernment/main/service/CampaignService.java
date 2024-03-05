@@ -17,14 +17,11 @@ import com.egovernment.main.domain.enums.*;
 import com.egovernment.main.domain.factory.CampaignFactory;
 import com.egovernment.main.exceptions.CampaignNotFoundException;
 import com.egovernment.main.exceptions.CustomValidationException;
-import com.egovernment.main.filter.ActiveElectionFilter;
 import com.egovernment.main.repository.CampaignRepository;
-import com.egovernment.main.validation.ActiveCampaignValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +34,6 @@ public class CampaignService {
     private final UserService userService;
     private final RoleService roleService;
     private final ElectionService electionService;
-    private final CandidateService candidateService;
     private final CensusQuestionService censusQuestionService;
     private final CampaignsCatalog campaignsCatalog;
     private final KafkaMessageService kafkaMessageService;
@@ -141,42 +137,6 @@ public class CampaignService {
                                    boolean isActive, CampaignRegion campaignRegion, CampaignStatus campaignStatus) {
         return campaignFactory.createCampaign(type, title, description,
                 from, startDate, endDate, isActive, campaignRegion, campaignStatus);
-    }
-
-    public List<CampaignFilteredDTO> getActiveCampaigns(String regionName){
-
-        List<Campaign> all = this.campaignRepository
-                .findAll();
-        List<Campaign> allActiveCampaigns = all
-                .stream()
-                .filter(ActiveCampaignValidator::isCampaignActive)
-                .toList();
-
-        List<CampaignFilteredDTO> filteredCampaigns = new ArrayList<>();
-
-        for (Campaign campaign : allActiveCampaigns) {
-
-            if(campaign.getCampaignType().equals(CampaignType.VOTING)){
-
-                List<CampaignFilteredDTO> activeSuitableElections = this.electionService
-                        .getElectionsByCampaignId(campaign.getId())
-                        .stream()
-                        .filter(e -> ActiveElectionFilter.filterByRegionAndIsActive(e, regionName))
-                        .map(this.electionService::mapElectionToCampaignFilteredDTO)
-                        .toList();
-
-                filteredCampaigns.addAll(activeSuitableElections);
-
-            }else if(campaign.getCampaignType().equals(CampaignType.CENSUS)){
-
-                CampaignFilteredDTO campaignFilteredDTO = mapCensusCampaignToCampaignFilteredDTO(campaign);
-
-                filteredCampaigns.add(campaignFilteredDTO);
-            }
-
-        }
-
-        return filteredCampaigns;
     }
 
     private CampaignFilteredDTO mapCensusCampaignToCampaignFilteredDTO(Campaign campaign) {
