@@ -15,28 +15,35 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FilteredCampaignService {
     private final FilteredCampaignRepository filteredCampaignRepository;
-
     @Transactional
     public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
-
         return this.filteredCampaignRepository
                 .findAll()
                 .stream()
                 .filter(c -> CampaignRegionFilter.filterByRegionAndIsActive(c, regionName))
                 .map(this::mapCampaignToCampaignFilteredDTO)
                 .collect(Collectors.toList());
-
     }
 
     private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(FilteredCampaign campaign) {
-
-        return CampaignFilteredDTO.builder()
+        CampaignFilteredDTO result = CampaignFilteredDTO
+                .builder()
                 .campaignTitle(campaign.getCampaignTitle())
-                .regionName(campaign.getRegionName())
-                .campaignId(campaign.getId())
                 .campaignType(campaign.getCampaignType())
+                .startDate(campaign.getStartDate())
+                .endDate(campaign.getEndDate())
                 .build();
 
+        if(campaign.getCampaignType().equals("VOTING")){
+            result.setRegionName(campaign.getRegionName());
+            result.setElectionId(campaign.getElectionId());
+            result.setElectionType(campaign.getElectionType());
+
+        }else if(campaign.getCampaignType().equals("CENSUS")){
+            result.setCampaignId(campaign.getCampaignId());
+            result.setRegionName("GLOBAL");
+        }
+        return result;
     }
     public void saveCampaign(FilteredCampaign campaign){
         this.filteredCampaignRepository.save(campaign);
