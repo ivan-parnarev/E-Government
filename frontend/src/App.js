@@ -5,12 +5,16 @@ import {
     RouterProvider,
 } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { Provider } from 'react-redux';
+
 import { RootLayout } from './RootLayout';
+import { AuthProvider } from './hooks/AuthContext';
+import store from './redux/store';
+
 import { HomePage } from './pages/HomePage';
 import { RegisterPage } from './pages/RegisterPage';
 import { ActiveCampaignsPage } from './pages/ActiveCampaignsPage';
 import { ProfilePage } from './pages/ProfilePage';
-import { AuthProvider } from './hooks/AuthContext';
 import { CreateCampaignPage } from './pages/CreateCampaignPage';
 import { ResultsPage } from './pages/ResultsPage';
 import { LandingPage } from './pages/LandingPage/LandingPage';
@@ -35,9 +39,11 @@ const router = createBrowserRouter(routeDefinitions);
 
 export function App() {
     return (
-        <AuthProvider>
-            <Toaster position="top-right" />
-            <RouterProvider router={router} />
-        </AuthProvider>
+        <Provider store={store}>
+            <AuthProvider>
+                <Toaster position="top-right" />
+                <RouterProvider router={router} />
+            </AuthProvider>
+        </Provider>
     );
 }
