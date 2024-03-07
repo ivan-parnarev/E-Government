@@ -87,7 +87,7 @@
     text-decoration: underline;
 }
 
-@media screen and (min-width: 330px) and (max-width: 550px) {
+@media screen and (min-width: 330px) and (max-width: 400px) {
     .form {
         width: 100%;
         padding: 1rem 2.5rem;
@@ -105,5 +105,16 @@
 
     .checkLabel {
         min-height: 0px;
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 457px) {
+    .form {
+        padding: 1rem 2rem;
+    }
+
+    .utils,
+    .register {
+        padding: 1rem 2rem;
     }
 }
