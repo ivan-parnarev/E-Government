@@ -7,8 +7,6 @@ import { LPDescription } from '../../components/LandingPage/LPDescription';
 export function LandingPage() {
     return (
         <>
-            <LandingPageNav />
-
             <main className={styles.main}>
                 <LPHeader />
 
