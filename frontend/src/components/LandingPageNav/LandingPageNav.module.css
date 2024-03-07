@@ -23,3 +23,9 @@
     justify-content: center;
     margin-top: 10px;
 }
+
+@media screen and (max-width: 768px) {
+    .link {
+        font-size: 18px;
+    }
+}

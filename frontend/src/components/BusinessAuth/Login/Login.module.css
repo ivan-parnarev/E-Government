@@ -1,0 +1,120 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 400px;
+    text-align: center;
+}
+
+.title {
+    color: white;
+    font-weight: 600;
+    /* font-size: 24px; */
+    margin-bottom: 1rem;
+}
+
+.label {
+    color: #57606b;
+}
+
+.utils {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.remember {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.resetPwd {
+    margin-bottom: 0;
+}
+
+.resetPwd a {
+    color: white;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.resetPwd a:hover {
+    text-decoration: underline;
+}
+
+.btnsContainer {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.button {
+    font-size: 22px;
+    margin-bottom: 1rem;
+    height: 58px;
+}
+
+.or {
+    color: white;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+.socials {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.register {
+    color: rgb(223, 223, 223);
+    font-weight: 400;
+}
+
+.register a {
+    color: rgb(209, 197, 197);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.register a:hover {
+    text-decoration: underline;
+}
+
+@media screen and (min-width: 330px) and (max-width: 400px) {
+    .form {
+        width: 100%;
+        padding: 1rem 2.5rem;
+    }
+
+    .form > input {
+        width: 100%;
+    }
+
+    .utils,
+    .register {
+        padding: 0 2.5rem;
+        font-size: 12px;
+    }
+
+    .checkLabel {
+        min-height: 0px;
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 457px) {
+    .form {
+        padding: 1rem 2rem;
+    }
+
+    .utils,
+    .register {
+        padding: 1rem 2rem;
+    }
+}
