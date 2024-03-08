@@ -5,8 +5,8 @@ services:
   postgres:
     container_name: e-gov-postgres
     build:
-      context: ../../dev-env
       dockerfile: dockerfiles/postgres.Dockerfile
+      context: ../../dev-env
     image: postgres
     env_file:
       - ../docker.env
@@ -14,7 +14,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
 
   frontend:
     container_name: e-gov-react
@@ -52,4 +52,7 @@ services:
       dockerfile: ../authentication/authentication.Dockerfile
     image: auth
     ports:
-      - "8082:8082"
+      - "8081:8081"
+
+volumes:
+  postgres_data:
