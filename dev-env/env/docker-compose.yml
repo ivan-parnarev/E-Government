@@ -5,8 +5,8 @@ services:
   postgres:
     container_name: e-gov-postgres
     build:
-      dockerfile: dockerfiles/postgres.Dockerfile
       context: ../../dev-env
+      dockerfile: dockerfiles/postgres.Dockerfile
     image: postgres
     env_file:
       - ../docker.env
