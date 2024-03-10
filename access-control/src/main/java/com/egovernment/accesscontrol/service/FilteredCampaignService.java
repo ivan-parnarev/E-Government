@@ -4,8 +4,11 @@ import com.egovernment.accesscontrol.domain.entity.FilteredCampaign;
 import com.egovernment.accesscontrol.repository.FilteredCampaignRepository;
 import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.accesscontrol.filter.CampaignRegionFilter;
+import com.egovernment.kafka.domain.dto.CensusCampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.VotingCampaignFilteredDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FilteredCampaignService {
     private final FilteredCampaignRepository filteredCampaignRepository;
+    private final ModelMapper modelMapper;
+
     @Transactional
     public List<CampaignFilteredDTO> getActiveLocalCampaigns(String regionName) {
         return this.filteredCampaignRepository
@@ -26,26 +31,16 @@ public class FilteredCampaignService {
     }
 
     private CampaignFilteredDTO mapCampaignToCampaignFilteredDTO(FilteredCampaign campaign) {
-        CampaignFilteredDTO result = CampaignFilteredDTO
-                .builder()
-                .campaignTitle(campaign.getCampaignTitle())
-                .campaignType(campaign.getCampaignType())
-                .startDate(campaign.getStartDate())
-                .endDate(campaign.getEndDate())
-                .build();
-
-        if(campaign.getCampaignType().equals("VOTING")){
-            result.setRegionName(campaign.getRegionName());
-            result.setElectionId(campaign.getElectionId());
-            result.setElectionType(campaign.getElectionType());
-
-        }else if(campaign.getCampaignType().equals("CENSUS")){
-            result.setCampaignId(campaign.getCampaignId());
-            result.setRegionName("GLOBAL");
+        if (campaign.getCampaignType().equals("VOTING")) {
+            VotingCampaignFilteredDTO result = this.modelMapper.map(campaign, VotingCampaignFilteredDTO.class);
+            return result;
+        }else{
+            CensusCampaignFilteredDTO result = this.modelMapper.map(campaign, CensusCampaignFilteredDTO.class);
+            return result;
         }
-        return result;
     }
-    public void saveCampaign(FilteredCampaign campaign){
+
+    public void saveCampaign(FilteredCampaign campaign) {
         this.filteredCampaignRepository.save(campaign);
     }
 

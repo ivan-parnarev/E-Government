@@ -1,6 +1,7 @@
 package com.egovernment.kafka.domain.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -12,13 +13,10 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CampaignFilteredDTO implements Serializable {
+public abstract class CampaignFilteredDTO implements Serializable {
 
     private String campaignType;
     private String campaignTitle;
-    private Long campaignId;
-    private Long electionId;
-    private String electionType;
     private String regionName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
