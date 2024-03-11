@@ -1,10 +1,11 @@
 package com.egovernment.main.service;
 
+import com.egovernment.main.client.AccessControlClient;
 import com.egovernment.main.client.AuthenticationClient;
 import com.egovernment.main.domain.dto.auth.AuthRequest;
 import com.egovernment.main.domain.dto.auth.AuthResponse;
 import com.egovernment.main.domain.dto.auth.FeignAuthResponse;
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.main.domain.dto.region.AddressDTO;
 import com.egovernment.main.exceptions.UserNotFoundException;
 import com.egovernment.main.utils.JwtTokenUtil;
@@ -27,7 +28,7 @@ public class AuthenticationService {
     private final ModelMapper modelMapper;
     private final AuthenticationClient authenticationClient;
     private final JwtTokenUtil jwtTokenUtil;
-    private final CampaignService campaignService;
+    private final AccessControlClient accessControlClient;
 
     public ResponseEntity<AuthResponse> authenticateUser(AuthRequest authRequest) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
@@ -70,7 +71,7 @@ public class AuthenticationService {
         AddressDTO addressDTO = this.modelMapper.map(address, AddressDTO.class);
         String region = addressDTO.getCity();
 
-        return this.campaignService.getActiveCampaigns(region);
+        return this.accessControlClient.getActiveCampaigns(region).getBody();
     }
 
 }

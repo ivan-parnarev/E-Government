@@ -1,12 +1,12 @@
 package com.egovernment.accesscontrol.validation;
 
-import com.egovernment.accesscontrol.domain.entity.Campaign;
+import com.egovernment.accesscontrol.domain.entity.FilteredCampaign;
 
 import java.time.LocalDateTime;
 
 public class ActiveCampaignValidator {
 
-    public static boolean isCampaignActive(Campaign campaign) {
+    public static boolean isCampaignActive(FilteredCampaign campaign) {
         LocalDateTime currentTime = LocalDateTime.now();
         if (campaign == null) {
             return false;

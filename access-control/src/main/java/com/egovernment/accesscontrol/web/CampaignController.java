@@ -1,7 +1,7 @@
 package com.egovernment.accesscontrol.web;
 
-import com.egovernment.accesscontrol.domain.dto.CampaignFilteredDTO;
-import com.egovernment.accesscontrol.service.CampaignService;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
+import com.egovernment.accesscontrol.service.FilteredCampaignService;
 import com.egovernment.accesscontrol.web.interfaces.CampaignControllerInterface;
 import com.egovernment.accesscontrol.web.path.ApiPaths;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CampaignController implements CampaignControllerInterface {
 
-    private final CampaignService campaignService;
+    private final FilteredCampaignService filteredCampaignService;
 
     @Operation(summary = "Get Active Campaigns", description = "Retrieves a list of all active voting campaigns available.")
     @ApiResponse(responseCode = "200", description = "Successfully retrieved the list of active campaigns",
@@ -28,7 +28,7 @@ public class CampaignController implements CampaignControllerInterface {
     @PostMapping(ApiPaths.ACTIVE_PATH)
     public ResponseEntity<List<CampaignFilteredDTO>> getActiveCampaigns(@RequestBody String regionName) {
 
-        List<CampaignFilteredDTO> activeVotingCampaigns = this.campaignService
+        List<CampaignFilteredDTO> activeVotingCampaigns = this.filteredCampaignService
                 .getActiveLocalCampaigns(regionName);
 
         return ResponseEntity.ok().body(activeVotingCampaigns);

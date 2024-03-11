@@ -1,7 +1,7 @@
 package com.egovernment.main.service;
 
 import com.egovernment.main.client.AccessControlClient;
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
 import com.egovernment.main.hashing.HashUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

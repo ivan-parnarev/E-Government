@@ -1,4 +1,4 @@
-package com.egovernment.accesscontrol.domain.dto;
+package com.egovernment.kafka.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CampaignFilteredDTO {
-
+public class CensusCampaignFilteredDTO extends CampaignFilteredDTO{
     private Long campaignId;
-    private String campaignTitle;
-    private String regionName;
-    private String campaignType;
-
 }

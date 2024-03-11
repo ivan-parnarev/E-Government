@@ -1,6 +1,7 @@
 package com.egovernment.main.service;
 
-import com.egovernment.main.domain.dto.common.CampaignFilteredDTO;
+import com.egovernment.kafka.domain.dto.CampaignFilteredDTO;
+import com.egovernment.kafka.service.KafkaMessageService;
 import com.egovernment.main.domain.dto.voteCampaign.CandidateDTO;
 import com.egovernment.main.domain.dto.voteCampaign.ElectionDTO;
 import com.egovernment.main.domain.dto.voteCampaign.VoteCampaignDTO;
@@ -25,6 +26,7 @@ public class ElectionService {
 
     private final CandidateService candidateService;
     private final ElectionRepository electionRepository;
+    private final KafkaMessageService kafkaMessageService;
     private final ElectionFactory electionFactory = new ElectionFactory();
     private final ModelMapper modelMapper;
 
@@ -74,6 +76,7 @@ public class ElectionService {
 
             election.setCandidateList(savedCandidates);
             saveElection(election);
+            kafkaMessageService.sendMessage(this.mapElectionToCampaignFilteredDTO(election));
         }
     }
 
@@ -91,6 +94,8 @@ public class ElectionService {
                 .campaignType(campaign.getCampaignType().toString())
                 .electionId(election.getId())
                 .electionType(election.getElectionType().toString())
+                .startDate(campaign.getStartDate())
+                .endDate(campaign.getEndDate())
                 .build();
 
     }
