@@ -1,33 +1,31 @@
-name: GitHub Action Java CI/CD with Maven
+name: Deploy
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
-
+  add_keys_and_execute_commands:
     runs-on: ubuntu-latest
-
+    
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: '1.8'
-        distribution: 'adopt'
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean install
-
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: cmakkaya/my-github-action-app
-        tags: latest
-        registry: docker.io
-        dockerfile: Dockerfile
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up environment variables
+      run: |
+        export POSTGRES_USER=ostgres
+        export POSTGRES_PASSWORD=1234qwer
+        export POSTGRES_DB=postgres
+        export SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/postgres
+        export SPRING_DATASOURCE_USERNAME=postgres
+        export SPRING_DATASOURCE_PASSWORD=1234qwer
+        
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Execute Python command
+      run: |
+        python manage.py start
