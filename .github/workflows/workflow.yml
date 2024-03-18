@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-22.04.4
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -18,9 +18,15 @@ jobs:
           openssl ecparam -name prime256v1 -genkey -out private.pem
           openssl ec -in private.pem -pubout -out public.pem
 
+      - name: Install pip
+        run: |
+          apt update
+          apt install python3-pip
+
       - name: Download requirements
         run: pip install -r requirements.txt
 
       - name: Start docker compose
         run: python manage.py start
+      
 
