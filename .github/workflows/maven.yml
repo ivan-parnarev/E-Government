@@ -1,4 +1,4 @@
-name: Deploy
+name: Deployment Workflow
 
 on:
   push:
@@ -6,26 +6,34 @@ on:
       - main
 
 jobs:
-  add_keys_and_execute_commands:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      
-    - name: Set up environment variables
-      run: |
-        export POSTGRES_USER=ostgres
-        export POSTGRES_PASSWORD=1234qwer
-        export POSTGRES_DB=postgres
-        export SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/postgres
-        export SPRING_DATASOURCE_USERNAME=postgres
-        export SPRING_DATASOURCE_PASSWORD=1234qwer
-        
-    - name: Install Python dependencies
-      run: |
-        pip install -r requirements.txt
-        
-    - name: Execute Python command
-      run: |
-        python manage.py start
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Generate API Keys
+        run: |
+          openssl ecparam -name prime256v1 -genkey -out private.pem
+          openssl ec -in private.pem -pubout -out public.pem
+
+      - name: Transfer Files
+        run: |
+          cp ../resources/access-control/application.yml ../../access-control/src/main/resources/
+          cp ../resources/authentication/application.yml ../../authentication/src/main/resources/
+          cp ../resources/main/application.yml ../../main/src/main/resources/
+          cp ../dockerfiles/access-control.Dockerfile ../../access-control/
+          cp ../dockerfiles/authentication.Dockerfile ../../authentication/
+          cp ../dockerfiles/postgres.Dockerfile ../
+          cp ../dockerfiles/frontend.Dockerfile ../../frontend/
+          cp ../dockerfiles/main.Dockerfile ../../main/
+          cp ../resources/access-control/data.sql ../../access-control/src/main/resources/
+          cp ../resources/authentication/data.sql ../../authentication/src/main/resources/
+          cp ../resources/main/data.sql ../../main/src/main/resources/
+          cp public.pem ../../authentication/src/main/resources/keys/
+          cp private.pem ../../authentication/src/main/resources/keys/
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
