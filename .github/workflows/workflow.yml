@@ -20,8 +20,8 @@ jobs:
 
       - name: Install pip
         run: |
-          apt update
-          apt install python3-pip
+          python3 -m ensurepip
+          python3 -m pip install --upgrade pip
 
       - name: Download requirements
         run: pip install -r requirements.txt
