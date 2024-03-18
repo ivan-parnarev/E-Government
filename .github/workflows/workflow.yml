@@ -18,22 +18,9 @@ jobs:
           openssl ecparam -name prime256v1 -genkey -out private.pem
           openssl ec -in private.pem -pubout -out public.pem
 
-      - name: Transfer Files
-        run: |
-          cp ../resources/access-control/application.yml ../../access-control/src/main/resources/
-          cp ../resources/authentication/application.yml ../../authentication/src/main/resources/
-          cp ../resources/main/application.yml ../../main/src/main/resources/
-          cp ../dockerfiles/access-control.Dockerfile ../../access-control/
-          cp ../dockerfiles/authentication.Dockerfile ../../authentication/
-          cp ../dockerfiles/postgres.Dockerfile ../
-          cp ../dockerfiles/frontend.Dockerfile ../../frontend/
-          cp ../dockerfiles/main.Dockerfile ../../main/
-          cp ../resources/access-control/data.sql ../../access-control/src/main/resources/
-          cp ../resources/authentication/data.sql ../../authentication/src/main/resources/
-          cp ../resources/main/data.sql ../../main/src/main/resources/
-          cp public.pem ../../authentication/src/main/resources/keys/
-          cp private.pem ../../authentication/src/main/resources/keys/
+      - name: Download requirements
+        run: pip install -r requirements.txt
 
-      - name: Start Docker Compose
-        run: docker-compose up -d
+      - name: Start docker compose
+        run: python manage.py start
 
