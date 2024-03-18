@@ -18,13 +18,8 @@ jobs:
           openssl ecparam -name prime256v1 -genkey -out private.pem
           openssl ec -in private.pem -pubout -out public.pem
 
-      - name: Install pip
-        run: |
-          python3 -m ensurepip
-          python3 -m pip install --upgrade pip
-
       - name: Download requirements
-        run: pip install -r requirements.txt
+        run: ../dev-env/requirements.txt -m pip install -r requirements.txt
 
       - name: Start docker compose
         run: python manage.py start
